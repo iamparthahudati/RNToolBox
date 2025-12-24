@@ -23,7 +23,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Components" component={ComponentsScreen} />
         <Stack.Screen name="NativeActions" component={NativeActionsScreen} />

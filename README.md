@@ -130,12 +130,17 @@ These screens act as **visual documentation**.
 - Theme system
 - Buttons & Inputs
 - Call, Email, Maps, Clipboard
+- Permissions
+- Push Notifications
 
 ### Phase 2
-- Permissions
+
 - Media picker
 - Location
 - OTP handling
+- Voice recorder
+- Media Player -> Video /Audio
+- Recording Player ( Like whatsapp)
 
 ### Phase 3
 - Security
