@@ -1,12 +1,12 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
 
-import HomeScreen from '../screens/HomeScreen';
 import ComponentsScreen from '../screens/ComponentsScreen';
+import HomeScreen from '../screens/HomeScreen';
+import HooksScreen from '../screens/HooksScreen';
 import NativeActionsScreen from '../screens/NativeActionsScreen';
 import PermissionsScreen from '../screens/PermissionsScreen';
-import HooksScreen from '../screens/HooksScreen';
 import SystemScreen from '../screens/SystemScreen';
 
 export type RootStackParamList = {
@@ -16,6 +16,7 @@ export type RootStackParamList = {
   Permissions: undefined;
   Hooks: undefined;
   System: undefined;
+  Device: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -23,13 +24,17 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{ headerShown: false }}
+      >
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Components" component={ComponentsScreen} />
         <Stack.Screen name="NativeActions" component={NativeActionsScreen} />
         <Stack.Screen name="Permissions" component={PermissionsScreen} />
         <Stack.Screen name="Hooks" component={HooksScreen} />
         <Stack.Screen name="System" component={SystemScreen} />
+        <Stack.Screen name="Device" component={SystemScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
