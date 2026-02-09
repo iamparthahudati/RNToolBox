@@ -23,17 +23,19 @@ This project acts as a **living toolbox** — whenever a feature is needed in a 
 - Android-first (cross-platform ready)
 - React Navigation
 - Minimal & proven libraries only
+- Deeplinking
+- Device info
 
 ---
 
 ## 📁 Project Structure
-
 
 ---
 
 ## 🧱 Core UI Components
 
 ### Buttons
+
 - Primary / Secondary / Outline
 - Loading & disabled states
 - Icon support
@@ -41,6 +43,7 @@ This project acts as a **living toolbox** — whenever a feature is needed in a 
 - Long press support
 
 ### Inputs
+
 - Text / Number / Password
 - OTP input (auto focus)
 - Search input (debounced)
@@ -48,6 +51,7 @@ This project acts as a **living toolbox** — whenever a feature is needed in a 
 - Masked inputs
 
 ### Selection Controls
+
 - Switch
 - Checkbox
 - Radio button
@@ -58,6 +62,7 @@ This project acts as a **living toolbox** — whenever a feature is needed in a 
 ## 📱 Native & Device Features
 
 ### Communication
+
 - Call number
 - Open dialer
 - Send SMS
@@ -65,6 +70,7 @@ This project acts as a **living toolbox** — whenever a feature is needed in a 
 - Open WhatsApp
 
 ### System Utilities
+
 - Clipboard (copy / paste)
 - Share text & images
 - Open URLs
@@ -72,6 +78,7 @@ This project acts as a **living toolbox** — whenever a feature is needed in a 
 - Open Play Store listing
 
 ### Location & Maps
+
 - Open Google Maps
 - Navigate to coordinates
 - Address search
@@ -92,6 +99,7 @@ This project acts as a **living toolbox** — whenever a feature is needed in a 
 ## 🧠 Hooks & Utilities
 
 ### Custom Hooks
+
 - `useDebounce`
 - `useThrottle`
 - `useKeyboard`
@@ -100,6 +108,7 @@ This project acts as a **living toolbox** — whenever a feature is needed in a 
 - `usePermissions`
 
 ### Utilities
+
 - Logger
 - Validators (email, phone)
 - Date formatter
@@ -126,6 +135,7 @@ These screens act as **visual documentation**.
 ## 📈 Growth Plan
 
 ### Phase 1
+
 - Project setup
 - Theme system
 - Buttons & Inputs
@@ -143,12 +153,14 @@ These screens act as **visual documentation**.
 - Recording Player ( Like whatsapp)
 
 ### Phase 3
+
 - Security
 - Storage
 - Network layer
 - Biometric authentication
 
 ### Phase 4
+
 - Debug tools
 - Feature flags
 - Performance helpers
@@ -176,7 +188,7 @@ These screens act as **visual documentation**.
 ## ✅ Status
 
 🚧 Actively evolving  
-📌 Used as a long-term reference project  
+📌 Used as a long-term reference project
 
 ---
 
