@@ -1,4 +1,4 @@
-import { Linking, Alert } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
 
 export const openMaps = (address: string) => {
   if (!address) {
@@ -8,13 +8,15 @@ export const openMaps = (address: string) => {
 
   const encodedAddress = encodeURIComponent(address);
 
-  // Android-safe Google Maps URL
-  const googleMapsAppUrl = `geo:0,0?q=${encodedAddress}`;
-  const googleMapsWebUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+  const url = Platform.select({
+    ios: `maps:0,0?q=${encodedAddress}`,
+    android: `geo:0,0?q=${encodedAddress}`,
+  });
 
-  Linking.openURL(googleMapsAppUrl).catch(() => {
-    // Fallback to browser if Maps app not available
-    Linking.openURL(googleMapsWebUrl).catch(() => {
+  const fallbackUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+
+  Linking.openURL(url!).catch(() => {
+    Linking.openURL(fallbackUrl).catch(() => {
       Alert.alert('Error', 'Unable to open maps');
     });
   });
