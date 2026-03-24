@@ -1,90 +1,200 @@
 import React, { useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TextInputProps,
-  View,
-} from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
+import { HelperText, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/Header';
 import { theme } from '../../theme';
 
-interface InputFieldProps extends TextInputProps {
-  label: string;
-}
-
-const InputField = ({ label, style, ...rest }: InputFieldProps) => (
-  <View style={styles.fieldWrapper}>
-    <Text style={styles.label}>{label}</Text>
-    <TextInput
-      style={[
-        styles.input,
-        rest.editable === false && styles.inputDisabled,
-        style,
-      ]}
-      {...rest}
-    />
-  </View>
-);
+const PAPER_THEME = {
+  colors: {
+    primary: theme.colors.primary,
+    background: theme.colors.white,
+    error: '#DC2626',
+  },
+};
 
 const InputsScreen = () => {
-  const [textValue, setTextValue] = useState('');
+  const [text, setText] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [number, setNumber] = useState('');
+  const [multiline, setMultiline] = useState('');
+
+  const validateEmail = (val: string) => {
+    setEmail(val);
+    setEmailError(val.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val));
+  };
 
   return (
     <SafeAreaView style={styles.root}>
       <Header title="Inputs" />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.sectionTitle}>Basic</Text>
-        <InputField label="Default" placeholder="Enter text..." />
-        <InputField
-          label="With Value"
-          value={textValue}
-          onChangeText={setTextValue}
-          placeholder="Type something..."
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/* Outlined Mode */}
+        <TextInput
+          label="Default (Outlined)"
+          mode="outlined"
+          placeholder="Enter text..."
+          value={text}
+          onChangeText={setText}
+          style={styles.input}
+          theme={PAPER_THEME}
         />
 
-        <Text style={styles.sectionTitle}>Secure</Text>
-        <InputField
-          label="Password"
-          placeholder="Enter password"
-          secureTextEntry={true}
+        <TextInput
+          label="With Left Icon"
+          mode="outlined"
+          placeholder="Search..."
+          style={styles.input}
+          theme={PAPER_THEME}
+          left={<TextInput.Icon icon="magnify" />}
         />
 
-        <Text style={styles.sectionTitle}>Keyboard Types</Text>
-        <InputField
+        <TextInput
+          label="With Right Icon"
+          mode="outlined"
+          placeholder="Enter value..."
+          style={styles.input}
+          theme={PAPER_THEME}
+          right={<TextInput.Icon icon="close-circle-outline" />}
+        />
+
+        {/* Flat Mode */}
+        <TextInput
+          label="Flat Mode"
+          mode="flat"
+          placeholder="Enter text..."
+          style={styles.input}
+          theme={PAPER_THEME}
+        />
+
+        <TextInput
+          label="Flat with Icon"
+          mode="flat"
+          placeholder="Enter text..."
+          style={styles.input}
+          theme={PAPER_THEME}
+          left={<TextInput.Icon icon="account-outline" />}
+        />
+
+        {/* Email with validation */}
+        <TextInput
           label="Email"
+          mode="outlined"
           placeholder="you@example.com"
+          value={email}
+          onChangeText={validateEmail}
           keyboardType="email-address"
           autoCapitalize="none"
+          style={styles.input}
+          theme={PAPER_THEME}
+          error={emailError}
+          left={<TextInput.Icon icon="email-outline" />}
         />
-        <InputField
-          label="Phone"
-          placeholder="+1 555 000 0000"
-          keyboardType="phone-pad"
-        />
-        <InputField label="Number" placeholder="0" keyboardType="numeric" />
+        <HelperText type={emailError ? 'error' : 'info'} visible={true}>
+          {emailError ? 'Enter a valid email address' : 'e.g. name@example.com'}
+        </HelperText>
 
-        <Text style={styles.sectionTitle}>Multiline</Text>
-        <InputField
+        {/* Password */}
+        <TextInput
+          label="Password"
+          mode="outlined"
+          placeholder="Enter password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!passwordVisible}
+          style={styles.input}
+          theme={PAPER_THEME}
+          left={<TextInput.Icon icon="lock-outline" />}
+          right={
+            <TextInput.Icon
+              icon={passwordVisible ? 'eye-off-outline' : 'eye-outline'}
+              onPress={() => setPasswordVisible(v => !v)}
+            />
+          }
+        />
+        <HelperText
+          type="info"
+          visible={password.length > 0 && password.length < 8}
+        >
+          Password must be at least 8 characters
+        </HelperText>
+
+        {/* Phone */}
+        <TextInput
+          label="Phone"
+          mode="outlined"
+          placeholder="+1 555 000 0000"
+          value={phone}
+          onChangeText={setPhone}
+          keyboardType="phone-pad"
+          style={styles.input}
+          theme={PAPER_THEME}
+          left={<TextInput.Icon icon="phone-outline" />}
+        />
+
+        {/* Number */}
+        <TextInput
+          label="Number"
+          mode="outlined"
+          placeholder="0"
+          value={number}
+          onChangeText={setNumber}
+          keyboardType="numeric"
+          style={styles.input}
+          theme={PAPER_THEME}
+          left={<TextInput.Icon icon="numeric" />}
+        />
+
+        {/* Multiline */}
+        <TextInput
           label="Multiline"
+          mode="outlined"
           placeholder="Write something..."
-          multiline={true}
+          value={multiline}
+          onChangeText={setMultiline}
+          multiline
           numberOfLines={4}
           style={styles.multilineInput}
+          theme={PAPER_THEME}
         />
 
-        <Text style={styles.sectionTitle}>States</Text>
-        <InputField
+        {/* Disabled */}
+        <TextInput
           label="Disabled"
+          mode="outlined"
           value="Cannot edit this"
+          disabled
+          style={styles.input}
+          theme={PAPER_THEME}
+        />
+
+        {/* Read Only */}
+        <TextInput
+          label="Read Only"
+          mode="outlined"
+          value="Read only value"
           editable={false}
+          style={styles.input}
+          theme={PAPER_THEME}
+          right={
+            <TextInput.Icon
+              icon="lock-outline"
+              color={theme.colors.textSecondary}
+            />
+          }
         />
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+export default InputsScreen;
 
 const styles = StyleSheet.create({
   root: {
@@ -93,42 +203,15 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: theme.spacing.lg,
-    paddingBottom: theme.spacing.xl,
-  },
-  fieldWrapper: {
-    marginBottom: theme.spacing.md,
-  },
-  label: {
-    fontSize: theme.typography.sizes.sm,
-    fontWeight: '600',
-    color: theme.colors.textPrimary,
-    marginBottom: theme.spacing.xs,
+    paddingBottom: theme.spacing.xxl,
   },
   input: {
-    height: 48,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: 8,
-    paddingHorizontal: theme.spacing.md,
-    fontSize: theme.typography.sizes.md,
-    color: theme.colors.textPrimary,
+    marginBottom: theme.spacing.sm,
     backgroundColor: theme.colors.white,
   },
   multilineInput: {
-    height: 100,
-    textAlignVertical: 'top',
-  },
-  inputDisabled: {
-    backgroundColor: theme.colors.surface,
-    color: theme.colors.textSecondary,
-  },
-  sectionTitle: {
-    fontSize: theme.typography.sizes.lg,
-    fontWeight: '700',
-    color: theme.colors.textPrimary,
     marginBottom: theme.spacing.sm,
-    marginTop: theme.spacing.lg,
+    backgroundColor: theme.colors.white,
+    minHeight: 100,
   },
 });
-
-export default InputsScreen;

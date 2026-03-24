@@ -80,7 +80,7 @@ const HooksScreen = ({ navigation }: Props) => {
       <Text style={styles.itemDescription}>{item.description}</Text>
       {!item.implemented && (
         <View style={styles.soonBadge}>
-          <Text style={styles.soonText}>Soon</Text>
+          <Text style={styles.soonText}>Coming Soon</Text>
         </View>
       )}
     </TouchableOpacity>
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.xs,
   },
   soonBadge: {
-    backgroundColor: '#F3F4F6',
+    backgroundColor: '#FEF2F2',
     borderRadius: 4,
     paddingHorizontal: 6,
     paddingVertical: 2,
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   },
   soonText: {
     fontSize: 10,
-    color: theme.colors.textSecondary,
+    color: '#DC2626',
     fontWeight: '600',
   },
 });

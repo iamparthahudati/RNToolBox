@@ -11,6 +11,7 @@ import HomeScreen from '../screens/HomeScreen';
 import HooksScreen from '../screens/HooksScreen';
 import NativeActionsScreen from '../screens/NativeActionsScreen';
 import PermissionsScreen from '../screens/PermissionsScreen';
+import DeviceInfoScreen from '../screens/system/DeviceInfoScreen';
 import SystemScreen from '../screens/SystemScreen';
 
 export type RootStackParamList = {
@@ -28,6 +29,7 @@ export type RootStackParamList = {
   Permissions: undefined;
   Hooks: undefined;
   System: undefined;
+  SystemDeviceInfo: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -52,6 +54,7 @@ const AppNavigator = () => {
         <Stack.Screen name="Permissions" component={PermissionsScreen} />
         <Stack.Screen name="Hooks" component={HooksScreen} />
         <Stack.Screen name="System" component={SystemScreen} />
+        <Stack.Screen name="SystemDeviceInfo" component={DeviceInfoScreen} />
 
         {/* Catch-all for unimplemented screens */}
         <Stack.Screen name="ComingSoon" component={ComingSoonScreen} />
