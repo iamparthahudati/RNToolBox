@@ -1,20 +1,25 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import {
-  View,
-  Text,
   FlatList,
-  TouchableOpacity,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../components/Header';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { theme } from '../theme';
+
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 type MenuItem = {
   title: string;
   description: string;
   screen: keyof RootStackParamList;
+  params?: Record<string, any>;
+  implemented?: boolean;
 };
 
 const MENU_ITEMS: MenuItem[] = [
@@ -22,26 +27,52 @@ const MENU_ITEMS: MenuItem[] = [
     title: 'UI Components',
     description: 'Buttons, Inputs, Selection controls',
     screen: 'Components',
+    implemented: true,
   },
   {
     title: 'Native Actions',
     description: 'Call, Email, Maps, Share',
     screen: 'NativeActions',
+    implemented: true,
   },
   {
     title: 'Permissions',
     description: 'Camera, Location, Storage',
     screen: 'Permissions',
+    implemented: true,
   },
   {
     title: 'Hooks & Utilities',
     description: 'Custom hooks and helpers',
     screen: 'Hooks',
+    implemented: true,
   },
   {
     title: 'System & Device',
     description: 'App state, network, settings',
     screen: 'System',
+    implemented: true,
+  },
+  {
+    title: 'Animations',
+    description: 'FadeIn, SlideIn, spring, Reanimated basics',
+    screen: 'ComingSoon',
+    params: { title: 'Animations' },
+    implemented: false,
+  },
+  {
+    title: 'Forms',
+    description: 'Validation, error states, form submission',
+    screen: 'ComingSoon',
+    params: { title: 'Forms' },
+    implemented: false,
+  },
+  {
+    title: 'Navigation Patterns',
+    description: 'Tabs, drawer, modal stack demo',
+    screen: 'ComingSoon',
+    params: { title: 'Navigation Patterns' },
+    implemented: false,
   },
 ];
 
@@ -50,53 +81,44 @@ const HomeScreen = ({ navigation }: Props) => {
     return (
       <TouchableOpacity
         style={styles.card}
-        onPress={() => navigation.navigate(item.screen)}
+        onPress={() =>
+          navigation.navigate(item.screen as any, item.params as any)
+        }
       >
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.description}>{item.description}</Text>
+        {item.implemented === false && (
+          <View style={styles.soonBadge}>
+            <Text style={styles.soonText}>Soon</Text>
+          </View>
+        )}
       </TouchableOpacity>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>RNToolbox</Text>
-      <Text style={styles.subHeader}>
-        Personal React Native Reference
-      </Text>
-
+    <SafeAreaView style={styles.container}>
+      <Header title="RNToolbox" />
       <FlatList
         data={MENU_ITEMS}
-        keyExtractor={(item) => item.title}
+        keyExtractor={item => item.title}
         renderItem={renderItem}
         contentContainerStyle={styles.list}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default HomeScreen;
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: theme.spacing.lg,
-     backgroundColor: theme.colors.background,
-  },
-  header: {
-    fontSize: theme.typography.sizes.xl,
-    fontWeight: '700',
-    color: theme.colors.textPrimary,
-    marginBottom: theme.spacing.xs,
-  },
-  subHeader: {
-    fontSize: theme.typography.sizes.sm,
-    color: theme.colors.textSecondary,
-    marginBottom: theme.spacing.lg,
+    backgroundColor: theme.colors.background,
   },
   list: {
-     paddingBottom: theme.spacing.lg,
+    padding: theme.spacing.lg,
+    paddingBottom: theme.spacing.xl,
   },
   card: {
     padding: theme.spacing.lg,
@@ -113,7 +135,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   description: {
-   fontSize: theme.typography.sizes.xs,
+    fontSize: theme.typography.sizes.xs,
     color: theme.colors.textSecondary,
+  },
+  soonBadge: {
+    backgroundColor: '#F3F4F6',
+    borderRadius: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    alignSelf: 'flex-start',
+    marginTop: theme.spacing.xs,
+  },
+  soonText: {
+    fontSize: 10,
+    color: theme.colors.textSecondary,
+    fontWeight: '600',
   },
 });

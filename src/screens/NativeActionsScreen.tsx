@@ -1,116 +1,163 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import Button from '../components/Button';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../components/Header';
+import { RootStackParamList } from '../navigation/AppNavigator';
 import { theme } from '../theme';
 
-import { callPhoneNumber } from '../services/phone';
-import { sendEmail } from '../services/email';
-import { openMaps } from '../services/maps';
-import { copyToClipboard, getFromClipboard } from '../services/clipboard';
+type Props = NativeStackScreenProps<RootStackParamList, 'NativeActions'>;
 
-const NativeActionsScreen = () => {
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-const [otp, setOtp] = useState('');
-
-  return (
-    <View style={styles.container}>
-      {/* Call */}
-      <Text style={styles.sectionTitle}>Call Phone</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter phone number"
-        keyboardType="phone-pad"
-        value={phone}
-        onChangeText={setPhone}
-      />
-      <Button
-        title="Call Now"
-        onPress={() => callPhoneNumber(phone)}
-      />
-
-      {/* Email */}
-      <Text style={styles.sectionTitle}>Send Email</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter email address"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <Button
-        title="Send Email"
-        onPress={() =>
-          sendEmail({
-            to: email,
-            subject: 'RNToolbox Test',
-            body: 'This email was sent from RNToolbox',
-          })
-        }
-      />
-
-      {/* Maps */}
-      <Text style={styles.sectionTitle}>Open Maps</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter address"
-        value={address}
-        onChangeText={setAddress}
-      />
-      <Button
-        title="Open in Maps"
-        onPress={() => openMaps(address)}
-      />
-
-      <Text style={styles.sectionTitle}>OTP / Clipboard</Text>
-
-<TextInput
-  style={styles.input}
-  placeholder="Enter OTP"
-  keyboardType="number-pad"
-  value={otp}
-  onChangeText={setOtp}
-/>
-
-<Button
-  title="Copy OTP"
-  onPress={() => copyToClipboard(otp)}
-/>
-
-<Button
-  title="Paste OTP"
-  variant="outline"
-  onPress={async () => {
-    const value = await getFromClipboard();
-    setOtp(value);
-  }}
-/>
-    </View>
-  );
+type ActionItem = {
+  title: string;
+  description: string;
+  screen: keyof RootStackParamList;
+  params?: object;
+  implemented: boolean;
 };
 
-export default NativeActionsScreen;
+const ITEMS: ActionItem[] = [
+  {
+    title: 'Call Phone',
+    description: 'Dial a number via native dialer',
+    screen: 'ComingSoon',
+    params: { title: 'Call Phone' },
+    implemented: false,
+  },
+  {
+    title: 'Send Email',
+    description: 'Open native email composer',
+    screen: 'ComingSoon',
+    params: { title: 'Send Email' },
+    implemented: false,
+  },
+  {
+    title: 'Open Maps',
+    description: 'Navigate to an address',
+    screen: 'ComingSoon',
+    params: { title: 'Open Maps' },
+    implemented: false,
+  },
+  {
+    title: 'OTP / Clipboard',
+    description: 'Copy and paste from clipboard',
+    screen: 'ComingSoon',
+    params: { title: 'OTP / Clipboard' },
+    implemented: false,
+  },
+  {
+    title: 'Share',
+    description: 'Native share sheet',
+    screen: 'ComingSoon',
+    params: { title: 'Share' },
+    implemented: false,
+  },
+  {
+    title: 'Image Picker',
+    description: 'Camera and gallery picker',
+    screen: 'ComingSoon',
+    params: { title: 'Image Picker' },
+    implemented: false,
+  },
+  {
+    title: 'File Picker',
+    description: 'Document selection',
+    screen: 'ComingSoon',
+    params: { title: 'File Picker' },
+    implemented: false,
+  },
+  {
+    title: 'Haptics',
+    description: 'Vibration feedback patterns',
+    screen: 'ComingSoon',
+    params: { title: 'Haptics' },
+    implemented: false,
+  },
+  {
+    title: 'Biometrics',
+    description: 'Face ID and fingerprint auth',
+    screen: 'ComingSoon',
+    params: { title: 'Biometrics' },
+    implemented: false,
+  },
+];
+
+export default function NativeActionsScreen({ navigation }: Props) {
+  const renderItem = ({ item }: { item: ActionItem }) => (
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() =>
+        navigation.navigate(item.screen as any, item.params as any)
+      }
+      activeOpacity={0.7}
+    >
+      <Text style={styles.cardTitle}>{item.title}</Text>
+      <Text style={styles.cardDescription}>{item.description}</Text>
+      {!item.implemented && (
+        <View style={styles.soonBadge}>
+          <Text style={styles.soonText}>Soon</Text>
+        </View>
+      )}
+    </TouchableOpacity>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header title="Native Actions" />
+      <FlatList
+        data={ITEMS}
+        keyExtractor={item => item.title}
+        renderItem={renderItem}
+        contentContainerStyle={styles.listContent}
+      />
+    </SafeAreaView>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: theme.spacing.lg,
     backgroundColor: theme.colors.background,
   },
-  sectionTitle: {
-    fontSize: theme.typography.sizes.lg,
-    fontWeight: '700',
-    marginTop: theme.spacing.lg,
-    marginBottom: theme.spacing.sm,
-    color: theme.colors.textPrimary,
+  listContent: {
+    padding: theme.spacing.lg,
+    paddingBottom: theme.spacing.xl,
   },
-  input: {
-    height: 48,
+  card: {
+    padding: theme.spacing.lg,
+    borderRadius: 8,
+    backgroundColor: theme.colors.surface,
+    marginBottom: theme.spacing.md,
     borderWidth: 1,
     borderColor: theme.colors.border,
-    borderRadius: 8,
-    paddingHorizontal: theme.spacing.md,
-    marginBottom: theme.spacing.md,
+  },
+  cardTitle: {
+    fontSize: theme.typography.sizes.md,
+    color: theme.colors.textPrimary,
+    fontWeight: '600',
+    marginBottom: theme.spacing.xs,
+  },
+  cardDescription: {
+    fontSize: theme.typography.sizes.xs,
+    color: theme.colors.textSecondary,
+  },
+  soonBadge: {
+    backgroundColor: '#F3F4F6',
+    borderRadius: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    alignSelf: 'flex-start',
+    marginTop: theme.spacing.xs,
+  },
+  soonText: {
+    fontSize: 10,
+    color: theme.colors.textSecondary,
+    fontWeight: '600',
   },
 });

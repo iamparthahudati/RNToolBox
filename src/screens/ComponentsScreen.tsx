@@ -1,51 +1,160 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import Button from '../components/Button';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../components/Header';
+import { RootStackParamList } from '../navigation/AppNavigator';
 import { theme } from '../theme';
 
-const ComponentsScreen = () => {
-  const [loading, setLoading] = useState(false);
+type Props = NativeStackScreenProps<RootStackParamList, 'Components'>;
 
-  const handlePress = () => {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 1500);
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Buttons</Text>
-
-      <Button title="Primary Button" onPress={handlePress} />
-      <Button title="Loading Button" loading={loading} />
-      <Button title="Disabled Button" disabled />
-      <Button title="Outline Button" variant="outline" />
-
-      <Button
-        title="Debounced Button (1s)"
-        debounceMs={1000}
-        onPress={() => console.log('Pressed')}
-      />
-
-      <Button
-        title="Button With Icon"
-        icon={<Text>⭐</Text>}
-      />
-    </View>
-  );
+type MenuItem = {
+  title: string;
+  description: string;
+  screen: keyof RootStackParamList;
+  params?: Record<string, any>;
+  implemented: boolean;
 };
 
-export default ComponentsScreen;
+const ITEMS: MenuItem[] = [
+  {
+    title: 'Buttons',
+    description: 'Primary, outline, loading, icon variants',
+    screen: 'ComponentButtons',
+    implemented: true,
+  },
+  {
+    title: 'Inputs',
+    description: 'Text fields, password, multiline',
+    screen: 'ComponentInputs',
+    implemented: true,
+  },
+  {
+    title: 'Selection Controls',
+    description: 'Switch, checkbox, radio',
+    screen: 'ComponentSelection',
+    implemented: true,
+  },
+  {
+    title: 'Typography',
+    description: 'Font sizes, weights, line heights',
+    screen: 'ComingSoon',
+    params: { title: 'Typography' },
+    implemented: false,
+  },
+  {
+    title: 'Cards',
+    description: 'Basic, image, action cards',
+    screen: 'ComingSoon',
+    params: { title: 'Cards' },
+    implemented: false,
+  },
+  {
+    title: 'Badges & Tags',
+    description: 'Status indicators, labels',
+    screen: 'ComingSoon',
+    params: { title: 'Badges & Tags' },
+    implemented: false,
+  },
+  {
+    title: 'Modals & Alerts',
+    description: 'Custom modal, bottom sheet, confirmation dialog',
+    screen: 'ComingSoon',
+    params: { title: 'Modals & Alerts' },
+    implemented: false,
+  },
+  {
+    title: 'Toast / Snackbar',
+    description: 'Success, error, info notifications',
+    screen: 'ComingSoon',
+    params: { title: 'Toast / Snackbar' },
+    implemented: false,
+  },
+  {
+    title: 'Loading States',
+    description: 'Skeleton screens, spinners, progress bars',
+    screen: 'ComingSoon',
+    params: { title: 'Loading States' },
+    implemented: false,
+  },
+];
+
+export default function ComponentsScreen({ navigation }: Props) {
+  const renderItem = ({ item }: { item: MenuItem }) => (
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() =>
+        navigation.navigate(item.screen as any, item.params as any)
+      }
+      activeOpacity={0.7}
+    >
+      <Text style={styles.cardTitle}>{item.title}</Text>
+      <Text style={styles.cardDescription}>{item.description}</Text>
+      {!item.implemented && (
+        <View style={styles.soonBadge}>
+          <Text style={styles.soonText}>Soon</Text>
+        </View>
+      )}
+    </TouchableOpacity>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header title="Components" />
+      <FlatList
+        data={ITEMS}
+        keyExtractor={item => item.title}
+        renderItem={renderItem}
+        contentContainerStyle={styles.listContent}
+      />
+    </SafeAreaView>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: theme.spacing.lg,
     backgroundColor: theme.colors.background,
   },
-  sectionTitle: {
-    fontSize: theme.typography.sizes.lg,
-    fontWeight: '700',
+  listContent: {
+    padding: theme.spacing.lg,
+    paddingBottom: theme.spacing.xl,
+  },
+  card: {
+    padding: theme.spacing.lg,
+    borderRadius: 8,
+    backgroundColor: theme.colors.surface,
     marginBottom: theme.spacing.md,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+  },
+  cardTitle: {
+    fontSize: theme.typography.sizes.md,
     color: theme.colors.textPrimary,
+    fontWeight: '600',
+    marginBottom: theme.spacing.xs,
+  },
+  cardDescription: {
+    fontSize: theme.typography.sizes.xs,
+    color: theme.colors.textSecondary,
+  },
+  soonBadge: {
+    backgroundColor: '#F3F4F6',
+    borderRadius: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    alignSelf: 'flex-start',
+    marginTop: theme.spacing.xs,
+  },
+  soonText: {
+    fontSize: 10,
+    color: theme.colors.textSecondary,
+    fontWeight: '600',
   },
 });
