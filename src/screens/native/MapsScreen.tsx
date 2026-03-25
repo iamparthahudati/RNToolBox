@@ -8,92 +8,69 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../components/Header';
-import { RootStackParamList } from '../navigation/types';
-import { theme } from '../theme';
+import Header from '../../components/Header';
+import { RootStackParamList } from '../../navigation/types';
+import { theme } from '../../theme';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'NativeActions'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'NativeMaps'>;
 
-type ActionItem = {
+type MapItem = {
   title: string;
   description: string;
   screen: keyof RootStackParamList;
-  params?: object;
   implemented: boolean;
 };
 
-const ITEMS: ActionItem[] = [
+const ITEMS: MapItem[] = [
   {
-    title: 'Call Phone',
-    description: 'Dial a number via native dialer',
-    screen: 'ComingSoon',
-    params: { title: 'Call Phone' },
-    implemented: false,
-  },
-  {
-    title: 'Send Email',
-    description: 'Open native email composer',
-    screen: 'ComingSoon',
-    params: { title: 'Send Email' },
-    implemented: false,
-  },
-  {
-    title: 'Open Maps',
-    description: 'Navigate to an address',
-    screen: 'NativeMaps',
+    title: 'Open in Maps',
+    description: 'Launch native maps app with an address',
+    screen: 'NativeMapsOpen',
     implemented: true,
   },
   {
-    title: 'OTP / Clipboard',
-    description: 'Copy and paste from clipboard',
-    screen: 'ComingSoon',
-    params: { title: 'OTP / Clipboard' },
+    title: 'Basic Map',
+    description: 'Embedded interactive map with zoom and pan',
+    screen: 'NativeMapsBasic',
     implemented: false,
   },
   {
-    title: 'Share',
-    description: 'Native share sheet',
-    screen: 'ComingSoon',
-    params: { title: 'Share' },
+    title: 'My Location',
+    description: 'Show current GPS position on the map',
+    screen: 'NativeMapsLocation',
     implemented: false,
   },
   {
-    title: 'Image Picker',
-    description: 'Camera and gallery picker',
-    screen: 'ComingSoon',
-    params: { title: 'Image Picker' },
+    title: 'Markers',
+    description: 'Drop and customize pins on the map',
+    screen: 'NativeMapsMarkers',
     implemented: false,
   },
   {
-    title: 'File Picker',
-    description: 'Document selection',
-    screen: 'ComingSoon',
-    params: { title: 'File Picker' },
+    title: 'Directions',
+    description: 'Draw a route polyline between two points',
+    screen: 'NativeMapsDirections',
     implemented: false,
   },
   {
-    title: 'Haptics',
-    description: 'Vibration feedback patterns',
-    screen: 'ComingSoon',
-    params: { title: 'Haptics' },
+    title: 'Polygon',
+    description: 'Draw filled shapes and overlays on the map',
+    screen: 'NativeMapsPolygon',
     implemented: false,
   },
   {
-    title: 'Biometrics',
-    description: 'Face ID and fingerprint auth',
-    screen: 'ComingSoon',
-    params: { title: 'Biometrics' },
+    title: 'Geofence',
+    description: 'Define a radius circle around a coordinate',
+    screen: 'NativeMapsGeofence',
     implemented: false,
   },
 ];
 
-export default function NativeActionsScreen({ navigation }: Props) {
-  const renderItem = ({ item }: { item: ActionItem }) => (
+export default function MapsScreen({ navigation }: Props) {
+  const renderItem = ({ item }: { item: MapItem }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() =>
-        navigation.navigate(item.screen as any, item.params as any)
-      }
+      onPress={() => navigation.navigate(item.screen as any)}
       activeOpacity={0.7}
     >
       <Text style={styles.cardTitle}>{item.title}</Text>
@@ -108,7 +85,7 @@ export default function NativeActionsScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Native Actions" />
+      <Header title="Google Maps" />
       <FlatList
         data={ITEMS}
         keyExtractor={item => item.title}

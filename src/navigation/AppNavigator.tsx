@@ -2,6 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
+import { RootStackParamList } from './types';
+
 import ComingSoonScreen from '../screens/ComingSoonScreen';
 import ButtonsScreen from '../screens/components/ButtonsScreen';
 import InputsScreen from '../screens/components/InputsScreen';
@@ -9,28 +11,18 @@ import SelectionScreen from '../screens/components/SelectionScreen';
 import ComponentsScreen from '../screens/ComponentsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import HooksScreen from '../screens/HooksScreen';
+import BasicMapScreen from '../screens/native/maps/BasicMapScreen';
+import DirectionsScreen from '../screens/native/maps/DirectionsScreen';
+import GeofenceScreen from '../screens/native/maps/GeofenceScreen';
+import MarkersScreen from '../screens/native/maps/MarkersScreen';
+import MyLocationScreen from '../screens/native/maps/MyLocationScreen';
+import OpenInMapsScreen from '../screens/native/maps/OpenInMapsScreen';
+import PolygonScreen from '../screens/native/maps/PolygonScreen';
+import MapsScreen from '../screens/native/MapsScreen';
 import NativeActionsScreen from '../screens/NativeActionsScreen';
 import PermissionsScreen from '../screens/PermissionsScreen';
 import DeviceInfoScreen from '../screens/system/DeviceInfoScreen';
 import SystemScreen from '../screens/SystemScreen';
-
-export type RootStackParamList = {
-  Home: undefined;
-  ComingSoon: { title: string };
-
-  // UI Components
-  Components: undefined;
-  ComponentButtons: undefined;
-  ComponentInputs: undefined;
-  ComponentSelection: undefined;
-
-  // Top-level sections
-  NativeActions: undefined;
-  Permissions: undefined;
-  Hooks: undefined;
-  System: undefined;
-  SystemDeviceInfo: undefined;
-};
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -55,6 +47,19 @@ const AppNavigator = () => {
         <Stack.Screen name="Hooks" component={HooksScreen} />
         <Stack.Screen name="System" component={SystemScreen} />
         <Stack.Screen name="SystemDeviceInfo" component={DeviceInfoScreen} />
+
+        {/* Native */}
+        <Stack.Screen name="NativeMaps" component={MapsScreen} />
+        <Stack.Screen name="NativeMapsBasic" component={BasicMapScreen} />
+        <Stack.Screen name="NativeMapsLocation" component={MyLocationScreen} />
+        <Stack.Screen name="NativeMapsMarkers" component={MarkersScreen} />
+        <Stack.Screen
+          name="NativeMapsDirections"
+          component={DirectionsScreen}
+        />
+        <Stack.Screen name="NativeMapsPolygon" component={PolygonScreen} />
+        <Stack.Screen name="NativeMapsGeofence" component={GeofenceScreen} />
+        <Stack.Screen name="NativeMapsOpen" component={OpenInMapsScreen} />
 
         {/* Catch-all for unimplemented screens */}
         <Stack.Screen name="ComingSoon" component={ComingSoonScreen} />
