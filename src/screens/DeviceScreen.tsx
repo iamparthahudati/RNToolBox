@@ -1,51 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
-import Button from '../components/Button';
-import { copyToClipboard } from '../services/clipboard';
-import {
-  getFcmToken,
-  listenForegroundNotification,
-  listenNotificationOpen,
-} from '../services/notifications';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { theme } from '../theme';
 
 const DeviceScreen = () => {
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const unsubscribe = listenForegroundNotification();
-
-    listenNotificationOpen(data => {
-      console.log('Notification tapped:', data);
-    });
-
-    return unsubscribe;
-  }, []);
-
-  const handleGetToken = async () => {
-    const fcmToken = await getFcmToken();
-    Alert.alert('FCM Token', fcmToken ?? 'No token');
-    setToken(fcmToken);
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Push Notifications</Text>
-
-      <Button title="Get FCM Token" onPress={handleGetToken} />
-
-      {token && <Text style={styles.token}>{token}</Text>}
-
-      {token && (
-        <>
-          <Text style={styles.token}>{token}</Text>
-          <Button
-            title="Copy Token"
-            variant="outline"
-            onPress={() => copyToClipboard(token)}
-          />
-        </>
-      )}
+      <Text style={styles.subtitle}>Coming Soon</Text>
     </View>
   );
 };
@@ -57,15 +18,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: theme.spacing.lg,
     backgroundColor: theme.colors.background,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: theme.typography.sizes.lg,
     fontWeight: '700',
-    marginBottom: theme.spacing.md,
+    color: theme.colors.textPrimary,
+    marginBottom: theme.spacing.sm,
   },
-  token: {
-    fontSize: 12,
-    marginTop: theme.spacing.md,
+  subtitle: {
+    fontSize: theme.typography.sizes.sm,
     color: theme.colors.textSecondary,
   },
 });

@@ -25,7 +25,7 @@ type MenuItem = {
 const MENU_ITEMS: MenuItem[] = [
   {
     title: 'Push Notifications',
-    description: 'FCM token and notification setup',
+    description: 'Push notification setup',
     screen: 'ComingSoon',
     params: { title: 'Push Notifications' },
     implemented: false,
