@@ -21,6 +21,7 @@ const InputsScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [phone, setPhone] = useState('');
   const [number, setNumber] = useState('');
+  const [mfaPin, setMfaPin] = useState('');
   const [multiline, setMultiline] = useState('');
 
   const validateEmail = (val: string) => {
@@ -123,6 +124,33 @@ const InputsScreen = () => {
           visible={password.length > 0 && password.length < 8}
         >
           Password must be at least 8 characters
+        </HelperText>
+
+        {/* MFA PIN - auto-fills from SMS via keyboard toolbar */}
+        <TextInput
+          label="MFA PIN"
+          mode="outlined"
+          placeholder="Enter PIN from SMS"
+          value={mfaPin}
+          onChangeText={setMfaPin}
+          keyboardType="default"
+          textContentType="oneTimeCode"
+          autoComplete="sms-otp"
+          maxLength={6}
+          style={styles.input}
+          theme={PAPER_THEME}
+          left={<TextInput.Icon icon="shield-key-outline" />}
+          right={
+            mfaPin.length > 0 ? (
+              <TextInput.Icon
+                icon="close-circle-outline"
+                onPress={() => setMfaPin('')}
+              />
+            ) : undefined
+          }
+        />
+        <HelperText type="info" visible={true}>
+          PIN from your SMS will appear in the keyboard toolbar
         </HelperText>
 
         {/* Phone */}
