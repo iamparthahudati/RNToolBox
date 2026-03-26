@@ -6,12 +6,13 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/Header';
+import Header from '../../components/atoms/Header';
+import InfoRow from '../../components/molecules/InfoRow';
+import SectionHeader from '../../components/molecules/SectionHeader';
 import { theme } from '../../theme';
 
 interface DeviceInfoData {
@@ -141,20 +142,13 @@ export default function DeviceInfoScreen(): React.JSX.Element {
         <ScrollView contentContainerStyle={styles.scrollContent}>
           {SECTIONS.map(section => (
             <View key={section.title}>
-              <View style={styles.sectionHeader}>
-                <Text style={styles.sectionHeaderText}>{section.title}</Text>
-              </View>
+              <SectionHeader title={section.title} />
               {section.rows.map(row => (
-                <View key={row.key} style={styles.row}>
-                  <Text style={styles.rowLabel}>{row.label}</Text>
-                  <Text
-                    style={styles.rowValue}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {info?.[row.key] ?? '—'}
-                  </Text>
-                </View>
+                <InfoRow
+                  key={row.key}
+                  label={row.label}
+                  value={info?.[row.key] ?? '—'}
+                />
               ))}
             </View>
           ))}
@@ -176,41 +170,5 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: theme.spacing.xl,
-  },
-  sectionHeader: {
-    backgroundColor: theme.colors.surface,
-    paddingHorizontal: theme.spacing.lg,
-    paddingVertical: theme.spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.border,
-  },
-  sectionHeaderText: {
-    fontSize: theme.typography.sizes.xs,
-    fontWeight: '700',
-    color: theme.colors.textSecondary,
-    letterSpacing: 0.8,
-    textTransform: 'uppercase',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: theme.spacing.lg,
-    paddingVertical: theme.spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.border,
-    backgroundColor: theme.colors.white,
-  },
-  rowLabel: {
-    fontSize: theme.typography.sizes.sm,
-    color: theme.colors.textSecondary,
-    flex: 1,
-  },
-  rowValue: {
-    fontSize: theme.typography.sizes.sm,
-    color: theme.colors.textPrimary,
-    fontWeight: '500',
-    flex: 1,
-    textAlign: 'right',
   },
 });

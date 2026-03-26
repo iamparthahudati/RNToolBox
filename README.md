@@ -1,197 +1,844 @@
-# 📦 RNToolbox
+# RNToolBox
 
-RNToolbox is a **personal React Native reference & utility project** designed to speed up development by providing **ready-to-use components, native actions, hooks, and utilities**.
-
-This project acts as a **living toolbox** — whenever a feature is needed in a real app, it can be copied directly from here with confidence.
+A React Native developer reference app built with TypeScript. It demonstrates real-world patterns for UI components, native device actions, permissions, system info, and more — all organized using an atomic design system.
 
 ---
 
-## 🎯 Purpose
+## Table of Contents
 
-- Avoid rewriting common logic repeatedly
-- Maintain clean, tested reference implementations
-- Improve development speed and consistency
-- Serve as a long-term personal SDK
-- Act as an interview & architectural reference
-
----
-
-## 🛠 Tech Stack
-
-- React Native
-- TypeScript
-- Android-first (cross-platform ready)
-- React Navigation
-- Minimal & proven libraries only
-- Deeplinking
-- Device info
-
----
-
-## 📁 Project Structure
-
----
-
-## 🧱 Core UI Components
-
-### Buttons
-
-- Primary / Secondary / Outline
-- Loading & disabled states
-- Icon support
-- Debounced press handling
-- Long press support
-
-### Inputs
-
-- Text / Number / Password
-- OTP input (auto focus)
-- Search input (debounced)
-- Error & helper text
-- Masked inputs
-
-### Selection Controls
-
-- Switch
-- Checkbox
-- Radio button
-- Dropdown / Bottom sheet selector
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Architecture](#architecture)
+  - [Atomic Design](#atomic-design)
+  - [Atoms](#atoms)
+  - [Molecules](#molecules)
+  - [Screens](#screens)
+  - [Navigation](#navigation)
+  - [Services](#services)
+  - [Theme](#theme)
+  - [Types](#types)
+- [Feature Sections](#feature-sections)
+  - [UI Components](#ui-components)
+  - [Native Actions](#native-actions)
+  - [System & Device](#system--device)
+  - [Permissions](#permissions)
+  - [Hooks & Utilities](#hooks--utilities)
+- [Adding a New Screen](#adding-a-new-screen)
+- [Adding a New Component](#adding-a-new-component)
+- [Scripts](#scripts)
 
 ---
 
-## 📱 Native & Device Features
+## Overview
 
-### Communication
-
-- Call number
-- Open dialer
-- Send SMS
-- Send Email (with subject/body)
-- Open WhatsApp
-
-### System Utilities
-
-- Clipboard (copy / paste)
-- Share text & images
-- Open URLs
-- Open app / system settings
-- Open Play Store listing
-
-### Location & Maps
-
-- Open Google Maps
-- Navigate to coordinates
-- Address search
-- Permission handling
+RNToolBox is a living reference app — not a production app. Each section demonstrates a specific React Native capability with working, real code. Unimplemented sections show a "Coming Soon" placeholder so the navigation structure is always complete.
 
 ---
 
-## 🔐 Permissions & Security
+## Tech Stack
 
-- Centralized permission manager
-- Camera / Storage / Location permissions
-- Notification permission handling
-- Biometric authentication (future)
-- Secure storage reference
-
----
-
-## 🧠 Hooks & Utilities
-
-### Custom Hooks
-
-- `useDebounce`
-- `useThrottle`
-- `useKeyboard`
-- `useNetwork`
-- `useAppState`
-- `usePermissions`
-
-### Utilities
-
-- Logger
-- Validators (email, phone)
-- Date formatter
-- Currency formatter (₹)
-- Clipboard helpers
-- Permission helpers
+| Package                             | Version | Purpose                    |
+| ----------------------------------- | ------- | -------------------------- |
+| `react-native`                      | 0.83.1  | Core framework             |
+| `react`                             | 19.2.0  | UI library                 |
+| `typescript`                        | ^5.8.3  | Type safety                |
+| `@react-navigation/native`          | ^7.1.26 | Navigation container       |
+| `@react-navigation/native-stack`    | ^7.9.0  | Stack navigator            |
+| `react-native-paper`                | 5.15.0  | Material UI inputs         |
+| `react-native-safe-area-context`    | ^5.6.2  | Safe area handling         |
+| `react-native-screens`              | ^4.19.0 | Native screen optimization |
+| `react-native-device-info`          | 15.0.2  | Device metadata            |
+| `react-native-permissions`          | ^5.4.4  | Runtime permissions        |
+| `@react-native-clipboard/clipboard` | ^1.16.3 | Clipboard read/write       |
 
 ---
 
-## 🧪 Demo Screens
+## Project Structure
 
-Each feature is demonstrated via **dedicated demo screens**, not mock UI.
-
-- Components Demo
-- Native Actions Demo
-- Permissions Demo
-- Hooks Demo
-- Utilities Demo
-
-These screens act as **visual documentation**.
+```
+RNToolBox/
+├── App.tsx                          # Root: SafeAreaProvider > PaperProvider > AppNavigator
+├── src/
+│   ├── components/
+│   │   ├── index.ts                 # Barrel export for all atoms and molecules
+│   │   ├── atoms/
+│   │   │   ├── Badge/               # Status label (Coming Soon, success, error, warning)
+│   │   │   ├── Button/              # Pressable button with variants, loading, debounce
+│   │   │   ├── Chip/                # Selectable chip with optional sublabel
+│   │   │   ├── Divider/             # Horizontal or vertical line separator
+│   │   │   └── Header/              # Screen header with back navigation
+│   │   └── molecules/
+│   │       ├── Checkbox/            # Controlled and uncontrolled checkbox
+│   │       ├── InfoRow/             # Label + value row for settings-style lists
+│   │       ├── MenuCard/            # Tappable card with title, description, badge
+│   │       ├── RadioGroup/          # Group of radio options
+│   │       ├── ScreenLayout/        # Full-screen layout: Header + FlatList of MenuCards
+│   │       └── SectionHeader/       # Uppercase section label bar
+│   ├── navigation/
+│   │   ├── AppNavigator.tsx         # All routes registered here
+│   │   └── types.ts                 # RootStackParamList type
+│   ├── screens/
+│   │   ├── HomeScreen.tsx
+│   │   ├── ComponentsScreen.tsx
+│   │   ├── NativeActionsScreen.tsx
+│   │   ├── PermissionsScreen.tsx
+│   │   ├── HooksScreen.tsx
+│   │   ├── SystemScreen.tsx
+│   │   ├── ComingSoonScreen.tsx
+│   │   ├── DeviceScreen.tsx
+│   │   ├── components/
+│   │   │   ├── ButtonsScreen.tsx
+│   │   │   ├── InputsScreen.tsx
+│   │   │   └── SelectionScreen.tsx
+│   │   ├── native/
+│   │   │   ├── CallPhoneScreen.tsx
+│   │   │   ├── ClipboardScreen.tsx
+│   │   │   ├── MapsScreen.tsx
+│   │   │   ├── SendEmailScreen.tsx
+│   │   │   ├── ShareScreen.tsx
+│   │   │   └── maps/
+│   │   │       ├── OpenInMapsScreen.tsx
+│   │   │       ├── BasicMapScreen.tsx
+│   │   │       ├── MyLocationScreen.tsx
+│   │   │       ├── MarkersScreen.tsx
+│   │   │       ├── DirectionsScreen.tsx
+│   │   │       ├── PolygonScreen.tsx
+│   │   │       └── GeofenceScreen.tsx
+│   │   └── system/
+│   │       └── DeviceInfoScreen.tsx
+│   ├── services/
+│   │   ├── phone.ts                 # callPhoneNumber()
+│   │   ├── email.ts                 # sendEmail()
+│   │   ├── maps.ts                  # openMaps()
+│   │   ├── clipboard/
+│   │   │   ├── clipboard.ts         # copyToClipboard(), getFromClipboard()
+│   │   │   └── index.ts
+│   │   └── permissions/
+│   │       ├── permissions.ts       # checkPermission(), requestPermission(), openAppSettings()
+│   │       └── index.ts
+│   ├── theme/
+│   │   ├── colors.ts
+│   │   ├── spacing.ts
+│   │   ├── typography.ts
+│   │   └── index.ts                 # Exports: theme = { colors, spacing, typography }
+│   ├── types/
+│   │   └── menu.ts                  # Shared MenuItem type
+│   └── utils/
+│       └── helper.ts
+```
 
 ---
 
-## 📈 Growth Plan
+## Getting Started
 
-### Phase 1
+### Prerequisites
 
-- Project setup
-- Theme system
-- Buttons & Inputs
-- Call, Email, Maps, Clipboard
-- Permissions
-- Push Notifications
+- Node.js >= 20
+- Xcode (for iOS)
+- Android Studio (for Android)
+- CocoaPods (for iOS)
 
-### Phase 2
+### Install
 
-- Media picker
-- Location
-- OTP handling
-- Voice recorder
-- Media Player -> Video /Audio
-- Recording Player ( Like whatsapp)
+```bash
+# Clone the repo
+git clone <repo-url>
+cd RNToolBox
 
-### Phase 3
+# Install JS dependencies
+yarn install
 
-- Security
-- Storage
-- Network layer
-- Biometric authentication
+# Install iOS pods
+npx pod-install
+```
 
-### Phase 4
+### Run
 
-- Debug tools
-- Feature flags
-- Performance helpers
+```bash
+# iOS
+yarn ios
 
----
+# Android
+yarn android
 
-## 🧑‍💻 Usage Philosophy
-
-- Copy feature folders directly into production apps
-- Avoid premature abstractions
-- Keep implementations simple & readable
-- Prefer utilities over heavy libraries
+# Start Metro bundler with cache reset
+yarn start
+```
 
 ---
 
-## 📝 Notes
+## Architecture
 
-- This is **not** a UI showcase project
-- Focus is on **real-world functionality**
-- Code prioritizes **clarity over cleverness**
-- Android-first, but iOS-safe patterns
+### Atomic Design
+
+The component system follows atomic design principles with two layers:
+
+```
+Atoms      — smallest building blocks, no dependencies on other components
+Molecules  — composed of atoms, represent a complete UI pattern
+Screens    — composed of molecules and atoms, contain business logic
+```
+
+This keeps components focused, testable, and easy to reuse across screens.
 
 ---
 
-## ✅ Status
+### Atoms
 
-🚧 Actively evolving  
-📌 Used as a long-term reference project
+Located in `src/components/atoms/`. Import from the barrel:
+
+```ts
+import { Button, Header, Badge, Chip, Divider } from '../components';
+```
+
+#### Button
+
+```tsx
+import Button from '../components/atoms/Button';
+
+<Button title="Save" onPress={handleSave} />
+<Button title="Cancel" variant="outline" onPress={handleCancel} />
+<Button title="Delete" variant="secondary" loading={isDeleting} onPress={handleDelete} />
+<Button title="Submit" disabled />
+<Button title="Auto Width" fullWidth={false} onPress={handleSubmit} />
+<Button
+  title="With Icon"
+  icon={<Icon name="check" />}
+  iconPosition="left"
+  onPress={handleSubmit}
+/>
+<Button title="Debounced" debounceMs={1000} onPress={handleSubmit} />
+```
+
+| Prop           | Type                                  | Default   | Description                     |
+| -------------- | ------------------------------------- | --------- | ------------------------------- |
+| `title`        | `string`                              | required  | Button label                    |
+| `onPress`      | `function`                            | —         | Press handler                   |
+| `variant`      | `primary` \| `secondary` \| `outline` | `primary` | Visual style                    |
+| `loading`      | `boolean`                             | `false`   | Shows spinner, disables press   |
+| `disabled`     | `boolean`                             | `false`   | Disables press, reduces opacity |
+| `fullWidth`    | `boolean`                             | `true`    | Stretches to container width    |
+| `icon`         | `ReactNode`                           | —         | Icon element to render          |
+| `iconPosition` | `left` \| `right`                     | `left`    | Icon placement                  |
+| `debounceMs`   | `number`                              | `0`       | Minimum ms between presses      |
 
 ---
 
-## ✨ Author
+#### Header
 
-Built and maintained as a **personal developer toolbox**.
+```tsx
+import Header from '../components/atoms/Header';
+
+<Header title="My Screen" />;
+```
+
+Automatically shows a back button with label when `navigation.canGoBack()` is true. Uses `useNavigation()` internally — no navigation prop needed.
+
+| Prop    | Type     | Description                  |
+| ------- | -------- | ---------------------------- |
+| `title` | `string` | Text displayed in the center |
+
+---
+
+#### Badge
+
+```tsx
+import Badge from '../components/atoms/Badge';
+
+<Badge label="Coming Soon" variant="comingSoon" />
+<Badge label="Active" variant="success" />
+<Badge label="Pending" variant="warning" />
+<Badge label="Failed" variant="error" />
+```
+
+| Prop      | Type                                              | Default      | Description  |
+| --------- | ------------------------------------------------- | ------------ | ------------ |
+| `label`   | `string`                                          | required     | Badge text   |
+| `variant` | `comingSoon` \| `success` \| `warning` \| `error` | `comingSoon` | Color scheme |
+
+---
+
+#### Chip
+
+```tsx
+import Chip from '../components/atoms/Chip';
+
+<Chip label="Apple Support" sublabel="+1-800-275-2273" active={false} onPress={() => {}} />
+<Chip label="Selected" active={true} onPress={() => {}} />
+```
+
+| Prop       | Type       | Default  | Description                      |
+| ---------- | ---------- | -------- | -------------------------------- |
+| `label`    | `string`   | required | Primary chip text                |
+| `sublabel` | `string`   | —        | Secondary line below label       |
+| `active`   | `boolean`  | `false`  | Highlights chip in primary color |
+| `onPress`  | `function` | required | Press handler                    |
+
+---
+
+#### Divider
+
+```tsx
+import Divider from '../components/atoms/Divider';
+
+<Divider />                      // horizontal (default)
+<Divider horizontal={false} />   // vertical
+```
+
+| Prop         | Type      | Default | Description                   |
+| ------------ | --------- | ------- | ----------------------------- |
+| `horizontal` | `boolean` | `true`  | Direction of the divider line |
+
+---
+
+### Molecules
+
+Located in `src/components/molecules/`. Import from the barrel:
+
+```ts
+import {
+  MenuCard,
+  ScreenLayout,
+  SectionHeader,
+  InfoRow,
+  Checkbox,
+  RadioGroup,
+} from '../components';
+```
+
+---
+
+#### MenuCard
+
+A tappable card used in list screens. Automatically shows a `Badge` when `implemented` is false.
+
+```tsx
+import MenuCard from '../components/molecules/MenuCard';
+
+<MenuCard
+  title="Buttons"
+  description="Primary, outline, loading, icon variants"
+  implemented={true}
+  onPress={() => navigation.navigate('ComponentButtons')}
+/>;
+```
+
+| Prop          | Type       | Description                          |
+| ------------- | ---------- | ------------------------------------ |
+| `title`       | `string`   | Card heading                         |
+| `description` | `string`   | Card subtext                         |
+| `implemented` | `boolean`  | Shows "Coming Soon" badge when false |
+| `onPress`     | `function` | Press handler                        |
+
+---
+
+#### ScreenLayout
+
+Wraps an entire list screen — `SafeAreaView` + `Header` + `FlatList` of `MenuCard` items. Used by all top-level and section list screens.
+
+```tsx
+import ScreenLayout from '../components/molecules/ScreenLayout';
+import { MenuItem } from '../types/menu';
+
+const ITEMS: MenuItem[] = [
+  {
+    title: 'Buttons',
+    description: '...',
+    screen: 'ComponentButtons',
+    implemented: true,
+  },
+  {
+    title: 'Typography',
+    description: '...',
+    screen: 'ComingSoon',
+    params: { title: 'Typography' },
+    implemented: false,
+  },
+];
+
+<ScreenLayout
+  title="Components"
+  items={ITEMS}
+  onItemPress={item =>
+    navigation.navigate(item.screen as any, item.params as any)
+  }
+/>;
+```
+
+| Prop          | Type                       | Description                  |
+| ------------- | -------------------------- | ---------------------------- |
+| `title`       | `string`                   | Passed to `Header`           |
+| `items`       | `MenuItem[]`               | List of menu items to render |
+| `onItemPress` | `(item: MenuItem) => void` | Called when a card is tapped |
+
+---
+
+#### SectionHeader
+
+An uppercase label bar used to group rows in settings-style screens.
+
+```tsx
+import SectionHeader from '../components/molecules/SectionHeader';
+
+<SectionHeader title="DEVICE" />;
+```
+
+| Prop    | Type     | Description                         |
+| ------- | -------- | ----------------------------------- |
+| `title` | `string` | Section label (displayed uppercase) |
+
+---
+
+#### InfoRow
+
+A horizontal label + value row. Used in `DeviceInfoScreen`.
+
+```tsx
+import InfoRow from '../components/molecules/InfoRow';
+
+<InfoRow label="Model" value="iPhone 15 Pro" />
+<InfoRow label="OS Version" value="17.4" />
+```
+
+| Prop    | Type     | Description                          |
+| ------- | -------- | ------------------------------------ |
+| `label` | `string` | Left-side descriptor                 |
+| `value` | `string` | Right-side value (truncated if long) |
+
+---
+
+#### Checkbox
+
+Supports both uncontrolled (internal state) and controlled (external state) usage.
+
+```tsx
+import Checkbox from '../components/molecules/Checkbox';
+
+// Uncontrolled
+<Checkbox label="Accept Terms" />
+
+// Controlled
+<Checkbox label="Remember me" checked={rememberMe} onChange={setRememberMe} />
+```
+
+| Prop       | Type                         | Default  | Description              |
+| ---------- | ---------------------------- | -------- | ------------------------ |
+| `label`    | `string`                     | required | Checkbox label           |
+| `checked`  | `boolean`                    | —        | Controlled checked state |
+| `onChange` | `(checked: boolean) => void` | —        | Called on toggle         |
+
+---
+
+#### RadioGroup
+
+Renders a list of radio options. Fully controlled.
+
+```tsx
+import RadioGroup from '../components/molecules/RadioGroup';
+
+const OPTIONS = [
+  { id: 'light', label: 'Light Mode' },
+  { id: 'dark', label: 'Dark Mode' },
+  { id: 'system', label: 'System Default' },
+];
+
+<RadioGroup
+  options={OPTIONS}
+  selected={selectedTheme}
+  onSelect={setSelectedTheme}
+/>;
+```
+
+| Prop       | Type                              | Description                     |
+| ---------- | --------------------------------- | ------------------------------- |
+| `options`  | `{ id: string; label: string }[]` | List of options                 |
+| `selected` | `string`                          | Currently selected option id    |
+| `onSelect` | `(id: string) => void`            | Called when an option is tapped |
+
+---
+
+### Screens
+
+All screens live in `src/screens/`. They contain only data and navigation logic — no raw UI primitives. Layout and UI are delegated to molecules and atoms.
+
+| Screen                | Route                | Description                           |
+| --------------------- | -------------------- | ------------------------------------- |
+| `HomeScreen`          | `Home`               | Root menu                             |
+| `ComponentsScreen`    | `Components`         | UI component list                     |
+| `ButtonsScreen`       | `ComponentButtons`   | Button variants demo                  |
+| `InputsScreen`        | `ComponentInputs`    | Input field variants demo             |
+| `SelectionScreen`     | `ComponentSelection` | Switch, Checkbox, Radio demo          |
+| `NativeActionsScreen` | `NativeActions`      | Native action list                    |
+| `CallPhoneScreen`     | `NativeCallPhone`    | Phone dialer                          |
+| `SendEmailScreen`     | `NativeSendEmail`    | Email composer                        |
+| `MapsScreen`          | `NativeMaps`         | Maps sub-menu                         |
+| `OpenInMapsScreen`    | `NativeMapsOpen`     | Open address in native maps           |
+| `ClipboardScreen`     | `NativeClipboard`    | Clipboard copy/paste/OTP              |
+| `ShareScreen`         | `NativeShare`        | Native share sheet                    |
+| `PermissionsScreen`   | `Permissions`        | Permissions list                      |
+| `HooksScreen`         | `Hooks`              | Hooks & utilities list                |
+| `SystemScreen`        | `System`             | System & device list                  |
+| `DeviceInfoScreen`    | `SystemDeviceInfo`   | Device metadata viewer                |
+| `ComingSoonScreen`    | `ComingSoon`         | Placeholder for unimplemented screens |
+
+---
+
+### Navigation
+
+All routes are registered in `src/navigation/AppNavigator.tsx` using `@react-navigation/native-stack`. The navigator is wrapped in `NavigationContainer` and all headers are hidden (`headerShown: false`) — each screen renders its own `Header` atom.
+
+Route types are defined in `src/navigation/types.ts`:
+
+```ts
+export type RootStackParamList = {
+  Home: undefined;
+  ComingSoon: { title: string };
+  Components: undefined;
+  ComponentButtons: undefined;
+  // ... all routes
+};
+```
+
+To navigate to a screen:
+
+```ts
+navigation.navigate('ComponentButtons');
+navigation.navigate('ComingSoon', { title: 'My Feature' });
+```
+
+---
+
+### Services
+
+Pure functions with no UI dependencies. Each service handles one native capability.
+
+#### `services/phone.ts`
+
+```ts
+import { callPhoneNumber } from '../services/phone';
+
+callPhoneNumber('+1-800-275-2273');
+```
+
+Builds a `tel:` URL, checks device support via `Linking.canOpenURL`, then opens the dialer.
+
+---
+
+#### `services/email.ts`
+
+```ts
+import { sendEmail } from '../services/email';
+
+sendEmail({ to: 'hello@example.com', subject: 'Hi', body: 'Message body' });
+```
+
+Builds a `mailto:` URL with encoded subject and body, then opens the native email app.
+
+---
+
+#### `services/maps.ts`
+
+```ts
+import { openMaps } from '../services/maps';
+
+openMaps('1 Infinite Loop, Cupertino, CA');
+```
+
+Uses `maps:` on iOS and `geo:` on Android. Falls back to Google Maps web URL if the native app is unavailable.
+
+---
+
+#### `services/clipboard/clipboard.ts`
+
+```ts
+import { copyToClipboard, getFromClipboard } from '../services/clipboard';
+
+copyToClipboard('Hello world'); // Sets clipboard, shows Alert
+const text = await getFromClipboard(); // Returns clipboard string
+```
+
+---
+
+#### `services/permissions/permissions.ts`
+
+```ts
+import {
+  checkPermission,
+  requestPermission,
+  openAppSettings,
+} from '../services/permissions';
+
+const status = await checkPermission('camera'); // 'granted' | 'denied' | 'blocked' | ...
+const result = await requestPermission('location');
+openAppSettings(); // Opens device settings for this app
+```
+
+Supported permission types: `camera`, `location`, `notification`.
+
+Notification permission uses `PermissionsAndroid` on Android 13+. Camera and location use `react-native-permissions`.
+
+---
+
+### Theme
+
+All design tokens are in `src/theme/`. Import the `theme` object anywhere:
+
+```ts
+import { theme } from '../theme';
+```
+
+#### Colors
+
+| Token           | Value     | Usage                         |
+| --------------- | --------- | ----------------------------- |
+| `primary`       | `#2563EB` | Buttons, links, active states |
+| `background`    | `#FFFFFF` | Screen backgrounds            |
+| `surface`       | `#F9FAFB` | Cards, input backgrounds      |
+| `border`        | `#E5E7EB` | Borders, dividers             |
+| `textPrimary`   | `#111827` | Main text                     |
+| `textSecondary` | `#6B7280` | Subtitles, labels             |
+| `textDisabled`  | `#9CA3AF` | Disabled text                 |
+| `success`       | `#16A34A` | Success states                |
+| `warning`       | `#F59E0B` | Warning states                |
+| `error`         | `#DC2626` | Error states                  |
+| `white`         | `#FFFFFF` | —                             |
+| `black`         | `#000000` | —                             |
+
+#### Spacing
+
+| Token | Value |
+| ----- | ----- |
+| `xs`  | 4     |
+| `sm`  | 8     |
+| `md`  | 12    |
+| `lg`  | 16    |
+| `xl`  | 24    |
+| `xxl` | 32    |
+
+#### Typography
+
+| Token       | Value |
+| ----------- | ----- |
+| `sizes.xs`  | 12    |
+| `sizes.sm`  | 14    |
+| `sizes.md`  | 16    |
+| `sizes.lg`  | 18    |
+| `sizes.xl`  | 22    |
+| `sizes.xxl` | 26    |
+
+---
+
+### Types
+
+#### `src/types/menu.ts`
+
+Shared type used by all list screens and `ScreenLayout`:
+
+```ts
+import { MenuItem } from '../types/menu';
+
+type MenuItem = {
+  title: string;
+  description: string;
+  screen: keyof RootStackParamList;
+  params?: Record<string, any>;
+  implemented: boolean;
+};
+```
+
+---
+
+## Feature Sections
+
+### UI Components
+
+| Screen             | Status      | What it shows                                                                                                                    |
+| ------------------ | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Buttons            | Done        | Primary, outline, secondary variants; loading, disabled, full/auto width, icon left/right, debounce                              |
+| Inputs             | Done        | Outlined/flat modes, icons, email validation, password toggle, MFA PIN (SMS OTP), phone, numeric, multiline, disabled, read-only |
+| Selection Controls | Done        | Switch (3 items), Checkbox (uncontrolled), Radio group                                                                           |
+| Typography         | Coming Soon | —                                                                                                                                |
+| Cards              | Coming Soon | —                                                                                                                                |
+| Badges & Tags      | Coming Soon | —                                                                                                                                |
+| Modals & Alerts    | Coming Soon | —                                                                                                                                |
+| Toast / Snackbar   | Coming Soon | —                                                                                                                                |
+| Loading States     | Coming Soon | —                                                                                                                                |
+
+---
+
+### Native Actions
+
+| Screen          | Status      | What it shows                                                   |
+| --------------- | ----------- | --------------------------------------------------------------- |
+| Call Phone      | Done        | Phone input, quick-dial chips, native dialer via `tel:`         |
+| Send Email      | Done        | To/Subject/Body fields, native email app via `mailto:`          |
+| Open Maps       | Done        | Address input, suggestion chips, native maps via `maps:`/`geo:` |
+| OTP / Clipboard | Done        | Copy text, paste from clipboard, SMS OTP auto-fill demo         |
+| Share           | Done        | Message + URL fields, native share sheet via `Share` API        |
+| Image Picker    | Coming Soon | —                                                               |
+| File Picker     | Coming Soon | —                                                               |
+| Haptics         | Coming Soon | —                                                               |
+| Biometrics      | Coming Soon | —                                                               |
+
+---
+
+### System & Device
+
+| Screen             | Status      | What it shows                                                                           |
+| ------------------ | ----------- | --------------------------------------------------------------------------------------- |
+| Device Info        | Done        | Device name, brand, model, OS, app version, screen size, memory, battery, emulator flag |
+| Push Notifications | Coming Soon | —                                                                                       |
+| Network Info       | Coming Soon | —                                                                                       |
+| AsyncStorage       | Coming Soon | —                                                                                       |
+| Secure Store       | Coming Soon | —                                                                                       |
+| Environment        | Coming Soon | —                                                                                       |
+
+---
+
+### Permissions
+
+All permission screens are Coming Soon. The service layer (`checkPermission`, `requestPermission`, `openAppSettings`) is fully implemented and ready to use.
+
+---
+
+### Hooks & Utilities
+
+All hook screens are Coming Soon. Planned: `useDebounce`, `useLocalStorage`, `useNetworkStatus`, `useAppState`, `useKeyboard`, `useTimer`.
+
+---
+
+## Adding a New Screen
+
+### 1. Add the route to `src/navigation/types.ts`
+
+```ts
+export type RootStackParamList = {
+  // ...existing routes
+  MyNewScreen: undefined;
+};
+```
+
+### 2. Create the screen file
+
+```tsx
+// src/screens/MyNewScreen.tsx
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import Header from '../components/atoms/Header';
+import { RootStackParamList } from '../navigation/types';
+import { theme } from '../theme';
+
+type Props = NativeStackScreenProps<RootStackParamList, 'MyNewScreen'>;
+
+const MyNewScreen = ({}: Props) => (
+  <SafeAreaView style={styles.root}>
+    <Header title="My New Screen" />
+    {/* content here */}
+  </SafeAreaView>
+);
+
+export default MyNewScreen;
+
+const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: theme.colors.background },
+});
+```
+
+### 3. Register the screen in `src/navigation/AppNavigator.tsx`
+
+```tsx
+import MyNewScreen from '../screens/MyNewScreen';
+
+<Stack.Screen name="MyNewScreen" component={MyNewScreen} />;
+```
+
+### 4. Add it to a menu list
+
+In the relevant parent screen (e.g. `ComponentsScreen.tsx`), add an entry to the `ITEMS` array:
+
+```ts
+{
+  title: 'My Feature',
+  description: 'What this screen demonstrates',
+  screen: 'MyNewScreen',
+  implemented: true,
+},
+```
+
+---
+
+## Adding a New Component
+
+### Atom (no dependencies on other components)
+
+```
+src/components/atoms/MyAtom/
+├── MyAtom.tsx
+└── index.ts
+```
+
+```tsx
+// MyAtom.tsx
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { theme } from '../../../theme';
+
+type MyAtomProps = {
+  // props
+};
+
+const MyAtom = ({}: MyAtomProps) => <View style={styles.container} />;
+
+export default MyAtom;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: theme.colors.surface,
+  },
+});
+```
+
+```ts
+// index.ts
+export { default } from './MyAtom';
+```
+
+Then add to `src/components/index.ts`:
+
+```ts
+export { default as MyAtom } from './atoms/MyAtom';
+```
+
+### Molecule (composed of atoms)
+
+Same folder structure under `src/components/molecules/MyMolecule/`. Import atoms using relative paths:
+
+```tsx
+import Badge from '../../atoms/Badge';
+import Header from '../../atoms/Header';
+```
+
+Then add to `src/components/index.ts`:
+
+```ts
+export { default as MyMolecule } from './molecules/MyMolecule';
+```
+
+---
+
+## Scripts
+
+| Command              | Description                                               |
+| -------------------- | --------------------------------------------------------- |
+| `yarn start`         | Start Metro bundler (with cache reset)                    |
+| `yarn ios`           | Build and run on iOS simulator                            |
+| `yarn android`       | Build and run on Android emulator                         |
+| `yarn test`          | Run Jest tests                                            |
+| `yarn lint`          | Run ESLint                                                |
+| `yarn pods`          | Install CocoaPods                                         |
+| `yarn xcode`         | Open project in Xcode                                     |
+| `yarn android:clean` | Clean Android build artifacts                             |
+| `yarn deepclean`     | Full clean: node_modules, pods, build folders, lock files |

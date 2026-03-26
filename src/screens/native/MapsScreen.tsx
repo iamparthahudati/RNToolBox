@@ -1,27 +1,12 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/Header';
+import ScreenLayout from '../../components/molecules/ScreenLayout';
 import { RootStackParamList } from '../../navigation/types';
-import { theme } from '../../theme';
+import { MenuItem } from '../../types/menu';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'NativeMaps'>;
 
-type MapItem = {
-  title: string;
-  description: string;
-  screen: keyof RootStackParamList;
-  implemented: boolean;
-};
-
-const ITEMS: MapItem[] = [
+const ITEMS: MenuItem[] = [
   {
     title: 'Open in Maps',
     description: 'Launch native maps app with an address',
@@ -67,73 +52,11 @@ const ITEMS: MapItem[] = [
 ];
 
 export default function MapsScreen({ navigation }: Props) {
-  const renderItem = ({ item }: { item: MapItem }) => (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() => navigation.navigate(item.screen as any)}
-      activeOpacity={0.7}
-    >
-      <Text style={styles.cardTitle}>{item.title}</Text>
-      <Text style={styles.cardDescription}>{item.description}</Text>
-      {!item.implemented && (
-        <View style={styles.soonBadge}>
-          <Text style={styles.soonText}>Coming Soon</Text>
-        </View>
-      )}
-    </TouchableOpacity>
-  );
-
   return (
-    <SafeAreaView style={styles.container}>
-      <Header title="Google Maps" />
-      <FlatList
-        data={ITEMS}
-        keyExtractor={item => item.title}
-        renderItem={renderItem}
-        contentContainerStyle={styles.listContent}
-      />
-    </SafeAreaView>
+    <ScreenLayout
+      title="Google Maps"
+      items={ITEMS}
+      onItemPress={item => navigation.navigate(item.screen as any)}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  listContent: {
-    padding: theme.spacing.lg,
-    paddingBottom: theme.spacing.xl,
-  },
-  card: {
-    padding: theme.spacing.lg,
-    borderRadius: 8,
-    backgroundColor: theme.colors.surface,
-    marginBottom: theme.spacing.md,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-  },
-  cardTitle: {
-    fontSize: theme.typography.sizes.md,
-    color: theme.colors.textPrimary,
-    fontWeight: '600',
-    marginBottom: theme.spacing.xs,
-  },
-  cardDescription: {
-    fontSize: theme.typography.sizes.xs,
-    color: theme.colors.textSecondary,
-  },
-  soonBadge: {
-    backgroundColor: '#FEF2F2',
-    borderRadius: 4,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    alignSelf: 'flex-start',
-    marginTop: theme.spacing.xs,
-  },
-  soonText: {
-    fontSize: 10,
-    color: '#DC2626',
-    fontWeight: '600',
-  },
-});

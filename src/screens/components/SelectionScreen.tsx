@@ -1,56 +1,12 @@
 import React, { useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/Header';
+import Header from '../../components/atoms/Header';
+import Checkbox from '../../components/molecules/Checkbox';
+import RadioGroup from '../../components/molecules/RadioGroup';
 import { theme } from '../../theme';
 
-// ---------------------------------------------------------------------------
-// CheckboxItem
-// ---------------------------------------------------------------------------
-
-interface CheckboxItemProps {
-  label: string;
-}
-
-const CheckboxItem: React.FC<CheckboxItemProps> = ({ label }) => {
-  const [checked, setChecked] = useState(false);
-
-  return (
-    <TouchableOpacity
-      style={styles.row}
-      onPress={() => setChecked(prev => !prev)}
-      activeOpacity={0.7}
-    >
-      <View
-        style={[
-          styles.checkboxBox,
-          {
-            borderColor: checked ? theme.colors.primary : theme.colors.border,
-            backgroundColor: checked
-              ? theme.colors.primary
-              : theme.colors.white,
-          },
-        ]}
-      >
-        {checked && <Text style={styles.checkmark}>&#10003;</Text>}
-      </View>
-      <Text style={styles.rowLabel}>{label}</Text>
-    </TouchableOpacity>
-  );
-};
-
-// ---------------------------------------------------------------------------
-// SelectionScreen
-// ---------------------------------------------------------------------------
-
-const radioOptions = [
+const RADIO_OPTIONS = [
   { id: 'option1', label: 'Option One' },
   { id: 'option2', label: 'Option Two' },
   { id: 'option3', label: 'Option Three' },
@@ -69,12 +25,10 @@ const SelectionScreen: React.FC = () => {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
       >
-        {/* ---------------------------------------------------------------- */}
-        {/* Switch section                                                    */}
-        {/* ---------------------------------------------------------------- */}
+        {/* Switch */}
         <Text style={styles.sectionTitle}>Switch</Text>
 
-        <View style={styles.row}>
+        <View style={styles.switchRow}>
           <Text style={styles.rowLabel}>Notifications</Text>
           <Switch
             value={notif}
@@ -87,7 +41,7 @@ const SelectionScreen: React.FC = () => {
           />
         </View>
 
-        <View style={styles.row}>
+        <View style={styles.switchRow}>
           <Text style={styles.rowLabel}>Dark Mode</Text>
           <Switch
             value={dark}
@@ -100,7 +54,7 @@ const SelectionScreen: React.FC = () => {
           />
         </View>
 
-        <View style={styles.row}>
+        <View style={styles.switchRow}>
           <Text style={styles.rowLabel}>Auto Update</Text>
           <Switch
             value={autoUpdate}
@@ -113,53 +67,25 @@ const SelectionScreen: React.FC = () => {
           />
         </View>
 
-        {/* ---------------------------------------------------------------- */}
-        {/* Checkbox section                                                  */}
-        {/* ---------------------------------------------------------------- */}
+        {/* Checkbox */}
         <Text style={styles.sectionTitle}>Checkbox</Text>
+        <Checkbox label="Accept Terms" />
+        <Checkbox label="Subscribe to newsletter" />
+        <Checkbox label="Remember me" />
 
-        <CheckboxItem label="Accept Terms" />
-        <CheckboxItem label="Subscribe to newsletter" />
-        <CheckboxItem label="Remember me" />
-
-        {/* ---------------------------------------------------------------- */}
-        {/* Radio section                                                     */}
-        {/* ---------------------------------------------------------------- */}
+        {/* Radio */}
         <Text style={styles.sectionTitle}>Radio</Text>
-
-        {radioOptions.map(({ id, label }) => {
-          const selected = selectedRadio === id;
-          return (
-            <TouchableOpacity
-              key={id}
-              style={styles.row}
-              onPress={() => setSelectedRadio(id)}
-              activeOpacity={0.7}
-            >
-              <View
-                style={[
-                  styles.radioOuter,
-                  {
-                    borderColor: selected
-                      ? theme.colors.primary
-                      : theme.colors.border,
-                  },
-                ]}
-              >
-                {selected && <View style={styles.radioInner} />}
-              </View>
-              <Text style={styles.rowLabel}>{label}</Text>
-            </TouchableOpacity>
-          );
-        })}
+        <RadioGroup
+          options={RADIO_OPTIONS}
+          selected={selectedRadio}
+          onSelect={setSelectedRadio}
+        />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-// ---------------------------------------------------------------------------
-// Styles
-// ---------------------------------------------------------------------------
+export default SelectionScreen;
 
 const styles = StyleSheet.create({
   root: {
@@ -177,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.md,
     marginTop: theme.spacing.lg,
   },
-  row: {
+  switchRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -187,37 +113,4 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.sizes.md,
     color: theme.colors.textPrimary,
   },
-  // Checkbox
-  checkboxBox: {
-    width: 22,
-    height: 22,
-    borderRadius: 4,
-    borderWidth: 2,
-    marginRight: theme.spacing.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  checkmark: {
-    color: theme.colors.white,
-    fontSize: 14,
-    fontWeight: '700',
-  },
-  // Radio
-  radioOuter: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    borderWidth: 2,
-    marginRight: theme.spacing.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  radioInner: {
-    width: 11,
-    height: 11,
-    borderRadius: 6,
-    backgroundColor: theme.colors.primary,
-  },
 });
-
-export default SelectionScreen;

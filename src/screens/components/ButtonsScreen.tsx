@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Button from '../../components/Button';
-import Header from '../../components/Header';
+import Button from '../../components/atoms/Button';
+import Header from '../../components/atoms/Header';
 import { theme } from '../../theme';
 
 export default function ButtonsScreen() {

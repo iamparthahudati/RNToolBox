@@ -11,6 +11,8 @@ import SelectionScreen from '../screens/components/SelectionScreen';
 import ComponentsScreen from '../screens/ComponentsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import HooksScreen from '../screens/HooksScreen';
+import CallPhoneScreen from '../screens/native/CallPhoneScreen';
+import ClipboardScreen from '../screens/native/ClipboardScreen';
 import BasicMapScreen from '../screens/native/maps/BasicMapScreen';
 import DirectionsScreen from '../screens/native/maps/DirectionsScreen';
 import GeofenceScreen from '../screens/native/maps/GeofenceScreen';
@@ -19,6 +21,8 @@ import MyLocationScreen from '../screens/native/maps/MyLocationScreen';
 import OpenInMapsScreen from '../screens/native/maps/OpenInMapsScreen';
 import PolygonScreen from '../screens/native/maps/PolygonScreen';
 import MapsScreen from '../screens/native/MapsScreen';
+import SendEmailScreen from '../screens/native/SendEmailScreen';
+import ShareScreen from '../screens/native/ShareScreen';
 import NativeActionsScreen from '../screens/NativeActionsScreen';
 import PermissionsScreen from '../screens/PermissionsScreen';
 import DeviceInfoScreen from '../screens/system/DeviceInfoScreen';
@@ -47,6 +51,12 @@ const AppNavigator = () => {
         <Stack.Screen name="Hooks" component={HooksScreen} />
         <Stack.Screen name="System" component={SystemScreen} />
         <Stack.Screen name="SystemDeviceInfo" component={DeviceInfoScreen} />
+
+        {/* Native - Actions */}
+        <Stack.Screen name="NativeCallPhone" component={CallPhoneScreen} />
+        <Stack.Screen name="NativeSendEmail" component={SendEmailScreen} />
+        <Stack.Screen name="NativeClipboard" component={ClipboardScreen} />
+        <Stack.Screen name="NativeShare" component={ShareScreen} />
 
         {/* Native */}
         <Stack.Screen name="NativeMaps" component={MapsScreen} />

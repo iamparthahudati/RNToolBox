@@ -1,1 +1,2 @@
-export { default } from './Header';
+// Re-exported from atoms for backward compatibility
+export { default } from '../atoms/Header';

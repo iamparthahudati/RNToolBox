@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { HelperText, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/Header';
+import Header from '../../components/atoms/Header';
 import { theme } from '../../theme';
 
 const PAPER_THEME = {

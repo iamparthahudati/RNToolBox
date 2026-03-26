@@ -15,6 +15,12 @@ export type RootStackParamList = {
   System: undefined;
   SystemDeviceInfo: undefined;
 
+  // Native - Actions
+  NativeCallPhone: undefined;
+  NativeSendEmail: undefined;
+  NativeClipboard: undefined;
+  NativeShare: undefined;
+
   // Native - Maps
   NativeMaps: undefined;
   NativeMapsOpen: undefined;
