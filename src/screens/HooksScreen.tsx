@@ -10,43 +10,37 @@ const MENU_ITEMS: MenuItem[] = [
   {
     title: 'useDebounce',
     description: 'Debounced value hook',
-    screen: 'ComingSoon',
-    params: { title: 'useDebounce' },
+    screen: 'HooksDebounce',
     implemented: false,
   },
   {
     title: 'useLocalStorage',
     description: 'AsyncStorage wrapper hook',
-    screen: 'ComingSoon',
-    params: { title: 'useLocalStorage' },
+    screen: 'HooksLocalStorage',
     implemented: false,
   },
   {
     title: 'useNetworkStatus',
     description: 'Online and offline detection',
-    screen: 'ComingSoon',
-    params: { title: 'useNetworkStatus' },
+    screen: 'HooksNetworkStatus',
     implemented: false,
   },
   {
     title: 'useAppState',
     description: 'Foreground and background detection',
-    screen: 'ComingSoon',
-    params: { title: 'useAppState' },
+    screen: 'HooksAppState',
     implemented: false,
   },
   {
     title: 'useKeyboard',
     description: 'Keyboard height and visibility',
-    screen: 'ComingSoon',
-    params: { title: 'useKeyboard' },
+    screen: 'HooksKeyboard',
     implemented: false,
   },
   {
     title: 'useTimer',
     description: 'Countdown and stopwatch',
-    screen: 'ComingSoon',
-    params: { title: 'useTimer' },
+    screen: 'HooksTimer',
     implemented: false,
   },
 ];
@@ -56,7 +50,7 @@ const HooksScreen = ({ navigation }: Props) => (
     title="Hooks & Utilities"
     items={MENU_ITEMS}
     onItemPress={item =>
-      navigation.navigate(item.screen as 'ComingSoon', item.params as any)
+      navigation.navigate(item.screen as any, item.params as any)
     }
   />
 );

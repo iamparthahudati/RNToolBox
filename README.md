@@ -22,9 +22,15 @@ A React Native developer reference app built with TypeScript. It demonstrates re
 - [Feature Sections](#feature-sections)
   - [UI Components](#ui-components)
   - [Native Actions](#native-actions)
-  - [System & Device](#system--device)
   - [Permissions](#permissions)
   - [Hooks & Utilities](#hooks--utilities)
+  - [System & Device](#system--device)
+  - [Forms](#forms)
+  - [Animations](#animations)
+  - [Navigation Patterns](#navigation-patterns)
+  - [Storage](#storage)
+  - [Networking](#networking)
+  - [Testing](#testing)
 - [Adding a New Screen](#adding-a-new-screen)
 - [Adding a New Component](#adding-a-new-component)
 - [Scripts](#scripts)
@@ -34,6 +40,8 @@ A React Native developer reference app built with TypeScript. It demonstrates re
 ## Overview
 
 RNToolBox is a living reference app — not a production app. Each section demonstrates a specific React Native capability with working, real code. Unimplemented sections show a "Coming Soon" placeholder so the navigation structure is always complete.
+
+The app covers 11 major categories: UI Components, Native Actions, Permissions, Hooks & Utilities, System & Device, Forms, Animations, Navigation Patterns, Storage, Networking, and Testing.
 
 ---
 
@@ -86,8 +94,13 @@ RNToolBox/
 │   │   ├── PermissionsScreen.tsx
 │   │   ├── HooksScreen.tsx
 │   │   ├── SystemScreen.tsx
+│   │   ├── FormsScreen.tsx
+│   │   ├── AnimationsScreen.tsx
+│   │   ├── NavigationPatternsScreen.tsx
+│   │   ├── StorageScreen.tsx
+│   │   ├── NetworkingScreen.tsx
+│   │   ├── TestingScreen.tsx
 │   │   ├── ComingSoonScreen.tsx
-│   │   ├── DeviceScreen.tsx
 │   │   ├── components/
 │   │   │   ├── ButtonsScreen.tsx
 │   │   │   ├── InputsScreen.tsx
@@ -463,25 +476,31 @@ const OPTIONS = [
 
 All screens live in `src/screens/`. They contain only data and navigation logic — no raw UI primitives. Layout and UI are delegated to molecules and atoms.
 
-| Screen                | Route                | Description                           |
-| --------------------- | -------------------- | ------------------------------------- |
-| `HomeScreen`          | `Home`               | Root menu                             |
-| `ComponentsScreen`    | `Components`         | UI component list                     |
-| `ButtonsScreen`       | `ComponentButtons`   | Button variants demo                  |
-| `InputsScreen`        | `ComponentInputs`    | Input field variants demo             |
-| `SelectionScreen`     | `ComponentSelection` | Switch, Checkbox, Radio demo          |
-| `NativeActionsScreen` | `NativeActions`      | Native action list                    |
-| `CallPhoneScreen`     | `NativeCallPhone`    | Phone dialer                          |
-| `SendEmailScreen`     | `NativeSendEmail`    | Email composer                        |
-| `MapsScreen`          | `NativeMaps`         | Maps sub-menu                         |
-| `OpenInMapsScreen`    | `NativeMapsOpen`     | Open address in native maps           |
-| `ClipboardScreen`     | `NativeClipboard`    | Clipboard copy/paste/OTP              |
-| `ShareScreen`         | `NativeShare`        | Native share sheet                    |
-| `PermissionsScreen`   | `Permissions`        | Permissions list                      |
-| `HooksScreen`         | `Hooks`              | Hooks & utilities list                |
-| `SystemScreen`        | `System`             | System & device list                  |
-| `DeviceInfoScreen`    | `SystemDeviceInfo`   | Device metadata viewer                |
-| `ComingSoonScreen`    | `ComingSoon`         | Placeholder for unimplemented screens |
+| Screen                     | Route                | Description                           |
+| -------------------------- | -------------------- | ------------------------------------- |
+| `HomeScreen`               | `Home`               | Root menu                             |
+| `ComponentsScreen`         | `Components`         | UI component list                     |
+| `ButtonsScreen`            | `ComponentButtons`   | Button variants demo                  |
+| `InputsScreen`             | `ComponentInputs`    | Input field variants demo             |
+| `SelectionScreen`          | `ComponentSelection` | Switch, Checkbox, Radio demo          |
+| `NativeActionsScreen`      | `NativeActions`      | Native action list                    |
+| `CallPhoneScreen`          | `NativeCallPhone`    | Phone dialer                          |
+| `SendEmailScreen`          | `NativeSendEmail`    | Email composer                        |
+| `MapsScreen`               | `NativeMaps`         | Maps sub-menu                         |
+| `OpenInMapsScreen`         | `NativeMapsOpen`     | Open address in native maps           |
+| `ClipboardScreen`          | `NativeClipboard`    | Clipboard copy/paste/OTP              |
+| `ShareScreen`              | `NativeShare`        | Native share sheet                    |
+| `PermissionsScreen`        | `Permissions`        | Permissions list                      |
+| `HooksScreen`              | `Hooks`              | Hooks & utilities list                |
+| `SystemScreen`             | `System`             | System & device list                  |
+| `DeviceInfoScreen`         | `SystemDeviceInfo`   | Device metadata viewer                |
+| `FormsScreen`              | `Forms`              | Forms section list                    |
+| `AnimationsScreen`         | `Animations`         | Animations section list               |
+| `NavigationPatternsScreen` | `NavigationPatterns` | Navigation patterns list              |
+| `StorageScreen`            | `Storage`            | Storage section list                  |
+| `NetworkingScreen`         | `Networking`         | Networking section list               |
+| `TestingScreen`            | `Testing`            | Testing section list                  |
+| `ComingSoonScreen`         | `ComingSoon`         | Placeholder for unimplemented screens |
 
 ---
 
@@ -659,28 +678,66 @@ type MenuItem = {
 | Buttons            | Done        | Primary, outline, secondary variants; loading, disabled, full/auto width, icon left/right, debounce                              |
 | Inputs             | Done        | Outlined/flat modes, icons, email validation, password toggle, MFA PIN (SMS OTP), phone, numeric, multiline, disabled, read-only |
 | Selection Controls | Done        | Switch (3 items), Checkbox (uncontrolled), Radio group                                                                           |
-| Typography         | Coming Soon | —                                                                                                                                |
-| Cards              | Coming Soon | —                                                                                                                                |
-| Badges & Tags      | Coming Soon | —                                                                                                                                |
-| Modals & Alerts    | Coming Soon | —                                                                                                                                |
-| Toast / Snackbar   | Coming Soon | —                                                                                                                                |
-| Loading States     | Coming Soon | —                                                                                                                                |
+| Typography         | Coming Soon | Font sizes, weights, line heights, Text props                                                                                    |
+| Cards              | Coming Soon | Basic, image, action cards                                                                                                       |
+| Badges & Tags      | Coming Soon | Status indicators, labels                                                                                                        |
+| Modals & Alerts    | Coming Soon | Custom modal, bottom sheet, confirmation dialog                                                                                  |
+| Toast / Snackbar   | Coming Soon | Success, error, info notifications                                                                                               |
+| Loading States     | Coming Soon | Skeleton screens, spinners, progress bars                                                                                        |
+| Lists              | Coming Soon | FlatList, SectionList, pull-to-refresh, infinite scroll                                                                          |
+| Images             | Coming Soon | Image, ImageBackground, lazy loading, placeholder                                                                                |
+| Icons              | Coming Soon | Vector icons showcase and usage patterns                                                                                         |
+| Avatar             | Coming Soon | Image avatar, initials fallback, sizes                                                                                           |
+| Empty State        | Coming Soon | No data placeholder patterns                                                                                                     |
 
 ---
 
 ### Native Actions
 
-| Screen          | Status      | What it shows                                                   |
-| --------------- | ----------- | --------------------------------------------------------------- |
-| Call Phone      | Done        | Phone input, quick-dial chips, native dialer via `tel:`         |
-| Send Email      | Done        | To/Subject/Body fields, native email app via `mailto:`          |
-| Open Maps       | Done        | Address input, suggestion chips, native maps via `maps:`/`geo:` |
-| OTP / Clipboard | Done        | Copy text, paste from clipboard, SMS OTP auto-fill demo         |
-| Share           | Done        | Message + URL fields, native share sheet via `Share` API        |
-| Image Picker    | Coming Soon | —                                                               |
-| File Picker     | Coming Soon | —                                                               |
-| Haptics         | Coming Soon | —                                                               |
-| Biometrics      | Coming Soon | —                                                               |
+| Screen               | Status      | What it shows                                                   |
+| -------------------- | ----------- | --------------------------------------------------------------- |
+| Call Phone           | Done        | Phone input, quick-dial chips, native dialer via `tel:`         |
+| Send Email           | Done        | To/Subject/Body fields, native email app via `mailto:`          |
+| Open Maps            | Done        | Address input, suggestion chips, native maps via `maps:`/`geo:` |
+| OTP / Clipboard      | Done        | Copy text, paste from clipboard, SMS OTP auto-fill demo         |
+| Share                | Done        | Message + URL fields, native share sheet via `Share` API        |
+| Image Picker         | Coming Soon | Camera and gallery picker                                       |
+| File Picker          | Coming Soon | Document selection                                              |
+| Haptics              | Coming Soon | Vibration feedback patterns                                     |
+| Biometrics           | Coming Soon | Face ID and fingerprint auth                                    |
+| Camera               | Coming Soon | Live camera preview and capture                                 |
+| Barcode / QR Scanner | Coming Soon | Scan barcodes and QR codes                                      |
+| Push Notifications   | Coming Soon | Local and remote push notifications                             |
+| Background Tasks     | Coming Soon | Run tasks when app is in background                             |
+
+---
+
+### Permissions
+
+| Screen        | Status      | What it shows                                          |
+| ------------- | ----------- | ------------------------------------------------------ |
+| Camera        | Coming Soon | Camera access — check, request, open settings fallback |
+| Location      | Coming Soon | Foreground vs background location access               |
+| Notifications | Coming Soon | Push notification permission request                   |
+| Microphone    | Coming Soon | Audio recording access                                 |
+| Contacts      | Coming Soon | Address book access                                    |
+| Photo Library | Coming Soon | Gallery and media access                               |
+| Bluetooth     | Coming Soon | BLE device access                                      |
+
+The service layer (`checkPermission`, `requestPermission`, `openAppSettings`) is fully implemented in `src/services/permissions/` and ready to use.
+
+---
+
+### Hooks & Utilities
+
+| Hook             | Status      | What it shows                       |
+| ---------------- | ----------- | ----------------------------------- |
+| useDebounce      | Coming Soon | Debounced value hook                |
+| useLocalStorage  | Coming Soon | AsyncStorage wrapper hook           |
+| useNetworkStatus | Coming Soon | Online and offline detection        |
+| useAppState      | Coming Soon | Foreground and background detection |
+| useKeyboard      | Coming Soon | Keyboard height and visibility      |
+| useTimer         | Coming Soon | Countdown and stopwatch             |
 
 ---
 
@@ -689,23 +746,81 @@ type MenuItem = {
 | Screen             | Status      | What it shows                                                                           |
 | ------------------ | ----------- | --------------------------------------------------------------------------------------- |
 | Device Info        | Done        | Device name, brand, model, OS, app version, screen size, memory, battery, emulator flag |
-| Push Notifications | Coming Soon | —                                                                                       |
-| Network Info       | Coming Soon | —                                                                                       |
-| AsyncStorage       | Coming Soon | —                                                                                       |
-| Secure Store       | Coming Soon | —                                                                                       |
-| Environment        | Coming Soon | —                                                                                       |
+| Push Notifications | Coming Soon | Push notification setup and handling                                                    |
+| Network Info       | Coming Soon | Connection type and IP address                                                          |
+| Environment Config | Coming Soon | Dev, staging and prod config via react-native-config                                    |
+| Dark Mode          | Coming Soon | useColorScheme and theme switching                                                      |
+| Localization       | Coming Soon | i18n, translations and RTL support                                                      |
+| Accessibility      | Coming Soon | accessibilityLabel, roles, screen reader testing                                        |
 
 ---
 
-### Permissions
+### Forms
 
-All permission screens are Coming Soon. The service layer (`checkPermission`, `requestPermission`, `openAppSettings`) is fully implemented and ready to use.
+| Screen            | Status      | What it shows                                  |
+| ----------------- | ----------- | ---------------------------------------------- |
+| Form Validation   | Coming Soon | Required fields, regex, real-time vs on-submit |
+| React Hook Form   | Coming Soon | The standard RN form library                   |
+| Date Picker       | Coming Soon | Native date and time picker                    |
+| Dropdown / Select | Coming Soon | Picker and custom dropdown component           |
+| Search Input      | Coming Soon | Debounced search with clear button             |
 
 ---
 
-### Hooks & Utilities
+### Animations
 
-All hook screens are Coming Soon. Planned: `useDebounce`, `useLocalStorage`, `useNetworkStatus`, `useAppState`, `useKeyboard`, `useTimer`.
+| Screen          | Status      | What it shows                           |
+| --------------- | ----------- | --------------------------------------- |
+| Animated API    | Coming Soon | Fade, slide, scale basics with Animated |
+| LayoutAnimation | Coming Soon | Auto-animate layout changes             |
+| Reanimated      | Coming Soon | useSharedValue, useAnimatedStyle        |
+| Gesture Handler | Coming Soon | Swipe, pan, pinch gestures              |
+| Lottie          | Coming Soon | JSON animation playback                 |
+
+---
+
+### Navigation Patterns
+
+| Screen           | Status      | What it shows                                 |
+| ---------------- | ----------- | --------------------------------------------- |
+| Tab Navigator    | Coming Soon | Bottom tab navigation pattern                 |
+| Drawer Navigator | Coming Soon | Side menu drawer pattern                      |
+| Modal Stack      | Coming Soon | Presenting screens as modals                  |
+| Deep Linking     | Coming Soon | URL scheme and universal link handling        |
+| Auth Flow        | Coming Soon | Conditional stack for logged in vs logged out |
+
+---
+
+### Storage
+
+| Screen         | Status      | What it shows                          |
+| -------------- | ----------- | -------------------------------------- |
+| AsyncStorage   | Coming Soon | Read, write and delete key-value pairs |
+| MMKV           | Coming Soon | Fast synchronous key-value storage     |
+| Secure Storage | Coming Soon | Encrypted storage for sensitive data   |
+| SQLite         | Coming Soon | Structured local relational data       |
+
+---
+
+### Networking
+
+| Screen            | Status      | What it shows                              |
+| ----------------- | ----------- | ------------------------------------------ |
+| Fetch API         | Coming Soon | GET, POST, headers and error handling      |
+| Axios             | Coming Soon | Axios instance, requests and responses     |
+| Interceptors      | Coming Soon | Auth token injection and response handling |
+| Offline Detection | Coming Soon | NetInfo and retry logic                    |
+| WebSocket         | Coming Soon | Real-time connection demo                  |
+
+---
+
+### Testing
+
+| Screen          | Status      | What it shows                         |
+| --------------- | ----------- | ------------------------------------- |
+| Unit Tests      | Coming Soon | Jest tests for services and hooks     |
+| Component Tests | Coming Soon | React Native Testing Library patterns |
+| E2E Tests       | Coming Soon | Detox setup and example flows         |
 
 ---
 

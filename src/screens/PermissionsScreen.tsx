@@ -10,50 +10,43 @@ const MENU_ITEMS: MenuItem[] = [
   {
     title: 'Camera',
     description: 'Camera access permission',
-    screen: 'ComingSoon',
-    params: { title: 'Camera Permission' },
+    screen: 'PermissionsCamera',
     implemented: false,
   },
   {
     title: 'Location',
     description: 'GPS and location access',
-    screen: 'ComingSoon',
-    params: { title: 'Location Permission' },
+    screen: 'PermissionsLocation',
     implemented: false,
   },
   {
     title: 'Notifications',
     description: 'Push notification permission',
-    screen: 'ComingSoon',
-    params: { title: 'Notifications Permission' },
+    screen: 'PermissionsNotifications',
     implemented: false,
   },
   {
     title: 'Microphone',
     description: 'Audio recording access',
-    screen: 'ComingSoon',
-    params: { title: 'Microphone Permission' },
+    screen: 'PermissionsMicrophone',
     implemented: false,
   },
   {
     title: 'Contacts',
     description: 'Address book access',
-    screen: 'ComingSoon',
-    params: { title: 'Contacts Permission' },
+    screen: 'PermissionsContacts',
     implemented: false,
   },
   {
     title: 'Photo Library',
     description: 'Photos and media access',
-    screen: 'ComingSoon',
-    params: { title: 'Photo Library Permission' },
+    screen: 'PermissionsPhotoLibrary',
     implemented: false,
   },
   {
     title: 'Bluetooth',
     description: 'Bluetooth device access',
-    screen: 'ComingSoon',
-    params: { title: 'Bluetooth Permission' },
+    screen: 'PermissionsBluetooth',
     implemented: false,
   },
 ];
@@ -63,7 +56,7 @@ const PermissionsScreen = ({ navigation }: Props) => (
     title="Permissions"
     items={MENU_ITEMS}
     onItemPress={item =>
-      navigation.navigate(item.screen as 'ComingSoon', item.params as any)
+      navigation.navigate(item.screen as any, item.params as any)
     }
   />
 );

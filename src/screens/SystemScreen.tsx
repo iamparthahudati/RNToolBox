@@ -8,44 +8,45 @@ type Props = NativeStackScreenProps<RootStackParamList, 'System'>;
 
 const MENU_ITEMS: MenuItem[] = [
   {
-    title: 'Push Notifications',
-    description: 'Push notification setup',
-    screen: 'ComingSoon',
-    params: { title: 'Push Notifications' },
-    implemented: false,
-  },
-  {
     title: 'Device Info',
     description: 'Model, OS version, screen dimensions',
     screen: 'SystemDeviceInfo',
     implemented: true,
   },
   {
+    title: 'Push Notifications',
+    description: 'Push notification setup and handling',
+    screen: 'SystemPushNotifications',
+    implemented: false,
+  },
+  {
     title: 'Network Info',
     description: 'Connection type and IP address',
-    screen: 'ComingSoon',
-    params: { title: 'Network Info' },
+    screen: 'SystemNetwork',
     implemented: false,
   },
   {
-    title: 'AsyncStorage',
-    description: 'Read, write and delete demo',
-    screen: 'ComingSoon',
-    params: { title: 'AsyncStorage' },
-    implemented: false,
-  },
-  {
-    title: 'Secure Store',
-    description: 'Encrypted key-value storage',
-    screen: 'ComingSoon',
-    params: { title: 'Secure Store' },
-    implemented: false,
-  },
-  {
-    title: 'Environment',
+    title: 'Environment Config',
     description: 'Dev, staging and prod config',
-    screen: 'ComingSoon',
-    params: { title: 'Environment' },
+    screen: 'SystemEnvironment',
+    implemented: false,
+  },
+  {
+    title: 'Dark Mode',
+    description: 'useColorScheme and theme switching',
+    screen: 'SystemDarkMode',
+    implemented: false,
+  },
+  {
+    title: 'Localization',
+    description: 'i18n, translations and RTL support',
+    screen: 'SystemLocalization',
+    implemented: false,
+  },
+  {
+    title: 'Accessibility',
+    description: 'accessibilityLabel, roles, screen reader',
+    screen: 'SystemAccessibility',
     implemented: false,
   },
 ];
@@ -57,7 +58,7 @@ const SystemScreen = ({ navigation }: Props) => (
     onItemPress={item =>
       item.implemented
         ? navigation.navigate(item.screen as any)
-        : navigation.navigate('ComingSoon', item.params as any)
+        : navigation.navigate(item.screen as any, item.params as any)
     }
   />
 );
