@@ -29,7 +29,7 @@ const ITEMS: MenuItem[] = [
     title: 'Typography',
     description: 'Font sizes, weights, line heights',
     screen: 'ComponentTypography',
-    implemented: false,
+    implemented: true,
   },
   {
     title: 'Cards',

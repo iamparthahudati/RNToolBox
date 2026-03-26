@@ -1,18 +1,29 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Header from '../components/atoms/Header';
-import { RootStackParamList } from '../navigation/types';
 import { theme } from '../theme';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'ComingSoon'>;
+// Derives a readable title from a route name like "NativeImagePicker" → "Image Picker"
+const routeNameToTitle = (name: string): string =>
+  name
+    .replace(
+      /^(ComingSoon|Component|Native|Forms|Animations|Navigation|Hooks|Storage|Networking|System|Permissions|Testing)/,
+      '',
+    )
+    .replace(/([A-Z])/g, ' $1')
+    .trim() || name;
 
-const ComingSoonScreen = ({ route }: Props) => {
+const ComingSoonScreen = () => {
+  const route = useRoute();
+  const params = route.params as { title?: string } | undefined;
+  const title = params?.title ?? routeNameToTitle(route.name);
+
   return (
     <SafeAreaView style={styles.root}>
-      <Header title={route.params.title} />
+      <Header title={title} />
       <View style={styles.content}>
         <View style={styles.badge}>
           <Text style={styles.title}>Coming Soon</Text>
@@ -24,6 +35,8 @@ const ComingSoonScreen = ({ route }: Props) => {
     </SafeAreaView>
   );
 };
+
+export default ComingSoonScreen;
 
 const styles = StyleSheet.create({
   root: {
@@ -56,5 +69,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-export default ComingSoonScreen;

@@ -9,6 +9,7 @@ import ComingSoonScreen from '../screens/ComingSoonScreen';
 import ButtonsScreen from '../screens/components/ButtonsScreen';
 import InputsScreen from '../screens/components/InputsScreen';
 import SelectionScreen from '../screens/components/SelectionScreen';
+import TypographyScreen from '../screens/components/TypographyScreen';
 import ComponentsScreen from '../screens/ComponentsScreen';
 import FormsScreen from '../screens/FormsScreen';
 import HomeScreen from '../screens/HomeScreen';
@@ -24,6 +25,7 @@ import OpenInMapsScreen from '../screens/native/maps/OpenInMapsScreen';
 import PolygonScreen from '../screens/native/maps/PolygonScreen';
 import MapsScreen from '../screens/native/MapsScreen';
 import SendEmailScreen from '../screens/native/SendEmailScreen';
+import HapticsScreen from '../screens/native/HapticsScreen';
 import ShareScreen from '../screens/native/ShareScreen';
 import NativeActionsScreen from '../screens/NativeActionsScreen';
 import NavigationPatternsScreen from '../screens/NavigationPatternsScreen';
@@ -50,148 +52,47 @@ const AppNavigator = () => {
         <Stack.Screen name="ComponentButtons" component={ButtonsScreen} />
         <Stack.Screen name="ComponentInputs" component={InputsScreen} />
         <Stack.Screen name="ComponentSelection" component={SelectionScreen} />
-        <Stack.Screen
-          name="ComponentTypography"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Typography' }}
-        />
-        <Stack.Screen
-          name="ComponentCards"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Cards' }}
-        />
-        <Stack.Screen
-          name="ComponentBadges"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Badges & Tags' }}
-        />
-        <Stack.Screen
-          name="ComponentModals"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Modals & Alerts' }}
-        />
-        <Stack.Screen
-          name="ComponentToast"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Toast / Snackbar' }}
-        />
-        <Stack.Screen
-          name="ComponentLoading"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Loading States' }}
-        />
-        <Stack.Screen
-          name="ComponentLists"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Lists' }}
-        />
-        <Stack.Screen
-          name="ComponentImages"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Images' }}
-        />
-        <Stack.Screen
-          name="ComponentIcons"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Icons' }}
-        />
-        <Stack.Screen
-          name="ComponentAvatar"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Avatar' }}
-        />
-        <Stack.Screen
-          name="ComponentEmptyState"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Empty State' }}
-        />
+        <Stack.Screen name="ComponentTypography" component={TypographyScreen} />
+        <Stack.Screen name="ComponentCards" component={ComingSoonScreen} />
+        <Stack.Screen name="ComponentBadges" component={ComingSoonScreen} />
+        <Stack.Screen name="ComponentModals" component={ComingSoonScreen} />
+        <Stack.Screen name="ComponentToast" component={ComingSoonScreen} />
+        <Stack.Screen name="ComponentLoading" component={ComingSoonScreen} />
+        <Stack.Screen name="ComponentLists" component={ComingSoonScreen} />
+        <Stack.Screen name="ComponentImages" component={ComingSoonScreen} />
+        <Stack.Screen name="ComponentIcons" component={ComingSoonScreen} />
+        <Stack.Screen name="ComponentAvatar" component={ComingSoonScreen} />
+        <Stack.Screen name="ComponentEmptyState" component={ComingSoonScreen} />
 
         {/* Forms */}
         <Stack.Screen name="Forms" component={FormsScreen} />
-        <Stack.Screen
-          name="FormsValidation"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Form Validation' }}
-        />
-        <Stack.Screen
-          name="FormsHookForm"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'React Hook Form' }}
-        />
-        <Stack.Screen
-          name="FormsDatePicker"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Date Picker' }}
-        />
-        <Stack.Screen
-          name="FormsDropdown"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Dropdown / Select' }}
-        />
-        <Stack.Screen
-          name="FormsSearch"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Search Input' }}
-        />
+        <Stack.Screen name="FormsValidation" component={ComingSoonScreen} />
+        <Stack.Screen name="FormsHookForm" component={ComingSoonScreen} />
+        <Stack.Screen name="FormsDatePicker" component={ComingSoonScreen} />
+        <Stack.Screen name="FormsDropdown" component={ComingSoonScreen} />
+        <Stack.Screen name="FormsSearch" component={ComingSoonScreen} />
 
         {/* Animations */}
         <Stack.Screen name="Animations" component={AnimationsScreen} />
-        <Stack.Screen
-          name="AnimationsBasic"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Animated API' }}
-        />
-        <Stack.Screen
-          name="AnimationsLayout"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'LayoutAnimation' }}
-        />
+        <Stack.Screen name="AnimationsBasic" component={ComingSoonScreen} />
+        <Stack.Screen name="AnimationsLayout" component={ComingSoonScreen} />
         <Stack.Screen
           name="AnimationsReanimated"
           component={ComingSoonScreen}
-          initialParams={{ title: 'Reanimated' }}
         />
-        <Stack.Screen
-          name="AnimationsGesture"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Gesture Handler' }}
-        />
-        <Stack.Screen
-          name="AnimationsLottie"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Lottie' }}
-        />
+        <Stack.Screen name="AnimationsGesture" component={ComingSoonScreen} />
+        <Stack.Screen name="AnimationsLottie" component={ComingSoonScreen} />
 
         {/* Navigation Patterns */}
         <Stack.Screen
           name="NavigationPatterns"
           component={NavigationPatternsScreen}
         />
-        <Stack.Screen
-          name="NavigationTabs"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Tab Navigator' }}
-        />
-        <Stack.Screen
-          name="NavigationDrawer"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Drawer Navigator' }}
-        />
-        <Stack.Screen
-          name="NavigationModal"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Modal Stack' }}
-        />
-        <Stack.Screen
-          name="NavigationDeepLink"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Deep Linking' }}
-        />
-        <Stack.Screen
-          name="NavigationAuthFlow"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Auth Flow' }}
-        />
+        <Stack.Screen name="NavigationTabs" component={ComingSoonScreen} />
+        <Stack.Screen name="NavigationDrawer" component={ComingSoonScreen} />
+        <Stack.Screen name="NavigationModal" component={ComingSoonScreen} />
+        <Stack.Screen name="NavigationDeepLink" component={ComingSoonScreen} />
+        <Stack.Screen name="NavigationAuthFlow" component={ComingSoonScreen} />
 
         {/* Native Actions */}
         <Stack.Screen name="NativeActions" component={NativeActionsScreen} />
@@ -199,45 +100,19 @@ const AppNavigator = () => {
         <Stack.Screen name="NativeSendEmail" component={SendEmailScreen} />
         <Stack.Screen name="NativeClipboard" component={ClipboardScreen} />
         <Stack.Screen name="NativeShare" component={ShareScreen} />
-        <Stack.Screen
-          name="NativeImagePicker"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Image Picker' }}
-        />
-        <Stack.Screen
-          name="NativeFilePicker"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'File Picker' }}
-        />
-        <Stack.Screen
-          name="NativeHaptics"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Haptics' }}
-        />
-        <Stack.Screen
-          name="NativeBiometrics"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Biometrics' }}
-        />
-        <Stack.Screen
-          name="NativeCamera"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Camera' }}
-        />
-        <Stack.Screen
-          name="NativeBarcode"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Barcode / QR Scanner' }}
-        />
+        <Stack.Screen name="NativeImagePicker" component={ComingSoonScreen} />
+        <Stack.Screen name="NativeFilePicker" component={ComingSoonScreen} />
+        <Stack.Screen name="NativeHaptics" component={HapticsScreen} />
+        <Stack.Screen name="NativeBiometrics" component={ComingSoonScreen} />
+        <Stack.Screen name="NativeCamera" component={ComingSoonScreen} />
+        <Stack.Screen name="NativeBarcode" component={ComingSoonScreen} />
         <Stack.Screen
           name="NativePushNotifications"
           component={ComingSoonScreen}
-          initialParams={{ title: 'Push Notifications' }}
         />
         <Stack.Screen
           name="NativeBackgroundTasks"
           component={ComingSoonScreen}
-          initialParams={{ title: 'Background Tasks' }}
         />
 
         {/* Native - Maps */}
@@ -255,177 +130,71 @@ const AppNavigator = () => {
 
         {/* Permissions */}
         <Stack.Screen name="Permissions" component={PermissionsScreen} />
-        <Stack.Screen
-          name="PermissionsCamera"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Camera Permission' }}
-        />
-        <Stack.Screen
-          name="PermissionsLocation"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Location Permission' }}
-        />
+        <Stack.Screen name="PermissionsCamera" component={ComingSoonScreen} />
+        <Stack.Screen name="PermissionsLocation" component={ComingSoonScreen} />
         <Stack.Screen
           name="PermissionsNotifications"
           component={ComingSoonScreen}
-          initialParams={{ title: 'Notifications Permission' }}
         />
         <Stack.Screen
           name="PermissionsMicrophone"
           component={ComingSoonScreen}
-          initialParams={{ title: 'Microphone Permission' }}
         />
-        <Stack.Screen
-          name="PermissionsContacts"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Contacts Permission' }}
-        />
+        <Stack.Screen name="PermissionsContacts" component={ComingSoonScreen} />
         <Stack.Screen
           name="PermissionsPhotoLibrary"
           component={ComingSoonScreen}
-          initialParams={{ title: 'Photo Library Permission' }}
         />
         <Stack.Screen
           name="PermissionsBluetooth"
           component={ComingSoonScreen}
-          initialParams={{ title: 'Bluetooth Permission' }}
         />
 
         {/* Hooks & Utilities */}
         <Stack.Screen name="Hooks" component={HooksScreen} />
-        <Stack.Screen
-          name="HooksDebounce"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'useDebounce' }}
-        />
-        <Stack.Screen
-          name="HooksLocalStorage"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'useLocalStorage' }}
-        />
-        <Stack.Screen
-          name="HooksNetworkStatus"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'useNetworkStatus' }}
-        />
-        <Stack.Screen
-          name="HooksAppState"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'useAppState' }}
-        />
-        <Stack.Screen
-          name="HooksKeyboard"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'useKeyboard' }}
-        />
-        <Stack.Screen
-          name="HooksTimer"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'useTimer' }}
-        />
+        <Stack.Screen name="HooksDebounce" component={ComingSoonScreen} />
+        <Stack.Screen name="HooksLocalStorage" component={ComingSoonScreen} />
+        <Stack.Screen name="HooksNetworkStatus" component={ComingSoonScreen} />
+        <Stack.Screen name="HooksAppState" component={ComingSoonScreen} />
+        <Stack.Screen name="HooksKeyboard" component={ComingSoonScreen} />
+        <Stack.Screen name="HooksTimer" component={ComingSoonScreen} />
 
         {/* Storage */}
         <Stack.Screen name="Storage" component={StorageScreen} />
-        <Stack.Screen
-          name="StorageAsyncStorage"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'AsyncStorage' }}
-        />
-        <Stack.Screen
-          name="StorageMMKV"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'MMKV' }}
-        />
-        <Stack.Screen
-          name="StorageSecure"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Secure Storage' }}
-        />
-        <Stack.Screen
-          name="StorageSQLite"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'SQLite' }}
-        />
+        <Stack.Screen name="StorageAsyncStorage" component={ComingSoonScreen} />
+        <Stack.Screen name="StorageMMKV" component={ComingSoonScreen} />
+        <Stack.Screen name="StorageSecure" component={ComingSoonScreen} />
+        <Stack.Screen name="StorageSQLite" component={ComingSoonScreen} />
 
         {/* Networking */}
         <Stack.Screen name="Networking" component={NetworkingScreen} />
-        <Stack.Screen
-          name="NetworkingFetch"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Fetch API' }}
-        />
-        <Stack.Screen
-          name="NetworkingAxios"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Axios' }}
-        />
+        <Stack.Screen name="NetworkingFetch" component={ComingSoonScreen} />
+        <Stack.Screen name="NetworkingAxios" component={ComingSoonScreen} />
         <Stack.Screen
           name="NetworkingInterceptors"
           component={ComingSoonScreen}
-          initialParams={{ title: 'Interceptors' }}
         />
-        <Stack.Screen
-          name="NetworkingOffline"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Offline Detection' }}
-        />
-        <Stack.Screen
-          name="NetworkingWebSocket"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'WebSocket' }}
-        />
+        <Stack.Screen name="NetworkingOffline" component={ComingSoonScreen} />
+        <Stack.Screen name="NetworkingWebSocket" component={ComingSoonScreen} />
 
         {/* System & Device */}
         <Stack.Screen name="System" component={SystemScreen} />
         <Stack.Screen name="SystemDeviceInfo" component={DeviceInfoScreen} />
-        <Stack.Screen
-          name="SystemNetwork"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Network Info' }}
-        />
-        <Stack.Screen
-          name="SystemEnvironment"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Environment Config' }}
-        />
-        <Stack.Screen
-          name="SystemDarkMode"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Dark Mode' }}
-        />
-        <Stack.Screen
-          name="SystemLocalization"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Localization' }}
-        />
-        <Stack.Screen
-          name="SystemAccessibility"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Accessibility' }}
-        />
+        <Stack.Screen name="SystemNetwork" component={ComingSoonScreen} />
+        <Stack.Screen name="SystemEnvironment" component={ComingSoonScreen} />
+        <Stack.Screen name="SystemDarkMode" component={ComingSoonScreen} />
+        <Stack.Screen name="SystemLocalization" component={ComingSoonScreen} />
+        <Stack.Screen name="SystemAccessibility" component={ComingSoonScreen} />
         <Stack.Screen
           name="SystemPushNotifications"
           component={ComingSoonScreen}
-          initialParams={{ title: 'Push Notifications' }}
         />
 
         {/* Testing */}
         <Stack.Screen name="Testing" component={TestingScreen} />
-        <Stack.Screen
-          name="TestingUnit"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Unit Tests' }}
-        />
-        <Stack.Screen
-          name="TestingComponent"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'Component Tests' }}
-        />
-        <Stack.Screen
-          name="TestingE2E"
-          component={ComingSoonScreen}
-          initialParams={{ title: 'E2E Tests' }}
-        />
+        <Stack.Screen name="TestingUnit" component={ComingSoonScreen} />
+        <Stack.Screen name="TestingComponent" component={ComingSoonScreen} />
+        <Stack.Screen name="TestingE2E" component={ComingSoonScreen} />
 
         {/* Catch-all for unimplemented screens */}
         <Stack.Screen name="ComingSoon" component={ComingSoonScreen} />

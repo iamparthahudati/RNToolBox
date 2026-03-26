@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { theme } from '../../../theme';
 import Badge from '../../atoms/Badge';
-import { styles } from '../../Button/styles';
 
 type MenuCardProps = {
   title: string;

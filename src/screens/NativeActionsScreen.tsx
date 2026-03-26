@@ -53,7 +53,7 @@ const ITEMS: MenuItem[] = [
     title: 'Haptics',
     description: 'Vibration feedback patterns',
     screen: 'NativeHaptics',
-    implemented: false,
+    implemented: true,
   },
   {
     title: 'Biometrics',
