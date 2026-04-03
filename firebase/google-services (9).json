@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "339894760554",
+    "project_id": "rntoolbox-qa",
+    "storage_bucket": "rntoolbox-qa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339894760554:android:e06ca4c59cbdfa42f2c613",
+        "android_client_info": {
+          "package_name": "com.rntoolbox"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzPBUyd9TfrYmn6uAhRK0JuXrHe8g3Pkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
