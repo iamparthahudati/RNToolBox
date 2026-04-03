@@ -5550,6 +5550,11 @@ react-is@^19.1.0, react-is@^19.2.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-19.2.4.tgz#a080758243c572ccd4a63386537654298c99d135"
   integrity sha512-W+EWGn2v0ApPKgKKCy/7s7WHXkboGcsrXE+2joLyVxkbyVQfO3MUEaUQDHoSmb8TFFrSKYa9mw64WZHNHSDzYA==
 
+react-native-config@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.npmjs.org/react-native-config/-/react-native-config-1.6.0.tgz#dd830c8ada35eb17ad1371569515836d34230bd7"
+  integrity sha512-UtiKWiLlSNgWf/9CPMkM1UoOHtnc7p9YyvUb9DozgQ41xcRhImGfh6nAtW9HhWhfsvMgTdq7l+xSMn9JPW0SLQ==
+
 react-native-device-info@15.0.2:
   version "15.0.2"
   resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-15.0.2.tgz#c7de1bb6baeb07e1bab70159ad540c5705cb8dc0"

@@ -13,7 +13,11 @@
     "xcode": "xed ios",
     "pods": "npx pod-install",
     "deepclean": "rm -rf node_modules vendor ios/build ios/Pods android/build android/.gradle android/.idea android/.kotlin android/.default android/app/.cxx android/app/build && rm -f yarn.lock package-lock.json Gemfile.lock ios/Podfile.lock ios/Gemfile.lock ios/.xcode.env.local android/*.hprof",
-    "test": "jest"
+    "test": "jest",
+    "android:staging": "ENVFILE=.env.staging react-native run-android",
+    "android:prod": "ENVFILE=.env.production react-native run-android",
+    "ios:staging": "ENVFILE=.env.staging react-native run-ios",
+    "ios:prod": "ENVFILE=.env.production react-native run-ios"
   },
   "dependencies": {
     "@react-native-clipboard/clipboard": "^1.16.3",
@@ -23,6 +27,7 @@
     "@react-navigation/native-stack": "^7.9.0",
     "react": "19.2.0",
     "react-native": "0.83.1",
+    "react-native-config": "1.6.0",
     "react-native-device-info": "15.0.2",
     "react-native-paper": "5.15.0",
     "react-native-permissions": "^5.4.4",
