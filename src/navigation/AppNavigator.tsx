@@ -16,6 +16,7 @@ import HomeScreen from '../screens/HomeScreen';
 import HooksScreen from '../screens/HooksScreen';
 import CallPhoneScreen from '../screens/native/CallPhoneScreen';
 import ClipboardScreen from '../screens/native/ClipboardScreen';
+import HapticsScreen from '../screens/native/HapticsScreen';
 import BasicMapScreen from '../screens/native/maps/BasicMapScreen';
 import DirectionsScreen from '../screens/native/maps/DirectionsScreen';
 import GeofenceScreen from '../screens/native/maps/GeofenceScreen';
@@ -25,10 +26,11 @@ import OpenInMapsScreen from '../screens/native/maps/OpenInMapsScreen';
 import PolygonScreen from '../screens/native/maps/PolygonScreen';
 import MapsScreen from '../screens/native/MapsScreen';
 import SendEmailScreen from '../screens/native/SendEmailScreen';
-import HapticsScreen from '../screens/native/HapticsScreen';
 import ShareScreen from '../screens/native/ShareScreen';
 import NativeActionsScreen from '../screens/NativeActionsScreen';
 import NavigationPatternsScreen from '../screens/NavigationPatternsScreen';
+import RemoteConfigScreen from '../screens/networking/RemoteConfigScreen';
+import RemoteConfigSetupScreen from '../screens/networking/RemoteConfigSetupScreen';
 import NetworkingScreen from '../screens/NetworkingScreen';
 import PermissionsScreen from '../screens/PermissionsScreen';
 import StorageScreen from '../screens/StorageScreen';
@@ -107,7 +109,7 @@ const AppNavigator = () => {
         <Stack.Screen name="NativeCamera" component={ComingSoonScreen} />
         <Stack.Screen name="NativeBarcode" component={ComingSoonScreen} />
         <Stack.Screen
-          name="NativePushNotifications"
+          name="NativeFCMPushNotifications"
           component={ComingSoonScreen}
         />
         <Stack.Screen
@@ -165,6 +167,7 @@ const AppNavigator = () => {
         <Stack.Screen name="StorageMMKV" component={ComingSoonScreen} />
         <Stack.Screen name="StorageSecure" component={ComingSoonScreen} />
         <Stack.Screen name="StorageSQLite" component={ComingSoonScreen} />
+        <Stack.Screen name="StorageFirebase" component={ComingSoonScreen} />
 
         {/* Networking */}
         <Stack.Screen name="Networking" component={NetworkingScreen} />
@@ -176,6 +179,19 @@ const AppNavigator = () => {
         />
         <Stack.Screen name="NetworkingOffline" component={ComingSoonScreen} />
         <Stack.Screen name="NetworkingWebSocket" component={ComingSoonScreen} />
+        <Stack.Screen name="NetworkingFirestore" component={ComingSoonScreen} />
+        <Stack.Screen
+          name="NetworkingRealtimeDB"
+          component={ComingSoonScreen}
+        />
+        <Stack.Screen
+          name="NetworkingRemoteConfig"
+          component={RemoteConfigScreen}
+        />
+        <Stack.Screen
+          name="NetworkingRemoteConfigSetup"
+          component={RemoteConfigSetupScreen}
+        />
 
         {/* System & Device */}
         <Stack.Screen name="System" component={SystemScreen} />
@@ -189,12 +205,22 @@ const AppNavigator = () => {
           name="SystemPushNotifications"
           component={ComingSoonScreen}
         />
+        <Stack.Screen name="SystemAnalytics" component={ComingSoonScreen} />
+        <Stack.Screen name="SystemCrashlytics" component={ComingSoonScreen} />
 
         {/* Testing */}
         <Stack.Screen name="Testing" component={TestingScreen} />
         <Stack.Screen name="TestingUnit" component={ComingSoonScreen} />
         <Stack.Screen name="TestingComponent" component={ComingSoonScreen} />
         <Stack.Screen name="TestingE2E" component={ComingSoonScreen} />
+
+        {/* Authentication */}
+        <Stack.Screen name="Auth" component={ComingSoonScreen} />
+        <Stack.Screen name="AuthEmail" component={ComingSoonScreen} />
+        <Stack.Screen name="AuthGoogle" component={ComingSoonScreen} />
+        <Stack.Screen name="AuthApple" component={ComingSoonScreen} />
+        <Stack.Screen name="AuthPhoneOTP" component={ComingSoonScreen} />
+        <Stack.Screen name="AuthAnonymous" component={ComingSoonScreen} />
 
         {/* Catch-all for unimplemented screens */}
         <Stack.Screen name="ComingSoon" component={ComingSoonScreen} />

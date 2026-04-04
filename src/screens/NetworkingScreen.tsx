@@ -37,6 +37,24 @@ const ITEMS: MenuItem[] = [
     screen: 'NetworkingWebSocket',
     implemented: false,
   },
+  {
+    title: 'Firestore',
+    description: 'Cloud Firestore read, write, query and real-time updates',
+    screen: 'NetworkingFirestore',
+    implemented: false,
+  },
+  {
+    title: 'Realtime Database',
+    description: 'Firebase Realtime Database read, write and listeners',
+    screen: 'NetworkingRealtimeDB',
+    implemented: false,
+  },
+  {
+    title: 'Remote Config',
+    description: 'Fetch and activate Firebase Remote Config values',
+    screen: 'NetworkingRemoteConfig',
+    implemented: true,
+  },
 ];
 
 const NetworkingScreen = ({ navigation }: Props) => (
