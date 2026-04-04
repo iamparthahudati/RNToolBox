@@ -11,31 +11,31 @@ const ITEMS: MenuItem[] = [
     title: 'Email Auth',
     description: 'Email and password authentication',
     screen: 'AuthEmail',
-    implemented: false,
+    implemented: true,
   },
   {
     title: 'Google Sign In',
     description: 'Sign in with Google account',
     screen: 'AuthGoogle',
-    implemented: false,
+    implemented: true,
   },
   {
     title: 'Apple Sign In',
     description: 'Sign in with Apple ID',
     screen: 'AuthApple',
-    implemented: false,
+    implemented: true,
   },
   {
     title: 'Phone OTP',
     description: 'SMS OTP verification via Firebase Auth',
     screen: 'AuthPhoneOTP',
-    implemented: false,
+    implemented: true,
   },
   {
     title: 'Anonymous',
     description: 'Anonymous sign-in session',
     screen: 'AuthAnonymous',
-    implemented: false,
+    implemented: true,
   },
 ];
 

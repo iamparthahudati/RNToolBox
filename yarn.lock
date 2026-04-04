@@ -1486,6 +1486,11 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-2.0.3.tgz#4a2868d75d6d6963e423bcf90b7fd1be343409d3"
   integrity sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==
 
+"@invertase/react-native-apple-authentication@2.5.1":
+  version "2.5.1"
+  resolved "https://registry.npmjs.org/@invertase/react-native-apple-authentication/-/react-native-apple-authentication-2.5.1.tgz#50f6892e7ddbe5fab374ef6b4daa52216b6fdca2"
+  integrity sha512-KPKKc0wtRYpH4J0RkDfHzoKSZ+dYPEHmCXhpPdgHsT2MbK5AIkW1cYurjhAgev/kL7nOHFmWITjY1At5WhFEMQ==
+
 "@isaacs/ttlcache@^1.4.1":
   version "1.4.1"
   resolved "https://registry.npmjs.org/@isaacs/ttlcache/-/ttlcache-1.4.1.tgz#21fb23db34e9b6220c6ba023a0118a2dd3461ea2"
@@ -1993,10 +1998,22 @@
   dependencies:
     firebase "11.3.1"
 
+"@react-native-firebase/auth@21.14.0":
+  version "21.14.0"
+  resolved "https://registry.npmjs.org/@react-native-firebase/auth/-/auth-21.14.0.tgz#d5ba902567dfd94ba995815bdcf34da90be9e744"
+  integrity sha512-m4BFrq/pC4OlPPLZJjDu0n/3QHM+pE5KlYc7dvnE8zavtlqKclvZ6cchcfm4DsPVqmuQOJ1QQqrYdOfRm3hsHA==
+  dependencies:
+    plist "^3.1.0"
+
 "@react-native-firebase/remote-config@21.14.0":
   version "21.14.0"
   resolved "https://registry.npmjs.org/@react-native-firebase/remote-config/-/remote-config-21.14.0.tgz#73788fe4bd909c078a2e19ddcf19d7cc85d4ea90"
   integrity sha512-Zl7ltvDf4oBz3ftb16k6iH98wGfg2852mIzS1ctpL2vZXWnalVmTJW7ct1Hbx7HV+Y07sYzaBTmEUagf9vBY4Q==
+
+"@react-native-google-signin/google-signin@16.1.2":
+  version "16.1.2"
+  resolved "https://registry.npmjs.org/@react-native-google-signin/google-signin/-/google-signin-16.1.2.tgz#fe22dd4672f6fd1559e6a3fc27811ab5359de2ba"
+  integrity sha512-1hf4pRmpnS5t0dHtqU72Q1FmWzsCZR2Sm3uVQbbfMKeNPl5TKjpAsP6F8QTZ9L+Q6Cnn9tL9BXpDCb1nyutdCQ==
 
 "@react-native-vector-icons/common@^12.4.2":
   version "12.4.2"
