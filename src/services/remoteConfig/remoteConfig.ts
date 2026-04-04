@@ -69,5 +69,11 @@ export function getFetchStatus(): string {
 }
 
 export function getFirebaseProjectId(): string {
-  return remoteConfig().app.options.projectId ?? 'unknown';
+  try {
+    const { firebaseApp } =
+      require('../firebase') as typeof import('../firebase');
+    return firebaseApp.options.projectId ?? 'unknown';
+  } catch {
+    return 'unknown';
+  }
 }
