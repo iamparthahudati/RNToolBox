@@ -62,6 +62,12 @@ const MENU_ITEMS: MenuItem[] = [
     implemented: false,
   },
   {
+    title: 'Authentication',
+    description: 'Firebase Auth — email, Google, Apple sign-in',
+    screen: 'Auth',
+    implemented: false,
+  },
+  {
     title: 'Networking',
     description: 'Fetch, Axios, interceptors, offline, WebSocket',
     screen: 'Networking',

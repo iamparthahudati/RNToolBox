@@ -17,6 +17,12 @@ target 'RNToolbox' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # Firebase — core SDK (required by all other Firebase modules)
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseABTesting', :modular_headers => true
+  pod 'FirebaseInstallations', :modular_headers => true
+
   post_install do |installer|
     react_native_post_install(
       installer,

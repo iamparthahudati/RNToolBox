@@ -31,6 +31,12 @@ const ITEMS: MenuItem[] = [
     screen: 'StorageSQLite',
     implemented: false,
   },
+  {
+    title: 'Firebase Storage',
+    description: 'Upload, download and manage files in Firebase Storage',
+    screen: 'StorageFirebase',
+    implemented: false,
+  },
 ];
 
 const StorageScreen = ({ navigation }: Props) => (

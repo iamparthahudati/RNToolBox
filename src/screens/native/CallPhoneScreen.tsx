@@ -7,8 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Chip, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Chip from '../../components/atoms/Chip';
 import Header from '../../components/atoms/Header';
 import { RootStackParamList } from '../../navigation/types';
 import { callPhoneNumber } from '../../services/phone';

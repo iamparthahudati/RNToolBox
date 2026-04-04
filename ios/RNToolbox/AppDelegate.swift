@@ -2,6 +2,8 @@ import UIKit
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
+import FirebaseCore
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
@@ -13,6 +15,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+    // ---------------------------------------------------------------------------
+    // Firebase initialization
+    //
+    // The correct GoogleService-Info.plist is copied into the app bundle at build
+    // time by the "Copy Firebase Config" Run Script build phase in Xcode:
+    //
+    //   Source (Debug):   ../../firebase/dev/GoogleService-Info.plist
+    //   Source (Staging): ../../firebase/staging/GoogleService-Info.plist
+    //   Source (Release): ../../firebase/prod/GoogleService-Info.plist
+    //   Destination:      ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist
+    //
+    // FirebaseApp.configure() reads whichever plist was copied for the active
+    // build configuration, so no manual project switching is needed here.
+    // ---------------------------------------------------------------------------
+    FirebaseApp.configure()
+
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()

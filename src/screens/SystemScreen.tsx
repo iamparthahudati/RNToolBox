@@ -49,6 +49,18 @@ const MENU_ITEMS: MenuItem[] = [
     screen: 'SystemAccessibility',
     implemented: false,
   },
+  {
+    title: 'Analytics',
+    description: 'Firebase Analytics event logging and screen tracking',
+    screen: 'SystemAnalytics',
+    implemented: false,
+  },
+  {
+    title: 'Crashlytics',
+    description: 'Crash reporting and non-fatal error logging',
+    screen: 'SystemCrashlytics',
+    implemented: false,
+  },
 ];
 
 const SystemScreen = ({ navigation }: Props) => (

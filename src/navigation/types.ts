@@ -1,6 +1,6 @@
 export type RootStackParamList = {
   Home: undefined;
-  ComingSoon: { title: string };
+  ComingSoon: { title?: string } | undefined;
 
   // UI Components
   Components: undefined;
@@ -55,7 +55,7 @@ export type RootStackParamList = {
   NativeBiometrics: undefined;
   NativeCamera: undefined;
   NativeBarcode: undefined;
-  NativePushNotifications: undefined;
+  NativeFCMPushNotifications: undefined;
   NativeBackgroundTasks: undefined;
 
   // Native - Maps
@@ -93,6 +93,7 @@ export type RootStackParamList = {
   StorageMMKV: undefined;
   StorageSecure: undefined;
   StorageSQLite: undefined;
+  StorageFirebase: undefined;
 
   // Networking
   Networking: undefined;
@@ -101,6 +102,10 @@ export type RootStackParamList = {
   NetworkingInterceptors: undefined;
   NetworkingOffline: undefined;
   NetworkingWebSocket: undefined;
+  NetworkingFirestore: undefined;
+  NetworkingRealtimeDB: undefined;
+  NetworkingRemoteConfig: undefined;
+  NetworkingRemoteConfigSetup: undefined;
 
   // System & Device
   System: undefined;
@@ -111,10 +116,20 @@ export type RootStackParamList = {
   SystemLocalization: undefined;
   SystemAccessibility: undefined;
   SystemPushNotifications: undefined;
+  SystemAnalytics: undefined;
+  SystemCrashlytics: undefined;
 
   // Testing
   Testing: undefined;
   TestingUnit: undefined;
   TestingComponent: undefined;
   TestingE2E: undefined;
+
+  // Authentication
+  Auth: undefined;
+  AuthEmail: undefined;
+  AuthGoogle: undefined;
+  AuthApple: undefined;
+  AuthPhoneOTP: undefined;
+  AuthAnonymous: undefined;
 };

@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -19,8 +20,8 @@ react {
     /* Variants */
     //   The list of variants to that are debuggable. For those we're going to
     //   skip the bundling of the JS bundle and the assets. By default is just 'debug'.
-    //   If you add flavors like lite, prod, etc. you'll have to list your debuggableVariants.
-    // debuggableVariants = ["liteDebug", "prodDebug"]
+    //   With product flavors (dev, staging, prod) all debug variants must be listed.
+    debuggableVariants = ["devDebug", "stagingDebug", "prodDebug"]
 
     /* Bundling */
     //   A list containing the node command and its flags. Default is just 'node'.
@@ -71,6 +72,27 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
+// NOTE: google-services.json in this directory is auto-generated at build time.
+// It is copied from firebase/<flavor>/google-services.json by the task below.
+// Do NOT commit android/app/google-services.json — add it to android/app/.gitignore.
+
+// Copy correct google-services.json based on active flavor
+android.applicationVariants.all { variant ->
+    def flavor = variant.flavorName
+    def srcFile = rootProject.file("firebase/${flavor}/google-services.json")
+    def destFile = file("google-services.json")
+    variant.preBuildProvider.configure {
+        doFirst {
+            if (srcFile.exists()) {
+                copy { from srcFile; into file('.') }
+                println "[Firebase] Copied google-services.json for flavor: ${flavor}"
+            } else {
+                throw new GradleException("[Firebase] Missing config: ${srcFile.path}")
+            }
+        }
+    }
+}
+
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -104,6 +126,20 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    flavorDimensions 'env'
+    productFlavors {
+        dev {
+            dimension 'env'
+            applicationIdSuffix '.dev'
+        }
+        staging {
+            dimension 'env'
+            applicationIdSuffix '.staging'
+        }
+        prod {
+            dimension 'env'
+        }
+    }
 }
 
 dependencies {
@@ -116,3 +152,5 @@ dependencies {
         implementation jscFlavor
     }
 }
+
+apply plugin: 'com.google.gms.google-services'
