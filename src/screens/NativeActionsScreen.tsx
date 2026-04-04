@@ -74,9 +74,9 @@ const ITEMS: MenuItem[] = [
     implemented: false,
   },
   {
-    title: 'Push Notifications',
-    description: 'Local and remote push notifications',
-    screen: 'NativePushNotifications',
+    title: 'FCM Push Notifications',
+    description: 'Firebase Cloud Messaging token and notifications',
+    screen: 'NativeFCMPushNotifications',
     implemented: false,
   },
   {
