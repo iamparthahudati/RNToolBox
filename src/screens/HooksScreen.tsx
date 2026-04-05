@@ -12,36 +12,42 @@ const MENU_ITEMS: MenuItem[] = [
     description: 'Debounced value hook',
     screen: 'HooksDebounce',
     implemented: false,
+    icon: 'timer-outline',
   },
   {
     title: 'useLocalStorage',
     description: 'AsyncStorage wrapper hook',
     screen: 'HooksLocalStorage',
     implemented: false,
+    icon: 'harddisk',
   },
   {
     title: 'useNetworkStatus',
     description: 'Online and offline detection',
     screen: 'HooksNetworkStatus',
     implemented: false,
+    icon: 'wifi',
   },
   {
     title: 'useAppState',
     description: 'Foreground and background detection',
     screen: 'HooksAppState',
     implemented: false,
+    icon: 'cellphone-check',
   },
   {
     title: 'useKeyboard',
     description: 'Keyboard height and visibility',
     screen: 'HooksKeyboard',
     implemented: false,
+    icon: 'keyboard-outline',
   },
   {
     title: 'useTimer',
     description: 'Countdown and stopwatch',
     screen: 'HooksTimer',
     implemented: false,
+    icon: 'clock-outline',
   },
 ];
 

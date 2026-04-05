@@ -12,30 +12,35 @@ const ITEMS: MenuItem[] = [
     description: 'Fade, slide, scale basics with Animated',
     screen: 'AnimationsBasic',
     implemented: false,
+    icon: 'play-circle-outline',
   },
   {
     title: 'LayoutAnimation',
     description: 'Auto-animate layout changes',
     screen: 'AnimationsLayout',
     implemented: false,
+    icon: 'view-grid-outline',
   },
   {
     title: 'Reanimated',
     description: 'useSharedValue, useAnimatedStyle',
     screen: 'AnimationsReanimated',
     implemented: false,
+    icon: 'lightning-bolt-outline',
   },
   {
     title: 'Gesture Handler',
     description: 'Swipe, pan, pinch gestures',
     screen: 'AnimationsGesture',
     implemented: false,
+    icon: 'gesture-swipe',
   },
   {
     title: 'Lottie',
     description: 'JSON animation playback',
     screen: 'AnimationsLottie',
     implemented: false,
+    icon: 'animation',
   },
 ];
 

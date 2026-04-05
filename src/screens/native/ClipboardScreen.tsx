@@ -1,30 +1,22 @@
+import Icon from '@react-native-vector-icons/material-design-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { HelperText, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/Header';
+
+import Button from '../../components/atoms/Button';
+import Header from '../../components/atoms/Header';
+import SectionHeader from '../../components/molecules/SectionHeader';
 import { RootStackParamList } from '../../navigation/types';
 import { copyToClipboard, getFromClipboard } from '../../services/clipboard';
-import { theme } from '../../theme';
+import { useTheme } from '../../theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'NativeClipboard'>;
 
-const PAPER_THEME = {
-  colors: {
-    primary: theme.colors.primary,
-    background: theme.colors.white,
-    error: '#DC2626',
-  },
-};
-
 export default function ClipboardScreen(_props: Props) {
+  const { colors, spacing, typography, isDark } = useTheme();
+
   const [copyText, setCopyText] = useState('');
   const [pastedText, setPastedText] = useState('');
   const [pasteAttempted, setPasteAttempted] = useState(false);
@@ -42,27 +34,68 @@ export default function ClipboardScreen(_props: Props) {
 
   const showNothingHelper = pasteAttempted && pastedText === '';
 
+  const paperTheme = {
+    colors: {
+      primary: colors.primary,
+      background: colors.surface,
+      error: colors.errorMain,
+    },
+  };
+
   return (
-    <SafeAreaView style={styles.root}>
+    <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
       <Header title="OTP / Clipboard" />
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { padding: spacing.lg, paddingBottom: spacing.xxl },
+        ]}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
         {/* Hero */}
-        <View style={styles.heroContainer}>
-          <View style={styles.heroCircle}>
-            <Text style={styles.heroIcon}>{'⧉'}</Text>
+        <View
+          style={[
+            styles.heroContainer,
+            { marginBottom: spacing.xl, paddingTop: spacing.md },
+          ]}
+        >
+          <View
+            style={[
+              styles.heroCircle,
+              {
+                backgroundColor: isDark ? colors.primary900 : colors.primary50,
+                marginBottom: spacing.md,
+              },
+            ]}
+          >
+            <Icon
+              name={'clipboard-outline' as any}
+              size={32}
+              color={colors.primary}
+            />
           </View>
-          <Text style={styles.heroTitle}>Clipboard Manager</Text>
-          <Text style={styles.heroSubtitle}>
+          <Text
+            style={[
+              typography.presets.h2,
+              { color: colors.textPrimary, marginBottom: spacing.xs },
+            ]}
+          >
+            Clipboard Manager
+          </Text>
+          <Text
+            style={[
+              typography.presets.bodySmall,
+              styles.centered,
+              { color: colors.textSecondary },
+            ]}
+          >
             Copy text to the clipboard or paste content from it
           </Text>
         </View>
 
         {/* COPY Section */}
-        <Text style={styles.sectionLabel}>Copy</Text>
+        <SectionHeader title="Copy" />
         <TextInput
           mode="outlined"
           label="Text to Copy"
@@ -74,50 +107,56 @@ export default function ClipboardScreen(_props: Props) {
               <TextInput.Icon icon="close" onPress={() => setCopyText('')} />
             ) : undefined
           }
-          style={styles.input}
-          theme={PAPER_THEME}
-        />
-        <TouchableOpacity
           style={[
-            styles.button,
-            copyText.trim() === '' && styles.buttonDisabled,
+            styles.input,
+            { marginBottom: spacing.lg, backgroundColor: colors.surface },
           ]}
+          theme={paperTheme}
+        />
+        <Button
+          title="Copy to Clipboard"
+          variant="primary"
           onPress={handleCopy}
           disabled={copyText.trim() === ''}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.buttonText}>Copy to Clipboard</Text>
-        </TouchableOpacity>
+          fullWidth
+        />
 
         {/* PASTE Section */}
-        <Text style={[styles.sectionLabel, styles.sectionLabelSpaced]}>
-          Paste
-        </Text>
+        <View style={{ marginTop: spacing.xl }}>
+          <SectionHeader title="Paste" />
+        </View>
         <TextInput
           mode="outlined"
           label="Clipboard Content"
           value={pastedText}
           editable={false}
-          style={[styles.input, styles.readOnlyInput]}
-          theme={PAPER_THEME}
+          style={[
+            styles.input,
+            {
+              marginBottom: spacing.xs,
+              backgroundColor: colors.surface,
+            },
+          ]}
+          theme={paperTheme}
         />
         {showNothingHelper && (
           <HelperText type="info" visible style={styles.helperText}>
             Nothing in clipboard
           </HelperText>
         )}
-        <TouchableOpacity
-          style={styles.outlineButton}
-          onPress={handlePaste}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.outlineButtonText}>Paste from Clipboard</Text>
-        </TouchableOpacity>
+        <View style={{ marginTop: spacing.sm }}>
+          <Button
+            title="Paste from Clipboard"
+            variant="outline"
+            onPress={handlePaste}
+            fullWidth
+          />
+        </View>
 
         {/* OTP DEMO Section */}
-        <Text style={[styles.sectionLabel, styles.sectionLabelSpaced]}>
-          OTP Auto-fill Demo
-        </Text>
+        <View style={{ marginTop: spacing.xl }}>
+          <SectionHeader title="OTP Auto-fill Demo" />
+        </View>
         <TextInput
           mode="outlined"
           label="Enter OTP"
@@ -128,8 +167,11 @@ export default function ClipboardScreen(_props: Props) {
           textContentType="oneTimeCode"
           autoComplete="sms-otp"
           left={<TextInput.Icon icon="shield-key-outline" />}
-          style={styles.input}
-          theme={PAPER_THEME}
+          style={[
+            styles.input,
+            { marginBottom: spacing.xs, backgroundColor: colors.surface },
+          ]}
+          theme={paperTheme}
         />
         <HelperText type="info" visible style={styles.helperText}>
           OTP from SMS will appear in keyboard toolbar
@@ -142,102 +184,23 @@ export default function ClipboardScreen(_props: Props) {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
-  scrollContent: {
-    padding: theme.spacing.lg,
-    paddingBottom: theme.spacing.xxl,
-  },
-
-  // Hero
+  scrollContent: {},
   heroContainer: {
     alignItems: 'center',
-    marginBottom: theme.spacing.xl,
-    paddingTop: theme.spacing.md,
   },
   heroCircle: {
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: theme.colors.surface,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: theme.spacing.md,
   },
-  heroIcon: {
-    fontSize: 32,
-  },
-  heroTitle: {
-    fontSize: theme.typography.sizes.lg,
-    fontWeight: '700',
-    color: theme.colors.textPrimary,
-    marginBottom: theme.spacing.xs,
-  },
-  heroSubtitle: {
-    fontSize: theme.typography.sizes.sm,
-    color: theme.colors.textSecondary,
-    textAlign: 'center',
-    lineHeight: 20,
-  },
-
-  // Section label
-  sectionLabel: {
-    fontSize: theme.typography.sizes.xs,
-    fontWeight: '600',
-    color: theme.colors.textSecondary,
-    textTransform: 'uppercase',
-    letterSpacing: 0.6,
-    marginBottom: theme.spacing.sm,
-  },
-  sectionLabelSpaced: {
-    marginTop: theme.spacing.xl,
-  },
-
-  // Input
-  input: {
-    marginBottom: theme.spacing.lg,
-    backgroundColor: theme.colors.white,
-  },
-  readOnlyInput: {
-    backgroundColor: theme.colors.surface,
-    marginBottom: theme.spacing.xs,
-  },
+  input: {},
   helperText: {
-    marginBottom: theme.spacing.sm,
     paddingHorizontal: 0,
   },
-
-  // Primary button
-  button: {
-    backgroundColor: theme.colors.primary,
-    borderRadius: 10,
-    paddingVertical: theme.spacing.md + 2,
-    alignItems: 'center',
-  },
-  buttonDisabled: {
-    opacity: 0.45,
-  },
-  buttonText: {
-    color: theme.colors.white,
-    fontSize: theme.typography.sizes.md,
-    fontWeight: '700',
-  },
-
-  // Outline button
-  outlineButton: {
-    borderWidth: 1,
-    borderColor: theme.colors.primary,
-    backgroundColor: theme.colors.white,
-    borderRadius: 10,
-    paddingVertical: theme.spacing.md + 2,
-    alignItems: 'center',
-    marginTop: theme.spacing.sm,
-  },
-  outlineButtonText: {
-    color: theme.colors.primary,
-    fontSize: theme.typography.sizes.md,
-    fontWeight: '700',
+  centered: {
+    textAlign: 'center',
   },
 });

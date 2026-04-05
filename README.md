@@ -824,6 +824,198 @@ The service layer (`checkPermission`, `requestPermission`, `openAppSettings`) is
 
 ---
 
+## Next Steps
+
+The following modules are planned in priority order. Each entry lists what needs to be built and any dependencies required.
+
+---
+
+### 1. Authentication
+
+**Route:** `Auth` and sub-screens (`AuthEmail`, `AuthGoogle`, `AuthApple`, `AuthPhoneOTP`, `AuthAnonymous`)
+
+**Dependencies:** `@react-native-firebase/auth`, `@react-native-google-signin/google-signin`
+
+| Step | Task                                                                 |
+| ---- | -------------------------------------------------------------------- |
+| 1    | Add `@react-native-firebase/auth` and run `pod install`              |
+| 2    | Build `AuthScreen.tsx` category menu (already scaffolded)            |
+| 3    | Implement `AuthEmailScreen` — sign up, sign in, password reset       |
+| 4    | Implement `AuthGoogleScreen` — Google Sign-In with Firebase          |
+| 5    | Implement `AuthAppleScreen` — Apple Sign-In (iOS only)               |
+| 6    | Implement `AuthPhoneOTPScreen` — phone number + SMS OTP verification |
+| 7    | Implement `AuthAnonymousScreen` — anonymous sign-in and upgrade flow |
+| 8    | Create `src/services/firebase/auth.ts` service layer                 |
+| 9    | Mark `Auth` as `implemented: true` in `HomeScreen.tsx`               |
+
+---
+
+### 2. Remote Config
+
+**Route:** `NetworkingRemoteConfig`, `NetworkingRemoteConfigSetup` (already implemented)
+
+**Dependencies:** `@react-native-firebase/remote-config` (already in `package.json`)
+
+| Step | Task                                                                           |
+| ---- | ------------------------------------------------------------------------------ |
+| 1    | Verify `RemoteConfigScreen` and `RemoteConfigSetupScreen` are complete         |
+| 2    | Add A/B testing demo — two variants of a UI element driven by remote flag      |
+| 3    | Add fetch-and-activate with loading state and error handling                   |
+| 4    | Document default values and Firebase console setup in README                   |
+| 5    | Mark `NetworkingRemoteConfig` as `implemented: true` in `NetworkingScreen.tsx` |
+
+---
+
+### 3. Google Maps
+
+**Route:** `NativeMaps` and sub-screens (already implemented — 7 screens)
+
+**Dependencies:** `react-native-maps` (already linked)
+
+| Step | Task                                                                                                             |
+| ---- | ---------------------------------------------------------------------------------------------------------------- |
+| 1    | Audit all 7 map screens for completeness (Basic, MyLocation, Markers, Directions, Polygon, Geofence, OpenInMaps) |
+| 2    | Add clustering support to `MarkersScreen`                                                                        |
+| 3    | Add polyline drawing to `DirectionsScreen`                                                                       |
+| 4    | Add real geofence entry/exit callbacks to `GeofenceScreen`                                                       |
+| 5    | Mark `NativeMaps` as `implemented: true` in `NativeActionsScreen.tsx`                                            |
+
+---
+
+### 4. Networking
+
+**Route:** `Networking` and sub-screens
+
+**Dependencies:** `axios` (add), `@react-native-community/netinfo` (add)
+
+| Step | Task                                                                            |
+| ---- | ------------------------------------------------------------------------------- |
+| 1    | Install `axios` and `@react-native-community/netinfo`                           |
+| 2    | Implement `NetworkingFetchScreen` — GET/POST with headers and error handling    |
+| 3    | Implement `NetworkingAxiosScreen` — Axios instance, interceptors, retry         |
+| 4    | Implement `NetworkingOfflineScreen` — NetInfo hook, offline banner, retry queue |
+| 5    | Implement `NetworkingWebSocketScreen` — connect, send, receive, disconnect      |
+| 6    | Implement `NetworkingFirestoreScreen` — CRUD with real-time listener            |
+| 7    | Implement `NetworkingRealtimeDBScreen` — Firebase Realtime Database read/write  |
+| 8    | Create `src/services/networking/` service layer (axios instance, interceptors)  |
+| 9    | Mark `Networking` as `implemented: true` in `HomeScreen.tsx`                    |
+
+---
+
+### 5. Storage
+
+**Route:** `Storage` and sub-screens
+
+**Dependencies:** `@react-native-async-storage/async-storage` (add), `react-native-mmkv` (add), `react-native-keychain` (add), `react-native-quick-sqlite` (add)
+
+| Step | Task                                                                            |
+| ---- | ------------------------------------------------------------------------------- |
+| 1    | Install and link all storage libraries                                          |
+| 2    | Implement `StorageAsyncStorageScreen` — read, write, delete, list keys          |
+| 3    | Implement `StorageMMKVScreen` — synchronous get/set, benchmarks vs AsyncStorage |
+| 4    | Implement `StorageSecureScreen` — store and retrieve credentials with Keychain  |
+| 5    | Implement `StorageSQLiteScreen` — create table, insert, query, delete           |
+| 6    | Implement `StorageFirebaseScreen` — upload file, download URL, delete           |
+| 7    | Create `src/services/storage/` service layer                                    |
+| 8    | Mark `Storage` as `implemented: true` in `HomeScreen.tsx`                       |
+
+---
+
+### 6. Permissions
+
+**Route:** `Permissions` and sub-screens
+
+**Dependencies:** `react-native-permissions` (already installed)
+
+| Step | Task                                                                             |
+| ---- | -------------------------------------------------------------------------------- |
+| 1    | Implement `PermissionsCameraScreen` — check, request, blocked fallback           |
+| 2    | Implement `PermissionsLocationScreen` — foreground vs background                 |
+| 3    | Implement `PermissionsNotificationsScreen` — iOS/Android notification permission |
+| 4    | Implement `PermissionsMicrophoneScreen` — audio recording access                 |
+| 5    | Implement `PermissionsContactsScreen` — address book access                      |
+| 6    | Implement `PermissionsPhotoLibraryScreen` — gallery access                       |
+| 7    | Implement `PermissionsBluetoothScreen` — BLE scan permission                     |
+| 8    | Extend `src/services/permissions/permissions.ts` to cover all 7 types            |
+| 9    | Mark `Permissions` as `implemented: true` in `HomeScreen.tsx`                    |
+
+---
+
+### 7. Hooks & Utilities
+
+**Route:** `Hooks` and sub-screens
+
+**Dependencies:** None (pure JS)
+
+| Step | Task                                                                         |
+| ---- | ---------------------------------------------------------------------------- |
+| 1    | Create `src/hooks/useDebounce.ts` and demo screen                            |
+| 2    | Create `src/hooks/useLocalStorage.ts` (AsyncStorage wrapper) and demo screen |
+| 3    | Create `src/hooks/useNetworkStatus.ts` (NetInfo) and demo screen             |
+| 4    | Create `src/hooks/useAppState.ts` and demo screen                            |
+| 5    | Create `src/hooks/useKeyboard.ts` and demo screen                            |
+| 6    | Create `src/hooks/useTimer.ts` (countdown + stopwatch) and demo screen       |
+| 7    | Mark `Hooks` as `implemented: true` in `HomeScreen.tsx`                      |
+
+---
+
+### 8. Forms
+
+**Route:** `Forms` and sub-screens
+
+**Dependencies:** `react-hook-form` (add), `@react-native-community/datetimepicker` (add)
+
+| Step | Task                                                                             |
+| ---- | -------------------------------------------------------------------------------- |
+| 1    | Install `react-hook-form` and `@react-native-community/datetimepicker`           |
+| 2    | Implement `FormsValidationScreen` — required, regex, real-time vs on-submit      |
+| 3    | Implement `FormsHookFormScreen` — full form with `useForm`, `Controller`, errors |
+| 4    | Implement `FormsDatePickerScreen` — native date and time picker                  |
+| 5    | Implement `FormsDropdownScreen` — custom picker and `react-native-paper` menu    |
+| 6    | Implement `FormsSearchScreen` — debounced search with clear and results list     |
+| 7    | Mark `Forms` as `implemented: true` in `HomeScreen.tsx`                          |
+
+---
+
+### 9. Animations
+
+**Route:** `Animations` and sub-screens
+
+**Dependencies:** `react-native-reanimated` (add), `react-native-gesture-handler` (add), `lottie-react-native` (add)
+
+| Step | Task                                                                          |
+| ---- | ----------------------------------------------------------------------------- |
+| 1    | Install and configure Reanimated, Gesture Handler, and Lottie                 |
+| 2    | Implement `AnimationsBasicScreen` — fade, slide, scale with `Animated` API    |
+| 3    | Implement `AnimationsLayoutScreen` — `LayoutAnimation` presets                |
+| 4    | Implement `AnimationsReanimatedScreen` — `useSharedValue`, `useAnimatedStyle` |
+| 5    | Implement `AnimationsGestureScreen` — swipe, pan, pinch with Gesture Handler  |
+| 6    | Implement `AnimationsLottieScreen` — JSON animation playback                  |
+| 7    | Mark `Animations` as `implemented: true` in `HomeScreen.tsx`                  |
+
+---
+
+### 10. Code Refactoring
+
+**Route:** `Refactoring` and sub-screens
+
+**Dependencies:** None
+
+| Step | Task                                                                                |
+| ---- | ----------------------------------------------------------------------------------- |
+| 1    | Implement `RefactoringFolderStructureScreen` — scalable layout, barrel exports      |
+| 2    | Implement `RefactoringAtomicDesignScreen` — atoms, molecules, organisms walkthrough |
+| 3    | Implement `RefactoringCustomHooksScreen` — before/after extraction examples         |
+| 4    | Implement `RefactoringServiceLayerScreen` — isolating side effects from UI          |
+| 5    | Implement `RefactoringStateManagementScreen` — Context vs Zustand vs Redux          |
+| 6    | Implement `RefactoringTypeSafetyScreen` — strict TS, discriminated unions           |
+| 7    | Implement `RefactoringPerformanceScreen` — memo, useCallback, FlatList tips         |
+| 8    | Implement `RefactoringErrorBoundariesScreen` — fallback UI, crash hooks             |
+| 9    | Implement `RefactoringCodeSplittingScreen` — lazy screens, dynamic imports          |
+| 10   | Mark `Refactoring` as `implemented: true` in `HomeScreen.tsx`                       |
+
+---
+
 ## Adding a New Screen
 
 ### 1. Add the route to `src/navigation/types.ts`
