@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { theme } from '../../../theme';
+import Icon from '@react-native-vector-icons/material-design-icons';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Text, TouchableOpacity } from 'react-native';
+import { useTheme } from '../../../theme';
 
 type CheckboxProps = {
   label: string;
@@ -13,9 +14,31 @@ const Checkbox = ({
   checked: controlledChecked,
   onChange,
 }: CheckboxProps) => {
+  const { colors, spacing, typography } = useTheme();
   const [internalChecked, setInternalChecked] = useState(false);
   const isChecked =
     controlledChecked !== undefined ? controlledChecked : internalChecked;
+
+  const scale = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (isChecked) {
+      Animated.sequence([
+        Animated.spring(scale, {
+          toValue: 1.15,
+          useNativeDriver: true,
+          speed: 50,
+          bounciness: 8,
+        }),
+        Animated.spring(scale, {
+          toValue: 1,
+          useNativeDriver: true,
+          speed: 50,
+          bounciness: 8,
+        }),
+      ]).start();
+    }
+  }, [isChecked, scale]);
 
   const handlePress = () => {
     const next = !isChecked;
@@ -28,52 +51,41 @@ const Checkbox = ({
 
   return (
     <TouchableOpacity
-      style={styles.row}
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: spacing.md,
+      }}
       onPress={handlePress}
       activeOpacity={0.7}
     >
-      <View
-        style={[
-          styles.box,
-          {
-            borderColor: isChecked ? theme.colors.primary : theme.colors.border,
-            backgroundColor: isChecked
-              ? theme.colors.primary
-              : theme.colors.white,
-          },
-        ]}
+      <Animated.View
+        style={{
+          width: 22,
+          height: 22,
+          borderRadius: 6,
+          borderWidth: 2,
+          borderColor: isChecked ? colors.primary600 : colors.border,
+          backgroundColor: isChecked ? colors.primary600 : colors.surface,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: spacing.md,
+          transform: [{ scale }],
+        }}
       >
-        {isChecked && <Text style={styles.checkmark}>&#10003;</Text>}
-      </View>
-      <Text style={styles.label}>{label}</Text>
+        {isChecked && <Icon name={'check' as any} size={14} color={colors.white} />}
+      </Animated.View>
+
+      <Text
+        style={{
+          ...typography.presets.body,
+          color: colors.textPrimary,
+        }}
+      >
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 };
 
 export default Checkbox;
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: theme.spacing.md,
-  },
-  box: {
-    width: 22,
-    height: 22,
-    borderRadius: 4,
-    borderWidth: 2,
-    marginRight: theme.spacing.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  checkmark: {
-    color: theme.colors.white,
-    fontSize: 14,
-    fontWeight: '700',
-  },
-  label: {
-    fontSize: theme.typography.sizes.md,
-    color: theme.colors.textPrimary,
-  },
-});

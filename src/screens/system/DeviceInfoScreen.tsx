@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/atoms/Header';
 import InfoRow from '../../components/molecules/InfoRow';
 import SectionHeader from '../../components/molecules/SectionHeader';
-import { theme } from '../../theme';
+import { useTheme } from '../../theme';
 
 interface DeviceInfoData {
   deviceName: string;
@@ -91,6 +91,7 @@ const SECTIONS: Section[] = [
 ];
 
 export default function DeviceInfoScreen(): React.JSX.Element {
+  const { colors, spacing } = useTheme();
   const [info, setInfo] = useState<DeviceInfoData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -132,14 +133,19 @@ export default function DeviceInfoScreen(): React.JSX.Element {
   }, []);
 
   return (
-    <SafeAreaView style={styles.root}>
+    <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
       <Header title="Device Info" />
       {loading ? (
         <View style={styles.loaderContainer}>
-          <ActivityIndicator color={theme.colors.primary} />
+          <ActivityIndicator color={colors.primary} />
         </View>
       ) : (
-        <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ScrollView
+          contentContainerStyle={[
+            styles.scrollContent,
+            { paddingBottom: spacing.xxl },
+          ]}
+        >
           {SECTIONS.map(section => (
             <View key={section.title}>
               <SectionHeader title={section.title} />
@@ -161,7 +167,6 @@ export default function DeviceInfoScreen(): React.JSX.Element {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
   loaderContainer: {
     flex: 1,
@@ -169,6 +174,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   scrollContent: {
-    paddingBottom: theme.spacing.xl,
+    flexGrow: 1,
   },
 });

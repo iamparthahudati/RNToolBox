@@ -12,30 +12,35 @@ const ITEMS: MenuItem[] = [
     description: 'Required fields, regex, real-time vs on-submit',
     screen: 'FormsValidation',
     implemented: false,
+    icon: 'check-circle-outline',
   },
   {
     title: 'React Hook Form',
     description: 'The standard RN form library',
     screen: 'FormsHookForm',
     implemented: false,
+    icon: 'hook',
   },
   {
     title: 'Date Picker',
     description: 'Native date and time picker',
     screen: 'FormsDatePicker',
     implemented: false,
+    icon: 'calendar-outline',
   },
   {
     title: 'Dropdown / Select',
     description: 'Picker and custom dropdown component',
     screen: 'FormsDropdown',
     implemented: false,
+    icon: 'chevron-down-circle-outline',
   },
   {
     title: 'Search Input',
     description: 'Debounced search with clear button',
     screen: 'FormsSearch',
     implemented: false,
+    icon: 'magnify',
   },
 ];
 

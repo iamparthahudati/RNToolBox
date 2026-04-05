@@ -6,4 +6,5 @@ export type MenuItem = {
   screen: keyof RootStackParamList;
   params?: Record<string, any>;
   implemented: boolean;
+  icon: string; // MaterialDesignIcons icon name
 };

@@ -1,42 +1,75 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { theme } from '../../../theme';
+import { Text, View } from 'react-native';
+import { useTheme } from '../../../theme';
 
-type BadgeVariant = 'comingSoon' | 'success' | 'warning' | 'error';
+export type BadgeVariant =
+  | 'comingSoon'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'new'
+  | 'pro';
 
 type BadgeProps = {
   label: string;
   variant?: BadgeVariant;
+  showDot?: boolean;
 };
 
-const VARIANT_STYLES: Record<BadgeVariant, { bg: string; text: string }> = {
-  comingSoon: { bg: '#FEF2F2', text: '#DC2626' },
-  success: { bg: '#F0FDF4', text: '#16A34A' },
-  warning: { bg: '#FFFBEB', text: '#F59E0B' },
-  error: { bg: '#FEF2F2', text: '#DC2626' },
-};
+const Badge = ({
+  label,
+  variant = 'comingSoon',
+  showDot = false,
+}: BadgeProps) => {
+  const { colors } = useTheme();
 
-const Badge = ({ label, variant = 'comingSoon' }: BadgeProps) => {
-  const variantStyle = VARIANT_STYLES[variant];
+  const variantColors: Record<BadgeVariant, { bg: string; text: string }> = {
+    comingSoon: { bg: colors.warningLight, text: colors.warningMain },
+    warning: { bg: colors.warningLight, text: colors.warningMain },
+    success: { bg: colors.successLight, text: colors.successMain },
+    new: { bg: colors.successLight, text: colors.successMain },
+    error: { bg: colors.errorLight, text: colors.errorMain },
+    pro: { bg: colors.primary100, text: colors.primary700 },
+  };
+
+  const { bg, text } = variantColors[variant];
+
   return (
-    <View style={[styles.badge, { backgroundColor: variantStyle.bg }]}>
-      <Text style={[styles.text, { color: variantStyle.text }]}>{label}</Text>
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: bg,
+        borderRadius: 8,
+        paddingHorizontal: 7,
+        paddingVertical: 3,
+        alignSelf: 'flex-start',
+      }}
+    >
+      {showDot && (
+        <View
+          style={{
+            width: 5,
+            height: 5,
+            borderRadius: 3,
+            backgroundColor: text,
+            marginRight: 5,
+          }}
+        />
+      )}
+      <Text
+        style={{
+          fontSize: 11,
+          fontWeight: '600',
+          letterSpacing: 0.5,
+          textTransform: 'uppercase',
+          color: text,
+        }}
+      >
+        {label}
+      </Text>
     </View>
   );
 };
 
 export default Badge;
-
-const styles = StyleSheet.create({
-  badge: {
-    borderRadius: 4,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    alignSelf: 'flex-start',
-    marginTop: theme.spacing.xs,
-  },
-  text: {
-    fontSize: 10,
-    fontWeight: '600',
-  },
-});

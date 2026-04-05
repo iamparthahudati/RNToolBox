@@ -1,32 +1,54 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { theme } from '../../../theme';
+import { Pressable, Text, View } from 'react-native';
+import { useTheme } from '../../../theme';
 
 type SectionHeaderProps = {
   title: string;
+  action?: {
+    label: string;
+    onPress: () => void;
+  };
 };
 
-const SectionHeader = ({ title }: SectionHeaderProps) => (
-  <View style={styles.container}>
-    <Text style={styles.text}>{title}</Text>
-  </View>
-);
+const SectionHeader = ({ title, action }: SectionHeaderProps) => {
+  const { colors, spacing, typography } = useTheme();
+
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: 'transparent',
+        paddingHorizontal: spacing.lg,
+        paddingTop: spacing.xl,
+        paddingBottom: spacing.sm,
+      }}
+    >
+      <Text
+        style={{
+          ...typography.presets.overline,
+          color: colors.textTertiary,
+          flex: 1,
+        }}
+      >
+        {title}
+      </Text>
+      {action !== undefined && (
+        <Pressable onPress={action.onPress} hitSlop={8}>
+          <Text
+            style={{
+              ...typography.presets.caption,
+              color: colors.primary,
+              fontWeight: typography.weights.semibold as '600',
+            }}
+          >
+            {action.label}
+          </Text>
+        </Pressable>
+      )}
+    </View>
+  );
+};
 
 export default SectionHeader;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.colors.surface,
-    paddingHorizontal: theme.spacing.lg,
-    paddingVertical: theme.spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.border,
-  },
-  text: {
-    fontSize: theme.typography.sizes.xs,
-    fontWeight: '700',
-    color: theme.colors.textSecondary,
-    letterSpacing: 0.8,
-    textTransform: 'uppercase',
-  },
-});
