@@ -145,12 +145,12 @@ const GridCard = ({ item, onPress }: GridCardProps) => {
       onPress={onPress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
+      style={{ flex: 1, marginVertical: spacing.sm }}
     >
       <Animated.View
         style={{
           transform: [{ scale }],
           flex: 1,
-          margin: spacing.sm,
           padding: spacing.md,
           borderRadius: spacing.radii.lg,
           backgroundColor: colors.surface,
@@ -372,19 +372,16 @@ const HomeScreen = ({ navigation }: Props) => {
         data={filtered}
         keyExtractor={item => item.screen}
         numColumns={2}
-        ListHeaderComponent={
-          <View style={{ paddingHorizontal: spacing.sm }}>
-            <SectionHeader title="Categories" />
-          </View>
-        }
+        ListHeaderComponent={<SectionHeader title="Categories" />}
         renderItem={({ item }) => (
           <GridCard item={item} onPress={() => handleItemPress(item)} />
         )}
         contentContainerStyle={{
-          paddingHorizontal: spacing.sm,
+          paddingHorizontal: spacing.md,
           paddingBottom: spacing.xxl,
         }}
         columnWrapperStyle={{
+          gap: spacing.sm,
           paddingHorizontal: spacing.sm,
         }}
         showsVerticalScrollIndicator={false}
