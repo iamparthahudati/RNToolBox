@@ -1,4 +1,4 @@
-import Icon from '@react-native-vector-icons/MaterialDesignIcons';
+import Icon from '@react-native-vector-icons/material-design-icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Text, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../../theme';

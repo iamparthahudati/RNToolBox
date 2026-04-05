@@ -1,4 +1,4 @@
-import Icon from '@react-native-vector-icons/MaterialDesignIcons';
+import Icon from '@react-native-vector-icons/material-design-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
