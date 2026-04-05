@@ -12,18 +12,21 @@ const ITEMS: MenuItem[] = [
     description: 'Jest tests for services and hooks',
     screen: 'TestingUnit',
     implemented: false,
+    icon: 'test-tube',
   },
   {
     title: 'Component Tests',
     description: 'React Native Testing Library patterns',
     screen: 'TestingComponent',
     implemented: false,
+    icon: 'puzzle-outline',
   },
   {
     title: 'E2E Tests',
     description: 'Detox setup and example flows',
     screen: 'TestingE2E',
     implemented: false,
+    icon: 'robot-outline',
   },
 ];
 

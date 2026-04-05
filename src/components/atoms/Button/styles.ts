@@ -1,61 +1,30 @@
-import { StyleSheet } from 'react-native';
-import { theme } from '../../../theme';
+// Static layout-only styles — no color values.
+// All color/theme styles are applied inline in Button.tsx via useTheme().
 
-export const styles = StyleSheet.create({
+import { ViewStyle } from 'react-native';
+
+export const staticStyles: Record<string, ViewStyle> = {
   base: {
-    height: 48,
-    borderRadius: 8,
+    height: 52,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: theme.spacing.md,
-    paddingHorizontal: theme.spacing.lg,
+    paddingHorizontal: 16,
   },
-
   fullWidth: {
     width: '100%',
   },
-
-  primary: {
-    backgroundColor: theme.colors.primary,
-  },
-
-  secondary: {
-    backgroundColor: theme.colors.success,
-  },
-
-  outline: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: theme.colors.primary,
-  },
-
   disabled: {
-    opacity: 0.5,
+    opacity: 0.48,
   },
-
   content: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-
   icon: {
-    marginHorizontal: theme.spacing.sm,
+    marginHorizontal: 6,
   },
-
-  text: {
-    fontSize: theme.typography.sizes.md,
-    fontWeight: '600',
+  outlineBorder: {
+    borderWidth: 1.5,
   },
-
-  primaryText: {
-    color: theme.colors.white,
-  },
-
-  secondaryText: {
-    color: theme.colors.white,
-  },
-
-  outlineText: {
-    color: theme.colors.primary,
-  },
-});
+};

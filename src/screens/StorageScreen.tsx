@@ -12,30 +12,35 @@ const ITEMS: MenuItem[] = [
     description: 'Read, write and delete key-value pairs',
     screen: 'StorageAsyncStorage',
     implemented: false,
+    icon: 'archive-outline',
   },
   {
     title: 'MMKV',
     description: 'Fast synchronous key-value storage',
     screen: 'StorageMMKV',
     implemented: false,
+    icon: 'flash-outline',
   },
   {
     title: 'Secure Storage',
     description: 'Encrypted storage for sensitive data',
     screen: 'StorageSecure',
     implemented: false,
+    icon: 'lock-outline',
   },
   {
     title: 'SQLite',
     description: 'Structured local relational data',
     screen: 'StorageSQLite',
     implemented: false,
+    icon: 'table',
   },
   {
     title: 'Firebase Storage',
     description: 'Upload, download and manage files in Firebase Storage',
     screen: 'StorageFirebase',
     implemented: false,
+    icon: 'firebase',
   },
 ];
 
