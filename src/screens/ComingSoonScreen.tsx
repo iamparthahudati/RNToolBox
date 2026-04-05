@@ -3,8 +3,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import Icon from '@react-native-vector-icons/material-design-icons';
+import Badge from '../components/atoms/Badge';
 import Header from '../components/atoms/Header';
-import { theme } from '../theme';
+import { useTheme } from '../theme';
 
 // Derives a readable title from a route name like "NativeImagePicker" → "Image Picker"
 const routeNameToTitle = (name: string): string =>
@@ -18,18 +20,54 @@ const routeNameToTitle = (name: string): string =>
 
 const ComingSoonScreen = () => {
   const route = useRoute();
+  const { colors, spacing, typography, isDark } = useTheme();
   const params = route.params as { title?: string } | undefined;
   const title = params?.title ?? routeNameToTitle(route.name);
 
   return (
-    <SafeAreaView style={styles.root}>
+    <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
       <Header title={title} />
       <View style={styles.content}>
-        <View style={styles.badge}>
-          <Text style={styles.title}>Coming Soon</Text>
-          <Text style={styles.subtitle}>
-            This section is under construction
-          </Text>
+        <View
+          style={[
+            styles.iconCircle,
+            { backgroundColor: isDark ? colors.primary950 : colors.primary50 },
+          ]}
+        >
+          <Icon
+            name={'clock-time-four-outline' as any}
+            size={36}
+            color={colors.primary600}
+          />
+        </View>
+        <Text
+          style={[
+            typography.presets.h2,
+            {
+              color: colors.textPrimary,
+              marginTop: spacing.lg,
+              textAlign: 'center',
+            },
+          ]}
+        >
+          Coming Soon
+        </Text>
+        <Text
+          style={[
+            typography.presets.body,
+            {
+              color: colors.textSecondary,
+              textAlign: 'center',
+              marginTop: spacing.sm,
+              maxWidth: 260,
+            },
+          ]}
+        >
+          This feature is currently under construction and will be available in
+          a future update.
+        </Text>
+        <View style={{ marginTop: spacing.md }}>
+          <Badge label="Coming Soon" variant="comingSoon" />
         </View>
       </View>
     </SafeAreaView>
@@ -41,31 +79,17 @@ export default ComingSoonScreen;
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  badge: {
-    backgroundColor: theme.colors.surface,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: 8,
-    paddingHorizontal: theme.spacing.xl,
-    paddingVertical: theme.spacing.lg,
+  iconCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     alignItems: 'center',
-  },
-  title: {
-    fontSize: theme.typography.sizes.xl,
-    fontWeight: '700',
-    color: theme.colors.textPrimary,
-    marginBottom: theme.spacing.xs,
-  },
-  subtitle: {
-    fontSize: theme.typography.sizes.sm,
-    color: theme.colors.textSecondary,
-    textAlign: 'center',
+    justifyContent: 'center',
   },
 });

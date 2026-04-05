@@ -5,11 +5,11 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import Button from '../../components/atoms/Button/Button';
 import Header from '../../components/atoms/Header';
 import InfoRow from '../../components/molecules/InfoRow';
 import SectionHeader from '../../components/molecules/SectionHeader';
@@ -24,7 +24,7 @@ import {
   initRemoteConfig,
   RemoteConfigValues,
 } from '../../services/remoteConfig';
-import { theme } from '../../theme';
+import { useTheme } from '../../theme';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -51,6 +51,8 @@ function formatDate(date: Date | null): string {
 export default function RemoteConfigScreen({
   navigation,
 }: Props): React.JSX.Element {
+  const { colors, spacing, typography } = useTheme();
+
   const [loading, setLoading] = useState<boolean>(true);
   const [fetching, setFetching] = useState<boolean>(false);
   const [values, setValues] = useState<RemoteConfigValues>(
@@ -101,23 +103,39 @@ export default function RemoteConfigScreen({
   }
 
   return (
-    <SafeAreaView style={styles.root}>
+    <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
       <Header title="Remote Config" />
 
       {error !== null && (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
+        <View
+          style={[
+            styles.errorContainer,
+            {
+              marginHorizontal: spacing.lg,
+              marginTop: spacing.sm,
+              padding: spacing.md,
+              backgroundColor: colors.errorLight,
+              borderColor: colors.errorMain,
+              borderRadius: spacing.radii.md,
+            },
+          ]}
+        >
+          <Text
+            style={[typography.presets.bodySmall, { color: colors.errorMain }]}
+          >
+            {error}
+          </Text>
         </View>
       )}
 
       {loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={theme.colors.primary} />
+          <ActivityIndicator size="large" color={colors.primary} />
         </View>
       ) : (
         <ScrollView
           style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={{ paddingBottom: spacing.xxl }}
           showsVerticalScrollIndicator={false}
         >
           {/* STATUS */}
@@ -149,49 +167,81 @@ export default function RemoteConfigScreen({
 
           {/* ACTIONS */}
           <SectionHeader title="ACTIONS" />
-          <View style={styles.actionContainer}>
-            <TouchableOpacity
-              style={[
-                styles.fetchButton,
-                fetching && styles.fetchButtonDisabled,
-              ]}
+          <View
+            style={[
+              styles.actionContainer,
+              { marginHorizontal: spacing.lg, marginVertical: spacing.md },
+            ]}
+          >
+            <Button
+              title="Fetch & Activate"
+              variant="primary"
               onPress={handleFetchAndActivate}
+              loading={fetching}
               disabled={fetching}
-              activeOpacity={0.8}
-            >
-              {fetching ? (
-                <ActivityIndicator size="small" color={theme.colors.white} />
-              ) : (
-                <Text style={styles.fetchButtonText}>Fetch & Activate</Text>
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.setupButton}
-              onPress={() => navigation.navigate('NetworkingRemoteConfigSetup')}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.setupButtonText}>
-                Firebase Console Setup Guide
-              </Text>
-            </TouchableOpacity>
+              fullWidth
+            />
+            <View style={{ marginTop: spacing.sm }}>
+              <Button
+                title="Firebase Console Setup Guide"
+                variant="outline"
+                onPress={() =>
+                  navigation.navigate('NetworkingRemoteConfigSetup')
+                }
+                fullWidth
+              />
+            </View>
           </View>
 
           {/* HOW IT WORKS */}
           <SectionHeader title="HOW IT WORKS" />
-          <View style={styles.infoCard}>
-            <Text style={styles.infoText}>
+          <View
+            style={[
+              styles.infoCard,
+              {
+                backgroundColor: colors.surface,
+                marginHorizontal: spacing.lg,
+                marginVertical: spacing.md,
+                padding: spacing.lg,
+                borderRadius: spacing.radii.md,
+                borderColor: colors.border,
+                gap: spacing.sm,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                typography.presets.bodySmall,
+                { color: colors.textSecondary },
+              ]}
+            >
               Remote Config lets you change app behavior and appearance without
               publishing an app update.
             </Text>
-            <Text style={styles.infoText}>
+            <Text
+              style={[
+                typography.presets.bodySmall,
+                { color: colors.textSecondary },
+              ]}
+            >
               Values are fetched from Firebase and cached locally on the device
               for efficient access.
             </Text>
-            <Text style={styles.infoText}>
+            <Text
+              style={[
+                typography.presets.bodySmall,
+                { color: colors.textSecondary },
+              ]}
+            >
               fetchAndActivate() fetches the latest values from Firebase and
               immediately makes them active in the current session.
             </Text>
-            <Text style={styles.infoText}>
+            <Text
+              style={[
+                typography.presets.bodySmall,
+                { color: colors.textSecondary },
+              ]}
+            >
               minimumFetchIntervalMillis is set to 0 for this demo to allow
               immediate re-fetching. The production default is 12 hours to
               prevent excessive network requests.
@@ -206,7 +256,6 @@ export default function RemoteConfigScreen({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
   loadingContainer: {
     flex: 1,
@@ -214,72 +263,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorContainer: {
-    marginHorizontal: theme.spacing.lg,
-    marginTop: theme.spacing.sm,
-    padding: theme.spacing.md,
-    backgroundColor: '#FEF2F2',
-    borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#FECACA',
-  },
-  errorText: {
-    color: theme.colors.error,
-    fontSize: theme.typography.sizes.sm,
-    fontWeight: theme.typography.weights.medium as '500',
   },
   scrollView: {
     flex: 1,
   },
-  scrollContent: {
-    paddingBottom: theme.spacing.xxl,
-  },
-  actionContainer: {
-    marginHorizontal: theme.spacing.lg,
-    marginVertical: theme.spacing.md,
-  },
-  fetchButton: {
-    backgroundColor: theme.colors.primary,
-    borderRadius: 8,
-    paddingVertical: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  fetchButtonDisabled: {
-    opacity: 0.6,
-  },
-  fetchButtonText: {
-    color: theme.colors.white,
-    fontSize: theme.typography.sizes.md,
-    fontWeight: theme.typography.weights.semibold as '600',
-  },
-  setupButton: {
-    marginTop: theme.spacing.sm,
-    borderRadius: 8,
-    paddingVertical: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1.5,
-    borderColor: theme.colors.primary,
-    backgroundColor: theme.colors.white,
-  },
-  setupButtonText: {
-    color: theme.colors.primary,
-    fontSize: theme.typography.sizes.md,
-    fontWeight: theme.typography.weights.semibold as '600',
-  },
+  actionContainer: {},
   infoCard: {
-    backgroundColor: theme.colors.white,
-    marginHorizontal: theme.spacing.lg,
-    marginVertical: theme.spacing.md,
-    padding: theme.spacing.lg,
-    borderRadius: 8,
     borderWidth: 1,
-    borderColor: theme.colors.border,
-    gap: theme.spacing.sm,
-  },
-  infoText: {
-    color: theme.colors.textSecondary,
-    fontSize: theme.typography.sizes.sm,
-    lineHeight: 20,
   },
 });
