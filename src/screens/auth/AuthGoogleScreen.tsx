@@ -1,4 +1,3 @@
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 import {
@@ -17,6 +16,7 @@ import { RootStackParamList } from '../../navigation/types';
 import {
   AuthUser,
   getCurrentUser,
+  parseFirebaseAuthError,
   signInWithGoogle,
   signOut,
 } from '../../services/auth/auth';
@@ -30,13 +30,6 @@ export default function AuthGoogleScreen(_props: Props): React.JSX.Element {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Replace 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com' with the actual
-    // web client ID from your Firebase Console (Project Settings > General > Web API Key
-    // or Google Sign-In > Web client ID).
-    GoogleSignin.configure({
-      webClientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',
-    });
-
     setUser(getCurrentUser());
   }, []);
 
@@ -47,9 +40,7 @@ export default function AuthGoogleScreen(_props: Props): React.JSX.Element {
       const signedInUser = await signInWithGoogle();
       setUser(signedInUser);
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Google Sign-In failed.';
-      setError(message);
+      setError(parseFirebaseAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -62,8 +53,7 @@ export default function AuthGoogleScreen(_props: Props): React.JSX.Element {
       await signOut();
       setUser(null);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Sign-out failed.';
-      setError(message);
+      setError(parseFirebaseAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -169,8 +159,10 @@ export default function AuthGoogleScreen(_props: Props): React.JSX.Element {
             <View style={styles.stepContent}>
               <Text style={styles.stepTitle}>Configure webClientId</Text>
               <Text style={styles.stepDescription}>
-                Call GoogleSignin.configure() with the web client ID from your
-                Firebase Console before invoking sign-in.
+                GoogleSignin.configure() is called once at app startup with the
+                web client ID from your Firebase Console. Then call
+                GoogleSignin.hasPlayServices() to ensure Play Services are
+                available before sign-in.
               </Text>
             </View>
           </View>

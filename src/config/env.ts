@@ -17,6 +17,7 @@ export interface AppConfig {
   SENTRY_DSN: string;
   FEATURE_FLAG_NEW_UI: boolean;
   MAPS_API_KEY: string;
+  GOOGLE_WEB_CLIENT_ID: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -34,6 +35,7 @@ const REQUIRED_KEYS: ReadonlyArray<keyof AppConfig> = [
   'SENTRY_DSN',
   'FEATURE_FLAG_NEW_UI',
   'MAPS_API_KEY',
+  'GOOGLE_WEB_CLIENT_ID',
 ];
 
 const VALID_ENVS: ReadonlyArray<AppEnv> = [
@@ -127,6 +129,7 @@ export function parseConfig(): AppConfig {
       'FEATURE_FLAG_NEW_UI',
     ),
     MAPS_API_KEY: raw.MAPS_API_KEY as string,
+    GOOGLE_WEB_CLIENT_ID: raw.GOOGLE_WEB_CLIENT_ID as string,
   };
 }
 

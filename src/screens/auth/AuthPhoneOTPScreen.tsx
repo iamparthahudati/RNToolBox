@@ -19,6 +19,7 @@ import { RootStackParamList } from '../../navigation/types';
 import {
   AuthUser,
   getCurrentUser,
+  parseFirebaseAuthError,
   sendPhoneOTP,
   signOut,
   verifyPhoneOTP,
@@ -46,8 +47,10 @@ export default function AuthPhoneOTPScreen(_: Props): React.JSX.Element {
   const handleSendOTP = async () => {
     clearMessages();
     const trimmed = phoneNumber.trim();
-    if (!trimmed || trimmed === '+1' || trimmed.length < 8) {
-      setError('Please enter a valid phone number with country code.');
+    if (!/^\+[1-9]\d{7,14}$/.test(trimmed)) {
+      setError(
+        'Please enter a valid phone number in E.164 format (e.g. +15550001234).',
+      );
       return;
     }
     setLoading(true);
@@ -56,7 +59,7 @@ export default function AuthPhoneOTPScreen(_: Props): React.JSX.Element {
       setSuccess('OTP sent successfully. Check your SMS.');
       setStep('otp');
     } catch (err: any) {
-      setError(err?.message ?? 'Failed to send OTP. Please try again.');
+      setError(parseFirebaseAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -75,7 +78,7 @@ export default function AuthPhoneOTPScreen(_: Props): React.JSX.Element {
       setSuccess('Phone number verified successfully.');
       setStep('done');
     } catch (err: any) {
-      setError(err?.message ?? 'Invalid OTP. Please try again.');
+      setError(parseFirebaseAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -89,7 +92,7 @@ export default function AuthPhoneOTPScreen(_: Props): React.JSX.Element {
       await sendPhoneOTP(phoneNumber.trim());
       setSuccess('OTP resent. Check your SMS.');
     } catch (err: any) {
-      setError(err?.message ?? 'Failed to resend OTP.');
+      setError(parseFirebaseAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -106,7 +109,7 @@ export default function AuthPhoneOTPScreen(_: Props): React.JSX.Element {
       setOtp('');
       setSuccess('Signed out successfully.');
     } catch (err: any) {
-      setError(err?.message ?? 'Failed to sign out.');
+      setError(parseFirebaseAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -180,23 +183,18 @@ export default function AuthPhoneOTPScreen(_: Props): React.JSX.Element {
               </Text>
 
               <Text style={styles.label}>Phone Number</Text>
-              <View style={styles.phoneRow}>
-                <View style={styles.prefixBox}>
-                  <Text style={styles.prefixText}>+</Text>
-                </View>
-                <TextInput
-                  style={styles.phoneInput}
-                  value={phoneNumber}
-                  onChangeText={setPhoneNumber}
-                  placeholder="+1 555 000 0000"
-                  placeholderTextColor={theme.colors.textDisabled}
-                  keyboardType="phone-pad"
-                  textContentType="telephoneNumber"
-                  autoComplete="tel"
-                  autoFocus
-                  editable={!loading}
-                />
-              </View>
+              <TextInput
+                style={[styles.input, { marginBottom: theme.spacing.md }]}
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+                placeholder="+1 555 000 0000"
+                placeholderTextColor={theme.colors.textDisabled}
+                keyboardType="phone-pad"
+                textContentType="telephoneNumber"
+                autoComplete="tel"
+                autoFocus
+                editable={!loading}
+              />
 
               <TouchableOpacity
                 style={[styles.primaryButton, loading && styles.buttonDisabled]}
@@ -461,37 +459,16 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
   },
 
-  // Phone input row
-  phoneRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: theme.spacing.md,
+  // Shared text input
+  input: {
     borderWidth: 1,
     borderColor: theme.colors.border,
     borderRadius: 8,
-    backgroundColor: theme.colors.white,
-    overflow: 'hidden',
-  },
-  prefixBox: {
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.md,
-    borderRightWidth: 1,
-    borderRightColor: theme.colors.border,
-    backgroundColor: theme.colors.surface,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  prefixText: {
-    fontSize: theme.typography.sizes.md,
-    fontWeight: theme.typography.weights.semibold as '600',
-    color: theme.colors.textPrimary,
-  },
-  phoneInput: {
-    flex: 1,
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.md,
     fontSize: theme.typography.sizes.sm,
     color: theme.colors.textPrimary,
+    backgroundColor: theme.colors.white,
   },
 
   // OTP input

@@ -1,7 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -19,6 +20,7 @@ import {
   AuthUser,
   deleteAccount,
   getCurrentUser,
+  parseFirebaseAuthError,
   sendPasswordReset,
   signInWithEmail,
   signOut,
@@ -42,10 +44,7 @@ export default function AuthEmailScreen(_props: Props): React.JSX.Element {
   const [showPassword, setShowPassword] = useState(false);
   const [showResetInput, setShowResetInput] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
-
-  useEffect(() => {
-    setUser(getCurrentUser());
-  }, []);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   function clearMessages() {
     setError(null);
@@ -56,6 +55,14 @@ export default function AuthEmailScreen(_props: Props): React.JSX.Element {
     clearMessages();
     if (!email.trim() || !password.trim()) {
       setError('Email and password are required.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+    if (mode === 'signup' && password.trim().length < 6) {
+      setError('Password must be at least 6 characters.');
       return;
     }
     setLoading(true);
@@ -73,7 +80,7 @@ export default function AuthEmailScreen(_props: Props): React.JSX.Element {
       setEmail('');
       setPassword('');
     } catch (e: any) {
-      setError(e?.message ?? 'Authentication failed.');
+      setError(parseFirebaseAuthError(e));
     } finally {
       setLoading(false);
     }
@@ -87,24 +94,37 @@ export default function AuthEmailScreen(_props: Props): React.JSX.Element {
       setUser(null);
       setSuccess('Signed out successfully.');
     } catch (e: any) {
-      setError(e?.message ?? 'Sign out failed.');
+      setError(parseFirebaseAuthError(e));
     } finally {
       setLoading(false);
     }
   }
 
   async function handleDeleteAccount() {
-    clearMessages();
-    setLoading(true);
-    try {
-      await deleteAccount();
-      setUser(null);
-      setSuccess('Account deleted successfully.');
-    } catch (e: any) {
-      setError(e?.message ?? 'Account deletion failed.');
-    } finally {
-      setLoading(false);
-    }
+    Alert.alert(
+      'Delete Account',
+      'This action is permanent and cannot be undone. Are you sure?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            clearMessages();
+            setDeleteLoading(true);
+            try {
+              await deleteAccount();
+              setUser(null);
+              setSuccess('Account deleted successfully.');
+            } catch (e: any) {
+              setError(parseFirebaseAuthError(e));
+            } finally {
+              setDeleteLoading(false);
+            }
+          },
+        },
+      ],
+    );
   }
 
   async function handleSendReset() {
@@ -120,7 +140,7 @@ export default function AuthEmailScreen(_props: Props): React.JSX.Element {
       setResetEmail('');
       setShowResetInput(false);
     } catch (e: any) {
-      setError(e?.message ?? 'Failed to send reset email.');
+      setError(parseFirebaseAuthError(e));
     } finally {
       setResetLoading(false);
     }
@@ -217,12 +237,19 @@ export default function AuthEmailScreen(_props: Props): React.JSX.Element {
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.dangerButton, loading && styles.buttonDisabled]}
+                style={[
+                  styles.dangerButton,
+                  deleteLoading && styles.buttonDisabled,
+                ]}
                 onPress={handleDeleteAccount}
-                disabled={loading}
+                disabled={deleteLoading}
                 activeOpacity={0.8}
               >
-                <Text style={styles.dangerButtonText}>Delete Account</Text>
+                {deleteLoading ? (
+                  <ActivityIndicator color={theme.colors.error} />
+                ) : (
+                  <Text style={styles.dangerButtonText}>Delete Account</Text>
+                )}
               </TouchableOpacity>
             </>
           ) : (

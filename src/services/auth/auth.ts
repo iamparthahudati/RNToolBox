@@ -7,6 +7,11 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Platform } from 'react-native';
 
+/**
+ * Module-level confirmation result from a phone OTP request.
+ * Only one OTP flow can be active at a time. A new call to sendPhoneOTP
+ * will silently overwrite any in-progress confirmation.
+ */
 let _phoneConfirmation: FirebaseAuthTypes.ConfirmationResult | null = null;
 
 export interface AuthUser {
@@ -55,9 +60,23 @@ export async function signUpWithEmail(
 }
 
 export async function signOut(): Promise<void> {
+  try {
+    await GoogleSignin.revokeAccess();
+    await GoogleSignin.signOut();
+  } catch {
+    // Google SDK sign-out is best-effort; Firebase sign-out must still proceed.
+  }
   await auth().signOut();
 }
 
+/**
+ * Permanently deletes the current user's Firebase account.
+ *
+ * Firebase requires the user to have authenticated recently before this
+ * operation is permitted. If the user's session is stale, Firebase will throw
+ * an error with code `auth/requires-recent-login`. Callers should catch that
+ * error and prompt the user to re-authenticate before retrying.
+ */
 export async function deleteAccount(): Promise<void> {
   const user = auth().currentUser;
   if (!user) throw new Error('No authenticated user found.');
@@ -71,7 +90,10 @@ export async function sendPasswordReset(email: string): Promise<void> {
 export async function signInWithGoogle(): Promise<AuthUser> {
   await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
   const { data } = await GoogleSignin.signIn();
-  const credential = auth.GoogleAuthProvider.credential(data?.idToken ?? null);
+  if (!data || !data.idToken) {
+    throw new Error('Google Sign-In failed: no ID token returned.');
+  }
+  const credential = auth.GoogleAuthProvider.credential(data.idToken);
   const result = await auth().signInWithCredential(credential);
   return mapUser(result.user) as AuthUser;
 }
@@ -128,4 +150,35 @@ export async function signInWithApple(): Promise<AuthUser> {
   );
   const result = await auth().signInWithCredential(appleCredential);
   return mapUser(result.user) as AuthUser;
+}
+
+const FIREBASE_AUTH_ERROR_MAP: Record<string, string> = {
+  'auth/user-not-found': 'No account found with this email address.',
+  'auth/wrong-password': 'Incorrect password. Please try again.',
+  'auth/email-already-in-use': 'An account with this email already exists.',
+  'auth/weak-password': 'Password must be at least 6 characters.',
+  'auth/invalid-email': 'Please enter a valid email address.',
+  'auth/too-many-requests': 'Too many attempts. Please try again later.',
+  'auth/requires-recent-login':
+    'Please sign out and sign back in before performing this action.',
+  'auth/network-request-failed': 'Network error. Please check your connection.',
+  'auth/user-disabled': 'This account has been disabled.',
+  'auth/invalid-credential': 'Invalid credentials. Please try again.',
+  'auth/account-exists-with-different-credential':
+    'An account already exists with a different sign-in method.',
+  'auth/operation-not-allowed': 'This sign-in method is not enabled.',
+};
+
+export function parseFirebaseAuthError(error: unknown): string {
+  if (error !== null && typeof error === 'object') {
+    const code = (error as Record<string, unknown>).code;
+    if (typeof code === 'string' && code in FIREBASE_AUTH_ERROR_MAP) {
+      return FIREBASE_AUTH_ERROR_MAP[code];
+    }
+    const message = (error as Record<string, unknown>).message;
+    if (typeof message === 'string' && message.length > 0) {
+      return message;
+    }
+  }
+  return 'An unexpected error occurred. Please try again.';
 }

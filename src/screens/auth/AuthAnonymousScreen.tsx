@@ -1,7 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -22,6 +23,7 @@ import {
   deleteAccount,
   getCurrentUser,
   linkAnonymousWithEmail,
+  parseFirebaseAuthError,
   signInAnonymously,
   signOut,
 } from '../../services/auth';
@@ -38,10 +40,6 @@ export default function AuthAnonymousScreen(_props: Props): React.JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  useEffect(() => {
-    setUser(getCurrentUser());
-  }, []);
-
   function clearMessages() {
     setError(null);
     setSuccess(null);
@@ -57,7 +55,7 @@ export default function AuthAnonymousScreen(_props: Props): React.JSX.Element {
         'Signed in anonymously. A temporary account has been created.',
       );
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Anonymous sign-in failed.');
+      setError(parseFirebaseAuthError(e));
     } finally {
       setLoading(false);
     }
@@ -66,6 +64,14 @@ export default function AuthAnonymousScreen(_props: Props): React.JSX.Element {
   async function handleLinkAccount() {
     if (!linkEmail.trim() || !linkPassword.trim()) {
       setError('Please enter both email and password to link your account.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(linkEmail.trim())) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+    if (linkPassword.trim().length < 6) {
+      setError('Password must be at least 6 characters.');
       return;
     }
     clearMessages();
@@ -80,7 +86,7 @@ export default function AuthAnonymousScreen(_props: Props): React.JSX.Element {
       setLinkPassword('');
       setSuccess('Account linked successfully. Your UID has been preserved.');
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Failed to link account.');
+      setError(parseFirebaseAuthError(e));
     } finally {
       setLinkLoading(false);
     }
@@ -94,24 +100,37 @@ export default function AuthAnonymousScreen(_props: Props): React.JSX.Element {
       setUser(null);
       setSuccess('Signed out successfully.');
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Sign-out failed.');
+      setError(parseFirebaseAuthError(e));
     } finally {
       setLoading(false);
     }
   }
 
   async function handleDeleteAccount() {
-    clearMessages();
-    setLoading(true);
-    try {
-      await deleteAccount();
-      setUser(null);
-      setSuccess('Account deleted successfully.');
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Failed to delete account.');
-    } finally {
-      setLoading(false);
-    }
+    Alert.alert(
+      'Delete Account',
+      'This will permanently delete your anonymous account and all associated data. This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            clearMessages();
+            setLoading(true);
+            try {
+              await deleteAccount();
+              setUser(null);
+              setSuccess('Account deleted successfully.');
+            } catch (e: unknown) {
+              setError(parseFirebaseAuthError(e));
+            } finally {
+              setLoading(false);
+            }
+          },
+        },
+      ],
+    );
   }
 
   return (
