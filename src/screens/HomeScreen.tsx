@@ -104,6 +104,13 @@ const MENU_ITEMS: MenuItem[] = [
     implemented: false,
     icon: 'test-tube',
   },
+  {
+    title: 'Code Refactoring',
+    description: 'Folder structure, hooks, services, types, performance',
+    screen: 'Refactoring',
+    implemented: false,
+    icon: 'wrench-outline',
+  },
 ];
 
 const IMPLEMENTED_COUNT = MENU_ITEMS.filter(i => i.implemented).length;

@@ -132,4 +132,16 @@ export type RootStackParamList = {
   AuthApple: undefined;
   AuthPhoneOTP: undefined;
   AuthAnonymous: undefined;
+
+  // Code Refactoring
+  Refactoring: undefined;
+  RefactoringFolderStructure: undefined;
+  RefactoringAtomicDesign: undefined;
+  RefactoringCustomHooks: undefined;
+  RefactoringServiceLayer: undefined;
+  RefactoringStateManagement: undefined;
+  RefactoringTypeSafety: undefined;
+  RefactoringPerformance: undefined;
+  RefactoringErrorBoundaries: undefined;
+  RefactoringCodeSplitting: undefined;
 };

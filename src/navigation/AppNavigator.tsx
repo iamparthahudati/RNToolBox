@@ -33,6 +33,7 @@ import RemoteConfigScreen from '../screens/networking/RemoteConfigScreen';
 import RemoteConfigSetupScreen from '../screens/networking/RemoteConfigSetupScreen';
 import NetworkingScreen from '../screens/NetworkingScreen';
 import PermissionsScreen from '../screens/PermissionsScreen';
+import RefactoringScreen from '../screens/RefactoringScreen';
 import StorageScreen from '../screens/StorageScreen';
 import DeviceInfoScreen from '../screens/system/DeviceInfoScreen';
 import SystemScreen from '../screens/SystemScreen';
@@ -221,6 +222,45 @@ const AppNavigator = () => {
         <Stack.Screen name="AuthApple" component={ComingSoonScreen} />
         <Stack.Screen name="AuthPhoneOTP" component={ComingSoonScreen} />
         <Stack.Screen name="AuthAnonymous" component={ComingSoonScreen} />
+
+        {/* Code Refactoring */}
+        <Stack.Screen name="Refactoring" component={RefactoringScreen} />
+        <Stack.Screen
+          name="RefactoringFolderStructure"
+          component={ComingSoonScreen}
+        />
+        <Stack.Screen
+          name="RefactoringAtomicDesign"
+          component={ComingSoonScreen}
+        />
+        <Stack.Screen
+          name="RefactoringCustomHooks"
+          component={ComingSoonScreen}
+        />
+        <Stack.Screen
+          name="RefactoringServiceLayer"
+          component={ComingSoonScreen}
+        />
+        <Stack.Screen
+          name="RefactoringStateManagement"
+          component={ComingSoonScreen}
+        />
+        <Stack.Screen
+          name="RefactoringTypeSafety"
+          component={ComingSoonScreen}
+        />
+        <Stack.Screen
+          name="RefactoringPerformance"
+          component={ComingSoonScreen}
+        />
+        <Stack.Screen
+          name="RefactoringErrorBoundaries"
+          component={ComingSoonScreen}
+        />
+        <Stack.Screen
+          name="RefactoringCodeSplitting"
+          component={ComingSoonScreen}
+        />
 
         {/* Catch-all for unimplemented screens */}
         <Stack.Screen name="ComingSoon" component={ComingSoonScreen} />
