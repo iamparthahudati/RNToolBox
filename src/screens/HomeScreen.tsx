@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Badge from '../components/atoms/Badge';
 import SectionHeader from '../components/molecules/SectionHeader';
@@ -281,7 +282,7 @@ const HomeScreen = ({ navigation }: Props) => {
             React Native Developer Toolkit
           </Text>
         </View>
-        <Badge label="v0.0.1" variant="pro" />
+        <Badge label={`v${DeviceInfo.getVersion()}`} variant="pro" />
       </View>
 
       {/* ------------------------------------------------------------------ */}
