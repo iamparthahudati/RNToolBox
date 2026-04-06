@@ -2,6 +2,17 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+// Map each product flavor to its .env file for react-native-config
+project.ext.envConfigFiles = [
+    devDebug      : "../../.env.development",
+    devRelease    : "../../.env.development",
+    stagingDebug  : "../../.env.staging",
+    stagingRelease: "../../.env.staging",
+    prodDebug     : "../../.env.production",
+    prodRelease   : "../../.env.production",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -79,7 +90,7 @@ def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 // Copy correct google-services.json based on active flavor
 android.applicationVariants.all { variant ->
     def flavor = variant.flavorName
-    def srcFile = rootProject.file("firebase/${flavor}/google-services.json")
+    def srcFile = rootProject.file("../firebase/${flavor}/google-services.json")
     def destFile = file("google-services.json")
     variant.preBuildProvider.configure {
         doFirst {
@@ -130,14 +141,15 @@ android {
     productFlavors {
         dev {
             dimension 'env'
-            applicationIdSuffix '.dev'
+            resValue "string", "build_config_package", "com.rntoolbox"
         }
         staging {
             dimension 'env'
-            applicationIdSuffix '.staging'
+            resValue "string", "build_config_package", "com.rntoolbox"
         }
         prod {
             dimension 'env'
+            resValue "string", "build_config_package", "com.rntoolbox"
         }
     }
 }

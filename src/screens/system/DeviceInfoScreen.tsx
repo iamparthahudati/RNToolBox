@@ -15,6 +15,9 @@ import InfoRow from '../../components/molecules/InfoRow';
 import SectionHeader from '../../components/molecules/SectionHeader';
 import { useTheme } from '../../theme';
 
+const WHATSAPP_BUNDLE_ID = 'com.whatsapp';
+const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=';
+
 interface DeviceInfoData {
   deviceName: string;
   brand: string;
@@ -33,6 +36,8 @@ interface DeviceInfoData {
   totalMemory: string;
   batteryLevel: string;
   isEmulator: string;
+  liveAndroidVersion: string;
+  liveIosVersion: string;
 }
 
 interface SectionRow {
@@ -88,7 +93,64 @@ const SECTIONS: Section[] = [
       { label: 'Emulator', key: 'isEmulator' },
     ],
   },
+  {
+    title: 'STORE (LIVE)',
+    rows: [
+      { label: 'Android (Play Store)', key: 'liveAndroidVersion' },
+      { label: 'iOS (App Store)', key: 'liveIosVersion' },
+    ],
+  },
 ];
+
+async function fetchPlayStoreVersion(
+  packageId: string,
+): Promise<string | null> {
+  const url = `${PLAY_STORE_URL}${encodeURIComponent(packageId)}&hl=en&gl=US`;
+
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        // Mobile Chrome UA — required for Android's network stack to allow the request
+        // and for Google to return the full data-bearing HTML page.
+        'User-Agent':
+          'Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',
+        Accept:
+          'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+      },
+    });
+  } catch (networkErr: unknown) {
+    const msg =
+      networkErr instanceof Error ? networkErr.message : String(networkErr);
+    throw new Error(`Play Store network error: ${msg}`);
+  }
+
+  if (!response.ok) {
+    throw new Error(`Play Store responded with status ${response.status}`);
+  }
+
+  const html = await response.text();
+  // Version is embedded in Google's data blob as [[["x.x.x"]]]
+  const match = html.match(/\[\[\["(\d+\.\d+[\d.]*?)"\]\]/);
+  return match?.[1] ?? null;
+}
+
+async function fetchAppStoreVersion(): Promise<string> {
+  try {
+    // WhatsApp's numeric App Store ID (bundleId lookup doesn't work for WhatsApp)
+    const WHATSAPP_APP_STORE_ID = '310633997';
+    const res = await fetch(
+      `https://itunes.apple.com/lookup?id=${WHATSAPP_APP_STORE_ID}&country=us`,
+    );
+    const json = await res.json();
+    const version: string | undefined = json?.results?.[0]?.version;
+    return version ?? 'Unavailable';
+  } catch {
+    return 'Error';
+  }
+}
 
 export default function DeviceInfoScreen(): React.JSX.Element {
   const { colors, spacing } = useTheme();
@@ -99,11 +161,20 @@ export default function DeviceInfoScreen(): React.JSX.Element {
     const loadInfo = async () => {
       const { width, height } = Dimensions.get('screen');
 
-      const [battery, totalMem, emulator, apiLevel] = await Promise.all([
+      const [
+        battery,
+        totalMem,
+        emulator,
+        apiLevel,
+        androidVersion,
+        iosVersion,
+      ] = await Promise.all([
         DeviceInfo.getBatteryLevel(),
         DeviceInfo.getTotalMemory(),
         DeviceInfo.isEmulator(),
         DeviceInfo.getApiLevel(),
+        fetchPlayStoreVersion(WHATSAPP_BUNDLE_ID).catch(() => null),
+        fetchAppStoreVersion(),
       ]);
 
       setInfo({
@@ -115,7 +186,7 @@ export default function DeviceInfoScreen(): React.JSX.Element {
         systemVersion: DeviceInfo.getSystemVersion(),
         apiLevel: Platform.OS === 'android' ? `${apiLevel}` : 'N/A',
         appName: DeviceInfo.getApplicationName(),
-        bundleId: DeviceInfo.getBundleId(),
+        bundleId: WHATSAPP_BUNDLE_ID,
         appVersion: DeviceInfo.getVersion(),
         buildNumber: DeviceInfo.getBuildNumber(),
         screenWidth: `${Math.round(width)} px`,
@@ -124,6 +195,8 @@ export default function DeviceInfoScreen(): React.JSX.Element {
         totalMemory: `${(totalMem / (1024 * 1024 * 1024)).toFixed(2)} GB`,
         batteryLevel: `${Math.round(battery * 100)}%`,
         isEmulator: `${emulator}`,
+        liveAndroidVersion: androidVersion ?? 'Unavailable',
+        liveIosVersion: iosVersion,
       });
 
       setLoading(false);
