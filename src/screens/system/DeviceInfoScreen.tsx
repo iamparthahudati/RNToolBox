@@ -112,13 +112,11 @@ async function fetchPlayStoreVersion(
     response = await fetch(url, {
       method: 'GET',
       headers: {
-        // Mobile Chrome UA — required for Android's network stack to allow the request
-        // and for Google to return the full data-bearing HTML page.
+        // Use a mobile Android UA so Google serves the full AF_initDataCallback HTML.
+        // Do NOT send sec-fetch-site — it is a browser-only header and can cause
+        // Google to misidentify the request and return a different page structure.
         'User-Agent':
-          'Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',
-        Accept:
-          'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
+          'Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',
       },
     });
   } catch (networkErr: unknown) {
@@ -128,28 +126,85 @@ async function fetchPlayStoreVersion(
   }
 
   if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error(`App "${packageId}" not found in Google Play.`);
+    }
     throw new Error(`Play Store responded with status ${response.status}`);
   }
 
   const html = await response.text();
-  // Version is embedded in Google's data blob as [[["x.x.x"]]]
-  const match = html.match(/\[\[\["(\d+\.\d+[\d.]*?)"\]\]/);
-  return match?.[1] ?? null;
+
+  // Pattern 1 (primary): double-quoted triple-bracket — the format Google uses since 2024.
+  // Old single-quote variant broke when Google switched to double quotes in AF_initDataCallback.
+  const m1 = html.match(/\[\[\["([\d.]+?)"\]\]/);
+  if (m1?.[1]) {
+    return m1[1].trim();
+  }
+
+  // Pattern 2: add surrounding context anchors to reduce false positives.
+  const m2 = html.match(/\[\[\["([\d]+\.[\d.]+?)"\]\],null,\[\[\[/);
+  if (m2?.[1]) {
+    return m2[1].trim();
+  }
+
+  // Pattern 3: parse the full AF_initDataCallback ds:5 JSON blob (most structurally sound).
+  // Handles the October-2025 variant where the version moved to an object-at-last-index path.
+  const scriptMatch = html.match(
+    /AF_initDataCallback[\s\S]*?key:\s*'ds:5'[\s\S]*?data:([\s\S]*?),\s*sideChannel:\s*\{\}\s*\}\)/,
+  );
+  if (scriptMatch?.[1]) {
+    try {
+      const data = JSON.parse(scriptMatch[1]);
+      // Primary path: ds:5 -> [1][2][140][0][0][0]
+      const v1 = data?.[1]?.[2]?.[140]?.[0]?.[0]?.[0];
+      if (v1 && /^\d+\.\d+/.test(String(v1))) {
+        return String(v1).trim();
+      }
+      // Fallback path: new 2025 object-at-last-index variant (key '141')
+      const arr: unknown[] | undefined = data?.[1]?.[2];
+      if (Array.isArray(arr)) {
+        const lastEl = arr[arr.length - 1] as Record<string, unknown> | null;
+        const v2 = (lastEl as any)?.['141']?.[0]?.[0]?.[0];
+        if (v2 && /^\d+\.\d+/.test(String(v2))) {
+          return String(v2).trim();
+        }
+      }
+    } catch (_) {
+      // JSON parse failed — fall through to next pattern
+    }
+  }
+
+  // Pattern 4 (legacy fallback): "Current Version" label in older rendered HTML.
+  const m4 = html.match(/Current Version[\s\S]{0,200}?>([\d.]+)<\/span>/);
+  if (m4?.[1]) {
+    return m4[1].trim();
+  }
+
+  return null;
 }
 
-async function fetchAppStoreVersion(): Promise<string> {
+async function fetchAppStoreVersion(): Promise<string | null> {
+  // WhatsApp's numeric App Store ID (bundleId lookup doesn't work for WhatsApp)
+  const WHATSAPP_APP_STORE_ID = '310633997';
+
+  let response: Response;
   try {
-    // WhatsApp's numeric App Store ID (bundleId lookup doesn't work for WhatsApp)
-    const WHATSAPP_APP_STORE_ID = '310633997';
-    const res = await fetch(
+    response = await fetch(
       `https://itunes.apple.com/lookup?id=${WHATSAPP_APP_STORE_ID}&country=us`,
     );
-    const json = await res.json();
-    const version: string | undefined = json?.results?.[0]?.version;
-    return version ?? 'Unavailable';
-  } catch {
-    return 'Error';
+  } catch (networkErr: unknown) {
+    const msg =
+      networkErr instanceof Error ? networkErr.message : String(networkErr);
+    throw new Error(`App Store network error: ${msg}`);
   }
+
+  if (!response.ok) {
+    throw new Error(`App Store responded with status ${response.status}`);
+  }
+
+  const json = await response.json();
+  const version: string | undefined = json?.results?.[0]?.version;
+  return version ?? null;
 }
 
 export default function DeviceInfoScreen(): React.JSX.Element {
@@ -173,8 +228,14 @@ export default function DeviceInfoScreen(): React.JSX.Element {
         DeviceInfo.getTotalMemory(),
         DeviceInfo.isEmulator(),
         DeviceInfo.getApiLevel(),
-        fetchPlayStoreVersion(WHATSAPP_BUNDLE_ID).catch(() => null),
-        fetchAppStoreVersion(),
+        fetchPlayStoreVersion(WHATSAPP_BUNDLE_ID).catch(
+          (e: unknown) =>
+            `Error: ${e instanceof Error ? e.message : String(e)}`,
+        ),
+        fetchAppStoreVersion().catch(
+          (e: unknown) =>
+            `Error: ${e instanceof Error ? e.message : String(e)}`,
+        ),
       ]);
 
       setInfo({
@@ -195,8 +256,8 @@ export default function DeviceInfoScreen(): React.JSX.Element {
         totalMemory: `${(totalMem / (1024 * 1024 * 1024)).toFixed(2)} GB`,
         batteryLevel: `${Math.round(battery * 100)}%`,
         isEmulator: `${emulator}`,
-        liveAndroidVersion: androidVersion ?? 'Unavailable',
-        liveIosVersion: iosVersion,
+        liveAndroidVersion: androidVersion ?? 'Version not found',
+        liveIosVersion: iosVersion ?? 'Version not found',
       });
 
       setLoading(false);
