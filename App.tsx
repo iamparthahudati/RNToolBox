@@ -1,6 +1,7 @@
 import React from 'react';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import AppMask from './src/components/AppMask';
 import AppNavigator from './src/navigation/AppNavigator';
 
 const App = () => {
@@ -8,6 +9,7 @@ const App = () => {
     <SafeAreaProvider>
       <PaperProvider>
         <AppNavigator />
+        <AppMask />
       </PaperProvider>
     </SafeAreaProvider>
   );
