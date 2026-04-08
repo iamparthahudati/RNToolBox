@@ -133,6 +133,14 @@ export type RootStackParamList = {
   AuthPhoneOTP: undefined;
   AuthAnonymous: undefined;
 
+  // Security
+  Security: undefined;
+  SecurityAppMasking: undefined;
+  SecurityJailbreak: undefined;
+  SecurityScreenshot: undefined;
+  SecurityCertPinning: undefined;
+  SecurityObfuscation: undefined;
+
   // Code Refactoring
   Refactoring: undefined;
   RefactoringFolderStructure: undefined;

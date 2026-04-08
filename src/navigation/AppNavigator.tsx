@@ -34,6 +34,12 @@ import RemoteConfigSetupScreen from '../screens/networking/RemoteConfigSetupScre
 import NetworkingScreen from '../screens/NetworkingScreen';
 import PermissionsScreen from '../screens/PermissionsScreen';
 import RefactoringScreen from '../screens/RefactoringScreen';
+import AppMaskingScreen from '../screens/security/AppMaskingScreen';
+import CertificatePinningScreen from '../screens/security/CertificatePinningScreen';
+import JailbreakScreen from '../screens/security/JailbreakScreen';
+import ObfuscationScreen from '../screens/security/ObfuscationScreen';
+import ScreenshotPreventionScreen from '../screens/security/ScreenshotPreventionScreen';
+import SecurityScreen from '../screens/SecurityScreen';
 import StorageScreen from '../screens/StorageScreen';
 import DeviceInfoScreen from '../screens/system/DeviceInfoScreen';
 import SystemScreen from '../screens/SystemScreen';
@@ -222,6 +228,23 @@ const AppNavigator = () => {
         <Stack.Screen name="AuthApple" component={ComingSoonScreen} />
         <Stack.Screen name="AuthPhoneOTP" component={ComingSoonScreen} />
         <Stack.Screen name="AuthAnonymous" component={ComingSoonScreen} />
+
+        {/* Security */}
+        <Stack.Screen name="Security" component={SecurityScreen} />
+        <Stack.Screen name="SecurityAppMasking" component={AppMaskingScreen} />
+        <Stack.Screen name="SecurityJailbreak" component={JailbreakScreen} />
+        <Stack.Screen
+          name="SecurityScreenshot"
+          component={ScreenshotPreventionScreen}
+        />
+        <Stack.Screen
+          name="SecurityCertPinning"
+          component={CertificatePinningScreen}
+        />
+        <Stack.Screen
+          name="SecurityObfuscation"
+          component={ObfuscationScreen}
+        />
 
         {/* Code Refactoring */}
         <Stack.Screen name="Refactoring" component={RefactoringScreen} />

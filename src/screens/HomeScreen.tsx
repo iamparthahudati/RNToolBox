@@ -84,6 +84,13 @@ const MENU_ITEMS: MenuItem[] = [
     icon: 'database-outline',
   },
   {
+    title: 'Security',
+    description: 'App masking, jailbreak detection, certificate pinning',
+    screen: 'Security',
+    implemented: true,
+    icon: 'shield-lock-outline',
+  },
+  {
     title: 'Authentication',
     description: 'Firebase Auth — email, Google, Apple sign-in',
     screen: 'Auth',
