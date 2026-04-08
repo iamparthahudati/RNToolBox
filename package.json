@@ -3,8 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start --reset-cache",
     "ios:uninstall": "xcrun simctl uninstall booted com.transunion.trulookup",
@@ -14,12 +12,10 @@
     "pods": "npx pod-install",
     "deepclean": "rm -rf node_modules vendor ios/build ios/Pods android/build android/.gradle android/.idea android/.kotlin android/.default android/app/.cxx android/app/build && rm -f yarn.lock package-lock.json Gemfile.lock ios/Podfile.lock ios/Gemfile.lock ios/.xcode.env.local android/*.hprof",
     "test": "jest",
-    "android:dev": "ENVFILE=.env.development react-native run-android --mode devDebug",
-    "android:staging": "ENVFILE=.env.staging react-native run-android --mode stagingDebug",
-    "android:prod": "ENVFILE=.env.production react-native run-android --mode prodRelease",
-    "ios:dev": "ENVFILE=.env.development react-native run-ios --scheme RNToolbox",
-    "ios:staging": "ENVFILE=.env.staging react-native run-ios --scheme RNToolbox-Staging",
-    "ios:prod": "ENVFILE=.env.production react-native run-ios --scheme RNToolbox-Prod"
+    "android:debug": "ENVFILE=.env.debug react-native run-android --mode debug",
+    "android:release": "ENVFILE=.env.production react-native run-android --mode release",
+    "ios:debug": "ENVFILE=.env.debug react-native run-ios --scheme RNToolbox",
+    "ios:release": "ENVFILE=.env.production react-native run-ios --scheme RNToolbox --configuration Release"
   },
   "dependencies": {
     "@react-native-clipboard/clipboard": "^1.16.3",

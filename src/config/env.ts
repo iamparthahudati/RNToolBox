@@ -4,7 +4,7 @@ import Config from 'react-native-config';
 // Types
 // ---------------------------------------------------------------------------
 
-export type AppEnv = 'development' | 'staging' | 'production';
+export type AppEnv = 'debug' | 'production';
 
 export interface AppConfig {
   APP_NAME: string;
@@ -36,11 +36,7 @@ const REQUIRED_KEYS: ReadonlyArray<keyof AppConfig> = [
   'MAPS_API_KEY',
 ];
 
-const VALID_ENVS: ReadonlyArray<AppEnv> = [
-  'development',
-  'staging',
-  'production',
-];
+const VALID_ENVS: ReadonlyArray<AppEnv> = ['debug', 'production'];
 
 function parseBoolean(value: string | undefined, key: string): boolean {
   if (value === 'true') return true;
@@ -142,6 +138,5 @@ export default appConfig;
 // Convenience environment helpers
 // ---------------------------------------------------------------------------
 
-export const isDev: boolean = appConfig.APP_ENV === 'development';
-export const isStaging: boolean = appConfig.APP_ENV === 'staging';
+export const isDebug: boolean = appConfig.APP_ENV === 'debug';
 export const isProd: boolean = appConfig.APP_ENV === 'production';

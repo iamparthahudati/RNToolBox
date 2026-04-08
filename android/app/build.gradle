@@ -20,8 +20,7 @@ react {
     /* Variants */
     //   The list of variants to that are debuggable. For those we're going to
     //   skip the bundling of the JS bundle and the assets. By default is just 'debug'.
-    //   With product flavors (dev, staging, prod) all debug variants must be listed.
-    debuggableVariants = ["devDebug", "stagingDebug", "prodDebug"]
+    debuggableVariants = ["debug"]
 
     /* Bundling */
     //   A list containing the node command and its flags. Default is just 'node'.
@@ -72,20 +71,16 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
-// NOTE: google-services.json in this directory is auto-generated at build time.
-// It is copied from firebase/<flavor>/google-services.json by the task below.
-// Do NOT commit android/app/google-services.json — add it to android/app/.gitignore.
-
-// Copy correct google-services.json based on active flavor
+// Copy correct google-services.json based on build type (debug → firebase/debug, release → firebase/prod)
 android.applicationVariants.all { variant ->
-    def flavor = variant.flavorName
-    def srcFile = rootProject.file("firebase/${flavor}/google-services.json")
-    def destFile = file("google-services.json")
+    def buildTypeName = variant.buildType.name
+    def firebaseFolder = buildTypeName == "release" ? "prod" : buildTypeName
+    def srcFile = rootProject.file("firebase/${firebaseFolder}/google-services.json")
     variant.preBuildProvider.configure {
         doFirst {
             if (srcFile.exists()) {
                 copy { from srcFile; into file('.') }
-                println "[Firebase] Copied google-services.json for flavor: ${flavor}"
+                println "[Firebase] Copied google-services.json for build type: ${buildTypeName}"
             } else {
                 throw new GradleException("[Firebase] Missing config: ${srcFile.path}")
             }
@@ -124,20 +119,6 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        }
-    }
-    flavorDimensions 'env'
-    productFlavors {
-        dev {
-            dimension 'env'
-            applicationIdSuffix '.dev'
-        }
-        staging {
-            dimension 'env'
-            applicationIdSuffix '.staging'
-        }
-        prod {
-            dimension 'env'
         }
     }
 }

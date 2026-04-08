@@ -9,8 +9,8 @@
  * instance provided by @react-native-firebase/app.
  *
  * Environment → Firebase project mapping:
- *   - dev / prod  → rntollbox    (google-services.json / GoogleService-Info.plist)
- *   - staging     → rntoolbox-qa (google-services.json / GoogleService-Info.plist)
+ *   - debug      → rntoolbox-qa  (project #339894760554)
+ *   - production → rntollbox     (project #75014116828)
  */
 
 import firebase from '@react-native-firebase/app';

@@ -21,8 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // The correct GoogleService-Info.plist is copied into the app bundle at build
     // time by the "Copy Firebase Config" Run Script build phase in Xcode:
     //
-    //   Source (Debug):   ../../firebase/dev/GoogleService-Info.plist
-    //   Source (Staging): ../../firebase/staging/GoogleService-Info.plist
+    //   Source (Debug):   ../../firebase/debug/GoogleService-Info.plist
     //   Source (Release): ../../firebase/prod/GoogleService-Info.plist
     //   Destination:      ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist
     //
