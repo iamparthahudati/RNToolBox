@@ -1,5 +1,6 @@
 import AnimationsScreen from '../screens/AnimationsScreen';
 import AppMaskingScreen from '../screens/security/AppMaskingScreen';
+import AsyncStorageScreen from '../screens/storage/AsyncStorageScreen';
 import BadgesScreen from '../screens/components/BadgesScreen';
 import BasicMapScreen from '../screens/native/maps/BasicMapScreen';
 import ButtonsScreen from '../screens/components/ButtonsScreen';
@@ -170,7 +171,10 @@ const AppNavigator = () => {
 
         {/* Storage */}
         <Stack.Screen name="Storage" component={StorageScreen} />
-        <Stack.Screen name="StorageAsyncStorage" component={ComingSoonScreen} />
+        <Stack.Screen
+          name="StorageAsyncStorage"
+          component={AsyncStorageScreen}
+        />
         <Stack.Screen name="StorageMMKV" component={ComingSoonScreen} />
         <Stack.Screen name="StorageSecure" component={ComingSoonScreen} />
         <Stack.Screen name="StorageSQLite" component={ComingSoonScreen} />

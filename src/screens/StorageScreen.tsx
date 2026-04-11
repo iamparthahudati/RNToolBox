@@ -1,8 +1,8 @@
+import { MenuItem } from '../types/menu';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import ScreenLayout from '../components/molecules/ScreenLayout';
 import { RootStackParamList } from '../navigation/types';
-import { MenuItem } from '../types/menu';
+import ScreenLayout from '../components/molecules/ScreenLayout';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Storage'>;
 
@@ -11,7 +11,7 @@ const ITEMS: MenuItem[] = [
     title: 'AsyncStorage',
     description: 'Read, write and delete key-value pairs',
     screen: 'StorageAsyncStorage',
-    implemented: false,
+    implemented: true,
     icon: 'archive-outline',
   },
   {
