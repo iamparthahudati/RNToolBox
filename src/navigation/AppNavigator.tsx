@@ -31,6 +31,12 @@ import NativeActionsScreen from '../screens/NativeActionsScreen';
 import NavigationPatternsScreen from '../screens/NavigationPatternsScreen';
 import RemoteConfigScreen from '../screens/networking/RemoteConfigScreen';
 import RemoteConfigSetupScreen from '../screens/networking/RemoteConfigSetupScreen';
+import AuthScreen from '../screens/AuthScreen';
+import AuthAnonymousScreen from '../screens/auth/AuthAnonymousScreen';
+import AuthAppleScreen from '../screens/auth/AuthAppleScreen';
+import AuthEmailScreen from '../screens/auth/AuthEmailScreen';
+import AuthGoogleScreen from '../screens/auth/AuthGoogleScreen';
+import AuthPhoneOTPScreen from '../screens/auth/AuthPhoneOTPScreen';
 import NetworkingScreen from '../screens/NetworkingScreen';
 import PermissionsScreen from '../screens/PermissionsScreen';
 import RefactoringScreen from '../screens/RefactoringScreen';
@@ -222,12 +228,12 @@ const AppNavigator = () => {
         <Stack.Screen name="TestingE2E" component={ComingSoonScreen} />
 
         {/* Authentication */}
-        <Stack.Screen name="Auth" component={ComingSoonScreen} />
-        <Stack.Screen name="AuthEmail" component={ComingSoonScreen} />
-        <Stack.Screen name="AuthGoogle" component={ComingSoonScreen} />
-        <Stack.Screen name="AuthApple" component={ComingSoonScreen} />
-        <Stack.Screen name="AuthPhoneOTP" component={ComingSoonScreen} />
-        <Stack.Screen name="AuthAnonymous" component={ComingSoonScreen} />
+        <Stack.Screen name="Auth" component={AuthScreen} />
+        <Stack.Screen name="AuthEmail" component={AuthEmailScreen} />
+        <Stack.Screen name="AuthGoogle" component={AuthGoogleScreen} />
+        <Stack.Screen name="AuthApple" component={AuthAppleScreen} />
+        <Stack.Screen name="AuthPhoneOTP" component={AuthPhoneOTPScreen} />
+        <Stack.Screen name="AuthAnonymous" component={AuthAnonymousScreen} />
 
         {/* Security */}
         <Stack.Screen name="Security" component={SecurityScreen} />
