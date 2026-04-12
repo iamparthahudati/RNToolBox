@@ -2,6 +2,13 @@ import AnimationsScreen from '../screens/AnimationsScreen';
 import AppMaskingScreen from '../screens/security/AppMaskingScreen';
 import AsyncStorageScreen from '../screens/storage/AsyncStorageScreen';
 import BadgesScreen from '../screens/components/BadgesScreen';
+import AnimatedMarkerScreen from '../screens/native/maps/AnimatedMarkerScreen';
+import AuthAnonymousScreen from '../screens/auth/AuthAnonymousScreen';
+import AuthAppleScreen from '../screens/auth/AuthAppleScreen';
+import AuthEmailScreen from '../screens/auth/AuthEmailScreen';
+import AuthGoogleScreen from '../screens/auth/AuthGoogleScreen';
+import AuthPhoneOTPScreen from '../screens/auth/AuthPhoneOTPScreen';
+import AuthScreen from '../screens/AuthScreen';
 import BasicMapScreen from '../screens/native/maps/BasicMapScreen';
 import ButtonsScreen from '../screens/components/ButtonsScreen';
 import CallPhoneScreen from '../screens/native/CallPhoneScreen';
@@ -14,6 +21,11 @@ import DirectionsScreen from '../screens/native/maps/DirectionsScreen';
 import FormsScreen from '../screens/FormsScreen';
 import GeofenceScreen from '../screens/native/maps/GeofenceScreen';
 import HapticsScreen from '../screens/native/HapticsScreen';
+import ClusterMarkersScreen from '../screens/native/maps/ClusterMarkersScreen';
+import SearchPlaceScreen from '../screens/native/maps/SearchPlaceScreen';
+import CustomMapStyleScreen from '../screens/native/maps/CustomMapStyleScreen';
+import DrawAreaScreen from '../screens/native/maps/DrawAreaScreen';
+import HeatmapScreen from '../screens/native/maps/HeatmapScreen';
 import HomeScreen from '../screens/HomeScreen';
 import HooksScreen from '../screens/HooksScreen';
 import InputsScreen from '../screens/components/InputsScreen';
@@ -136,7 +148,22 @@ const AppNavigator = () => {
         />
         <Stack.Screen name="NativeMapsPolygon" component={PolygonScreen} />
         <Stack.Screen name="NativeMapsGeofence" component={GeofenceScreen} />
+        <Stack.Screen name="NativeMapsDrawArea" component={DrawAreaScreen} />
+        <Stack.Screen
+          name="NativeMapsCluster"
+          component={ClusterMarkersScreen}
+        />
+        <Stack.Screen
+          name="NativeMapsCustomStyle"
+          component={CustomMapStyleScreen}
+        />
+        <Stack.Screen name="NativeMapsHeatmap" component={HeatmapScreen} />
+        <Stack.Screen name="NativeMapsSearchPlace" component={SearchPlaceScreen} />
         <Stack.Screen name="NativeMapsOpen" component={OpenInMapsScreen} />
+        <Stack.Screen
+          name="NativeMapsAnimatedMarker"
+          component={AnimatedMarkerScreen}
+        />
 
         {/* Permissions */}
         <Stack.Screen name="Permissions" component={PermissionsScreen} />
@@ -226,12 +253,12 @@ const AppNavigator = () => {
         <Stack.Screen name="TestingE2E" component={ComingSoonScreen} />
 
         {/* Authentication */}
-        <Stack.Screen name="Auth" component={ComingSoonScreen} />
-        <Stack.Screen name="AuthEmail" component={ComingSoonScreen} />
-        <Stack.Screen name="AuthGoogle" component={ComingSoonScreen} />
-        <Stack.Screen name="AuthApple" component={ComingSoonScreen} />
-        <Stack.Screen name="AuthPhoneOTP" component={ComingSoonScreen} />
-        <Stack.Screen name="AuthAnonymous" component={ComingSoonScreen} />
+        <Stack.Screen name="Auth" component={AuthScreen} />
+        <Stack.Screen name="AuthEmail" component={AuthEmailScreen} />
+        <Stack.Screen name="AuthGoogle" component={AuthGoogleScreen} />
+        <Stack.Screen name="AuthApple" component={AuthAppleScreen} />
+        <Stack.Screen name="AuthPhoneOTP" component={AuthPhoneOTPScreen} />
+        <Stack.Screen name="AuthAnonymous" component={AuthAnonymousScreen} />
 
         {/* Security */}
         <Stack.Screen name="Security" component={SecurityScreen} />

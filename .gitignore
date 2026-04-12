@@ -76,6 +76,7 @@ yarn-error.log
 
 # Environment files
 .env
+.env.debug
 .env.staging
 .env.production
 .env.local

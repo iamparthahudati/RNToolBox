@@ -8,12 +8,56 @@ import shadows from './shadows';
 import spacing from './spacing';
 import typography from './typography';
 
-// ---------------------------------------------------------------------------
-// Static theme object — use when you need raw tokens outside of a component
-// ---------------------------------------------------------------------------
-
 export const theme = {
-  colors,
+  colors: {
+    // Semantic light-mode tokens (flat, for use in StyleSheet)
+    ...colors.light,
+    // Status colors
+    error: colors.errorMain,
+    errorLight: colors.errorLight,
+    errorDark: colors.errorDark,
+    success: colors.successMain,
+    successLight: colors.successLight,
+    successDark: colors.successDark,
+    warning: colors.warningMain,
+    warningLight: colors.warningLight,
+    warningDark: colors.warningDark,
+    info: colors.infoMain,
+    infoLight: colors.infoLight,
+    infoDark: colors.infoDark,
+    // Primary scale
+    primary: colors.primary600,
+    primary50: colors.primary50,
+    primary100: colors.primary100,
+    primary200: colors.primary200,
+    primary300: colors.primary300,
+    primary400: colors.primary400,
+    primary500: colors.primary500,
+    primary600: colors.primary600,
+    primary700: colors.primary700,
+    primary800: colors.primary800,
+    primary900: colors.primary900,
+    primary950: colors.primary950,
+    // Neutral scale
+    neutral50: colors.neutral50,
+    neutral100: colors.neutral100,
+    neutral200: colors.neutral200,
+    neutral300: colors.neutral300,
+    neutral400: colors.neutral400,
+    neutral500: colors.neutral500,
+    neutral600: colors.neutral600,
+    neutral700: colors.neutral700,
+    neutral800: colors.neutral800,
+    neutral900: colors.neutral900,
+    neutral950: colors.neutral950,
+    // Base
+    white: colors.white,
+    black: colors.black,
+    gradients: colors.gradients,
+    // Raw nested tokens still accessible if needed
+    light: colors.light,
+    dark: colors.dark,
+  },
   spacing,
   typography,
   shadows,

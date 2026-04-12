@@ -2,6 +2,13 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+// Inject .env variables into BuildConfig and AndroidManifest placeholders
+project.ext.envConfigFiles = [
+    debug:   ".env.debug",
+    release: ".env.production",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -70,23 +77,6 @@ def enableProguardInReleaseBuilds = false
  * this variant is about 6MiB larger per architecture than default.
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
-
-// Copy correct google-services.json based on build type (debug → firebase/debug, release → firebase/prod)
-android.applicationVariants.all { variant ->
-    def buildTypeName = variant.buildType.name
-    def firebaseFolder = buildTypeName == "release" ? "prod" : buildTypeName
-    def srcFile = rootProject.file("firebase/${firebaseFolder}/google-services.json")
-    variant.preBuildProvider.configure {
-        doFirst {
-            if (srcFile.exists()) {
-                copy { from srcFile; into file('.') }
-                println "[Firebase] Copied google-services.json for build type: ${buildTypeName}"
-            } else {
-                throw new GradleException("[Firebase] Missing config: ${srcFile.path}")
-            }
-        }
-    }
-}
 
 android {
     ndkVersion rootProject.ext.ndkVersion

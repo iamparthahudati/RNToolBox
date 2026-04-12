@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0649B850C2308738F4386630 /* libPods-RNToolbox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73BAA67E117AC5F690F855CD /* libPods-RNToolbox.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2705A42A65E01F4F71FB663A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		B54ACBE44A7C0856A12A2ABA /* Pods_RNToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B9B1CFD691E08D388092388 /* Pods_RNToolbox.framework */; };
 		FF66EE55DD44CC33BB22AA11 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF66 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -22,8 +22,8 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = RNToolbox/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-RNToolbox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNToolbox.debug.xcconfig"; path = "Target Support Files/Pods-RNToolbox/Pods-RNToolbox.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-RNToolbox.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNToolbox.release.xcconfig"; path = "Target Support Files/Pods-RNToolbox/Pods-RNToolbox.release.xcconfig"; sourceTree = "<group>"; };
-		73BAA67E117AC5F690F855CD /* libPods-RNToolbox.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNToolbox.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = RNToolbox/AppDelegate.swift; sourceTree = "<group>"; };
+		7B9B1CFD691E08D388092388 /* Pods_RNToolbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNToolbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RNToolbox/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AA11BB22CC33DD44EE55FF66 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "RNToolbox/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -34,7 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0649B850C2308738F4386630 /* libPods-RNToolbox.a in Frameworks */,
+				B54ACBE44A7C0856A12A2ABA /* Pods_RNToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,7 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				73BAA67E117AC5F690F855CD /* libPods-RNToolbox.a */,
+				7B9B1CFD691E08D388092388 /* Pods_RNToolbox.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
