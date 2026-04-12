@@ -56,6 +56,13 @@ const ITEMS: MenuItem[] = [
     icon: 'circle-outline',
     implemented: true,
   },
+  {
+    title: 'Draw Area',
+    description: 'Tap to draw a polygon and measure area',
+    screen: 'NativeMapsDrawArea',
+    icon: 'draw',
+    implemented: true,
+  },
 ];
 
 export default function MapsScreen({ navigation }: Props) {

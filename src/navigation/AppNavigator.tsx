@@ -19,6 +19,7 @@ import ClipboardScreen from '../screens/native/ClipboardScreen';
 import HapticsScreen from '../screens/native/HapticsScreen';
 import BasicMapScreen from '../screens/native/maps/BasicMapScreen';
 import DirectionsScreen from '../screens/native/maps/DirectionsScreen';
+import DrawAreaScreen from '../screens/native/maps/DrawAreaScreen';
 import GeofenceScreen from '../screens/native/maps/GeofenceScreen';
 import MarkersScreen from '../screens/native/maps/MarkersScreen';
 import MyLocationScreen from '../screens/native/maps/MyLocationScreen';
@@ -141,6 +142,7 @@ const AppNavigator = () => {
         />
         <Stack.Screen name="NativeMapsPolygon" component={PolygonScreen} />
         <Stack.Screen name="NativeMapsGeofence" component={GeofenceScreen} />
+        <Stack.Screen name="NativeMapsDrawArea" component={DrawAreaScreen} />
         <Stack.Screen name="NativeMapsOpen" component={OpenInMapsScreen} />
 
         {/* Permissions */}
