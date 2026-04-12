@@ -1,8 +1,8 @@
+import { MenuItem } from '../types/menu';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import ScreenLayout from '../components/molecules/ScreenLayout';
 import { RootStackParamList } from '../navigation/types';
-import { MenuItem } from '../types/menu';
+import ScreenLayout from '../components/molecules/ScreenLayout';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Components'>;
 
@@ -46,7 +46,7 @@ const ITEMS: MenuItem[] = [
     title: 'Badges & Tags',
     description: 'Status indicators, labels',
     screen: 'ComponentBadges',
-    implemented: false,
+    implemented: true,
     icon: 'tag-outline',
   },
   {
@@ -67,7 +67,7 @@ const ITEMS: MenuItem[] = [
     title: 'Loading States',
     description: 'Skeleton screens, spinners, progress bars',
     screen: 'ComponentLoading',
-    implemented: false,
+    implemented: true,
     icon: 'loading',
   },
   {

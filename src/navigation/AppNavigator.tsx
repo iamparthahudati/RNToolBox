@@ -1,6 +1,8 @@
-import AnimatedMarkerScreen from '../screens/native/maps/AnimatedMarkerScreen';
 import AnimationsScreen from '../screens/AnimationsScreen';
 import AppMaskingScreen from '../screens/security/AppMaskingScreen';
+import AsyncStorageScreen from '../screens/storage/AsyncStorageScreen';
+import BadgesScreen from '../screens/components/BadgesScreen';
+import AnimatedMarkerScreen from '../screens/native/maps/AnimatedMarkerScreen';
 import AuthAnonymousScreen from '../screens/auth/AuthAnonymousScreen';
 import AuthAppleScreen from '../screens/auth/AuthAppleScreen';
 import AuthEmailScreen from '../screens/auth/AuthEmailScreen';
@@ -12,22 +14,23 @@ import ButtonsScreen from '../screens/components/ButtonsScreen';
 import CallPhoneScreen from '../screens/native/CallPhoneScreen';
 import CertificatePinningScreen from '../screens/security/CertificatePinningScreen';
 import ClipboardScreen from '../screens/native/ClipboardScreen';
-import ClusterMarkersScreen from '../screens/native/maps/ClusterMarkersScreen';
-import SearchPlaceScreen from '../screens/native/maps/SearchPlaceScreen';
 import ComingSoonScreen from '../screens/ComingSoonScreen';
 import ComponentsScreen from '../screens/ComponentsScreen';
-import CustomMapStyleScreen from '../screens/native/maps/CustomMapStyleScreen';
 import DeviceInfoScreen from '../screens/system/DeviceInfoScreen';
 import DirectionsScreen from '../screens/native/maps/DirectionsScreen';
-import DrawAreaScreen from '../screens/native/maps/DrawAreaScreen';
 import FormsScreen from '../screens/FormsScreen';
 import GeofenceScreen from '../screens/native/maps/GeofenceScreen';
 import HapticsScreen from '../screens/native/HapticsScreen';
+import ClusterMarkersScreen from '../screens/native/maps/ClusterMarkersScreen';
+import SearchPlaceScreen from '../screens/native/maps/SearchPlaceScreen';
+import CustomMapStyleScreen from '../screens/native/maps/CustomMapStyleScreen';
+import DrawAreaScreen from '../screens/native/maps/DrawAreaScreen';
 import HeatmapScreen from '../screens/native/maps/HeatmapScreen';
 import HomeScreen from '../screens/HomeScreen';
 import HooksScreen from '../screens/HooksScreen';
 import InputsScreen from '../screens/components/InputsScreen';
 import JailbreakScreen from '../screens/security/JailbreakScreen';
+import LoadingScreen from '../screens/components/LoadingScreen';
 import MapsScreen from '../screens/native/MapsScreen';
 import MarkersScreen from '../screens/native/maps/MarkersScreen';
 import MyLocationScreen from '../screens/native/maps/MyLocationScreen';
@@ -73,10 +76,10 @@ const AppNavigator = () => {
         <Stack.Screen name="ComponentSelection" component={SelectionScreen} />
         <Stack.Screen name="ComponentTypography" component={TypographyScreen} />
         <Stack.Screen name="ComponentCards" component={ComingSoonScreen} />
-        <Stack.Screen name="ComponentBadges" component={ComingSoonScreen} />
+        <Stack.Screen name="ComponentBadges" component={BadgesScreen} />
         <Stack.Screen name="ComponentModals" component={ComingSoonScreen} />
         <Stack.Screen name="ComponentToast" component={ComingSoonScreen} />
-        <Stack.Screen name="ComponentLoading" component={ComingSoonScreen} />
+        <Stack.Screen name="ComponentLoading" component={LoadingScreen} />
         <Stack.Screen name="ComponentLists" component={ComingSoonScreen} />
         <Stack.Screen name="ComponentImages" component={ComingSoonScreen} />
         <Stack.Screen name="ComponentIcons" component={ComingSoonScreen} />
@@ -195,7 +198,10 @@ const AppNavigator = () => {
 
         {/* Storage */}
         <Stack.Screen name="Storage" component={StorageScreen} />
-        <Stack.Screen name="StorageAsyncStorage" component={ComingSoonScreen} />
+        <Stack.Screen
+          name="StorageAsyncStorage"
+          component={AsyncStorageScreen}
+        />
         <Stack.Screen name="StorageMMKV" component={ComingSoonScreen} />
         <Stack.Screen name="StorageSecure" component={ComingSoonScreen} />
         <Stack.Screen name="StorageSQLite" component={ComingSoonScreen} />
