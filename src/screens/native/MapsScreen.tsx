@@ -1,8 +1,8 @@
+import { MenuItem } from '../../types/menu';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import ScreenLayout from '../../components/molecules/ScreenLayout';
 import { RootStackParamList } from '../../navigation/types';
-import { MenuItem } from '../../types/menu';
+import ScreenLayout from '../../components/molecules/ScreenLayout';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'NativeMaps'>;
 
@@ -61,6 +61,48 @@ const ITEMS: MenuItem[] = [
     description: 'Tap to draw a polygon and measure area',
     screen: 'NativeMapsDrawArea',
     icon: 'draw',
+    implemented: true,
+  },
+  {
+    title: 'Animated Marker',
+    description: 'Simulate a vehicle moving along a polyline route',
+    screen: 'NativeMapsAnimatedMarker',
+    icon: 'car-arrow-right',
+    implemented: true,
+  },
+  {
+    title: 'Custom Map Style',
+    description: 'Apply dark, retro and minimal map themes',
+    screen: 'NativeMapsCustomStyle',
+    icon: 'palette-outline',
+    implemented: true,
+  },
+  {
+    title: 'Heatmap',
+    description: 'Visualize data density with a heatmap overlay',
+    screen: 'NativeMapsHeatmap',
+    icon: 'fire',
+    implemented: true,
+  },
+  {
+    title: 'Animated Marker',
+    description: 'Simulate a vehicle moving along a route',
+    screen: 'NativeMapsAnimatedMarker',
+    icon: 'car-outline',
+    implemented: true,
+  },
+  {
+    title: 'Cluster Markers',
+    description: 'Group nearby pins into dynamic clusters',
+    screen: 'NativeMapsCluster',
+    icon: 'map-marker-multiple',
+    implemented: true,
+  },
+  {
+    title: 'Search Place',
+    description: 'Search any address or place with autocomplete',
+    screen: 'NativeMapsSearchPlace',
+    icon: 'magnify',
     implemented: true,
   },
 ];

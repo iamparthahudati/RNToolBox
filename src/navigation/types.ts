@@ -68,6 +68,11 @@ export type RootStackParamList = {
   NativeMapsPolygon: undefined;
   NativeMapsGeofence: undefined;
   NativeMapsDrawArea: undefined;
+  NativeMapsCustomStyle: undefined;
+  NativeMapsHeatmap: undefined;
+  NativeMapsAnimatedMarker: undefined;
+  NativeMapsCluster: undefined;
+  NativeMapsSearchPlace: undefined;
 
   // Permissions
   Permissions: undefined;

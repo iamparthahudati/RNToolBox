@@ -1,56 +1,59 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-
-import { RootStackParamList } from './types';
-
+import AnimatedMarkerScreen from '../screens/native/maps/AnimatedMarkerScreen';
 import AnimationsScreen from '../screens/AnimationsScreen';
-import ComingSoonScreen from '../screens/ComingSoonScreen';
-import ButtonsScreen from '../screens/components/ButtonsScreen';
-import InputsScreen from '../screens/components/InputsScreen';
-import SelectionScreen from '../screens/components/SelectionScreen';
-import TypographyScreen from '../screens/components/TypographyScreen';
-import ComponentsScreen from '../screens/ComponentsScreen';
-import FormsScreen from '../screens/FormsScreen';
-import HomeScreen from '../screens/HomeScreen';
-import HooksScreen from '../screens/HooksScreen';
-import CallPhoneScreen from '../screens/native/CallPhoneScreen';
-import ClipboardScreen from '../screens/native/ClipboardScreen';
-import HapticsScreen from '../screens/native/HapticsScreen';
-import BasicMapScreen from '../screens/native/maps/BasicMapScreen';
-import DirectionsScreen from '../screens/native/maps/DirectionsScreen';
-import DrawAreaScreen from '../screens/native/maps/DrawAreaScreen';
-import GeofenceScreen from '../screens/native/maps/GeofenceScreen';
-import MarkersScreen from '../screens/native/maps/MarkersScreen';
-import MyLocationScreen from '../screens/native/maps/MyLocationScreen';
-import OpenInMapsScreen from '../screens/native/maps/OpenInMapsScreen';
-import PolygonScreen from '../screens/native/maps/PolygonScreen';
-import MapsScreen from '../screens/native/MapsScreen';
-import SendEmailScreen from '../screens/native/SendEmailScreen';
-import ShareScreen from '../screens/native/ShareScreen';
-import NativeActionsScreen from '../screens/NativeActionsScreen';
-import NavigationPatternsScreen from '../screens/NavigationPatternsScreen';
-import RemoteConfigScreen from '../screens/networking/RemoteConfigScreen';
-import RemoteConfigSetupScreen from '../screens/networking/RemoteConfigSetupScreen';
-import AuthScreen from '../screens/AuthScreen';
+import AppMaskingScreen from '../screens/security/AppMaskingScreen';
 import AuthAnonymousScreen from '../screens/auth/AuthAnonymousScreen';
 import AuthAppleScreen from '../screens/auth/AuthAppleScreen';
 import AuthEmailScreen from '../screens/auth/AuthEmailScreen';
 import AuthGoogleScreen from '../screens/auth/AuthGoogleScreen';
 import AuthPhoneOTPScreen from '../screens/auth/AuthPhoneOTPScreen';
-import NetworkingScreen from '../screens/NetworkingScreen';
-import PermissionsScreen from '../screens/PermissionsScreen';
-import RefactoringScreen from '../screens/RefactoringScreen';
-import AppMaskingScreen from '../screens/security/AppMaskingScreen';
+import AuthScreen from '../screens/AuthScreen';
+import BasicMapScreen from '../screens/native/maps/BasicMapScreen';
+import ButtonsScreen from '../screens/components/ButtonsScreen';
+import CallPhoneScreen from '../screens/native/CallPhoneScreen';
 import CertificatePinningScreen from '../screens/security/CertificatePinningScreen';
+import ClipboardScreen from '../screens/native/ClipboardScreen';
+import ClusterMarkersScreen from '../screens/native/maps/ClusterMarkersScreen';
+import SearchPlaceScreen from '../screens/native/maps/SearchPlaceScreen';
+import ComingSoonScreen from '../screens/ComingSoonScreen';
+import ComponentsScreen from '../screens/ComponentsScreen';
+import CustomMapStyleScreen from '../screens/native/maps/CustomMapStyleScreen';
+import DeviceInfoScreen from '../screens/system/DeviceInfoScreen';
+import DirectionsScreen from '../screens/native/maps/DirectionsScreen';
+import DrawAreaScreen from '../screens/native/maps/DrawAreaScreen';
+import FormsScreen from '../screens/FormsScreen';
+import GeofenceScreen from '../screens/native/maps/GeofenceScreen';
+import HapticsScreen from '../screens/native/HapticsScreen';
+import HeatmapScreen from '../screens/native/maps/HeatmapScreen';
+import HomeScreen from '../screens/HomeScreen';
+import HooksScreen from '../screens/HooksScreen';
+import InputsScreen from '../screens/components/InputsScreen';
 import JailbreakScreen from '../screens/security/JailbreakScreen';
+import MapsScreen from '../screens/native/MapsScreen';
+import MarkersScreen from '../screens/native/maps/MarkersScreen';
+import MyLocationScreen from '../screens/native/maps/MyLocationScreen';
+import NativeActionsScreen from '../screens/NativeActionsScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import NavigationPatternsScreen from '../screens/NavigationPatternsScreen';
+import NetworkingScreen from '../screens/NetworkingScreen';
 import ObfuscationScreen from '../screens/security/ObfuscationScreen';
+import OpenInMapsScreen from '../screens/native/maps/OpenInMapsScreen';
+import PermissionsScreen from '../screens/PermissionsScreen';
+import PolygonScreen from '../screens/native/maps/PolygonScreen';
+import React from 'react';
+import RefactoringScreen from '../screens/RefactoringScreen';
+import RemoteConfigScreen from '../screens/networking/RemoteConfigScreen';
+import RemoteConfigSetupScreen from '../screens/networking/RemoteConfigSetupScreen';
+import { RootStackParamList } from './types';
 import ScreenshotPreventionScreen from '../screens/security/ScreenshotPreventionScreen';
 import SecurityScreen from '../screens/SecurityScreen';
+import SelectionScreen from '../screens/components/SelectionScreen';
+import SendEmailScreen from '../screens/native/SendEmailScreen';
+import ShareScreen from '../screens/native/ShareScreen';
 import StorageScreen from '../screens/StorageScreen';
-import DeviceInfoScreen from '../screens/system/DeviceInfoScreen';
 import SystemScreen from '../screens/SystemScreen';
 import TestingScreen from '../screens/TestingScreen';
+import TypographyScreen from '../screens/components/TypographyScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -143,7 +146,21 @@ const AppNavigator = () => {
         <Stack.Screen name="NativeMapsPolygon" component={PolygonScreen} />
         <Stack.Screen name="NativeMapsGeofence" component={GeofenceScreen} />
         <Stack.Screen name="NativeMapsDrawArea" component={DrawAreaScreen} />
+        <Stack.Screen
+          name="NativeMapsCluster"
+          component={ClusterMarkersScreen}
+        />
+        <Stack.Screen
+          name="NativeMapsCustomStyle"
+          component={CustomMapStyleScreen}
+        />
+        <Stack.Screen name="NativeMapsHeatmap" component={HeatmapScreen} />
+        <Stack.Screen name="NativeMapsSearchPlace" component={SearchPlaceScreen} />
         <Stack.Screen name="NativeMapsOpen" component={OpenInMapsScreen} />
+        <Stack.Screen
+          name="NativeMapsAnimatedMarker"
+          component={AnimatedMarkerScreen}
+        />
 
         {/* Permissions */}
         <Stack.Screen name="Permissions" component={PermissionsScreen} />

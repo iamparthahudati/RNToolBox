@@ -1,5 +1,10 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import MapView, {
+  LatLng,
+  Marker,
+  PROVIDER_GOOGLE,
+  Polygon,
+  Polyline,
+} from 'react-native-maps';
 import {
   Platform,
   StyleSheet,
@@ -7,16 +12,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import MapView, {
-  LatLng,
-  Marker,
-  Polygon,
-  Polyline,
-  PROVIDER_GOOGLE,
-} from 'react-native-maps';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState } from 'react';
+
 import Header from '../../../components/Header';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../navigation/types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '../../../theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'NativeMapsDrawArea'>;
@@ -95,7 +96,11 @@ export default function DrawAreaScreen(_props: Props) {
     if (closed) {
       return;
     }
-    setPoints(prev => [...prev, e.nativeEvent.coordinate]);
+    const coordinate = e?.nativeEvent?.coordinate;
+    if (!coordinate) {
+      return;
+    }
+    setPoints(prev => [...prev, coordinate]);
   };
 
   const undo = () => {
@@ -118,16 +123,18 @@ export default function DrawAreaScreen(_props: Props) {
   };
 
   const canClose = points.length >= 3;
-  const area = closed ? calcArea(points) : 0;
-  const perimeter = closed ? calcPerimeter(points) : 0;
+  const area = points.length >= 3 ? calcArea(points) : 0;
+  const perimeter = points.length >= 2 ? calcPerimeter(points) : 0;
 
   const instruction = closed
     ? 'Shape complete — tap Reopen to keep editing'
     : points.length === 0
-      ? 'Tap the map to place your first vertex'
-      : points.length < 3
-        ? `${points.length} point${points.length > 1 ? 's' : ''} — add ${3 - points.length} more to close`
-        : 'Keep tapping to add vertices, or tap Close Shape';
+    ? 'Tap the map to place your first vertex'
+    : points.length < 3
+    ? `${points.length} point${points.length > 1 ? 's' : ''} — add ${
+        3 - points.length
+      } more to close`
+    : 'Keep tapping to add vertices, or tap Close Shape';
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>
@@ -140,7 +147,7 @@ export default function DrawAreaScreen(_props: Props) {
           onPress={handleMapPress}
         >
           {/* Filled polygon once closed */}
-          {closed && (
+          {closed && points.length >= 3 && (
             <Polygon
               coordinates={points}
               strokeColor={theme.colors.primary}
@@ -159,28 +166,33 @@ export default function DrawAreaScreen(_props: Props) {
           )}
 
           {/* Dashed closing-edge preview (last → first) */}
-          {!closed && points.length >= 3 && (
-            <Polyline
-              coordinates={[points[points.length - 1], points[0]]}
-              strokeColor={theme.colors.primary + '80'}
-              strokeWidth={2}
-              lineDashPattern={[8, 6]}
-            />
-          )}
+          {!closed &&
+            points.length >= 3 &&
+            points[0] &&
+            points[points.length - 1] && (
+              <Polyline
+                coordinates={[points[points.length - 1], points[0]]}
+                strokeColor={theme.colors.primary + '80'}
+                strokeWidth={2}
+                lineDashPattern={[8, 6]}
+              />
+            )}
 
           {/* Numbered vertex markers */}
-          {points.map((pt, idx) => (
-            <Marker
-              key={`v-${idx}`}
-              coordinate={pt}
-              anchor={{ x: 0.5, y: 0.5 }}
-              tracksViewChanges={false}
-            >
-              <View style={styles.vertex}>
-                <Text style={styles.vertexLabel}>{idx + 1}</Text>
-              </View>
-            </Marker>
-          ))}
+          {points.map((pt, idx) =>
+            pt ? (
+              <Marker
+                key={`v-${idx}`}
+                coordinate={pt}
+                anchor={{ x: 0.5, y: 0.5 }}
+                tracksViewChanges={false}
+              >
+                <View style={styles.vertex}>
+                  <Text style={styles.vertexLabel}>{idx + 1}</Text>
+                </View>
+              </Marker>
+            ) : null,
+          )}
         </MapView>
 
         {/* Floating instruction badge */}
@@ -199,14 +211,14 @@ export default function DrawAreaScreen(_props: Props) {
             <View style={styles.statDivider} />
             <View style={styles.stat}>
               <Text style={styles.statValue}>
-                {closed ? fmtDist(perimeter) : '—'}
+                {points.length >= 2 ? fmtDist(perimeter) : '—'}
               </Text>
               <Text style={styles.statLabel}>Perimeter</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.stat}>
               <Text style={styles.statValue}>
-                {closed ? fmtArea(area) : '—'}
+                {points.length >= 3 ? fmtArea(area) : '—'}
               </Text>
               <Text style={styles.statLabel}>Area</Text>
             </View>

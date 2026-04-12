@@ -78,23 +78,6 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
-// Copy correct google-services.json based on build type (debug → firebase/debug, release → firebase/prod)
-android.applicationVariants.all { variant ->
-    def buildTypeName = variant.buildType.name
-    def firebaseFolder = buildTypeName == "release" ? "prod" : buildTypeName
-    def srcFile = rootProject.file("firebase/${firebaseFolder}/google-services.json")
-    variant.preBuildProvider.configure {
-        doFirst {
-            if (srcFile.exists()) {
-                copy { from srcFile; into file('.') }
-                println "[Firebase] Copied google-services.json for build type: ${buildTypeName}"
-            } else {
-                throw new GradleException("[Firebase] Missing config: ${srcFile.path}")
-            }
-        }
-    }
-}
-
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
