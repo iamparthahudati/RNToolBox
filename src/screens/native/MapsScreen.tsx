@@ -1,8 +1,8 @@
-import { MenuItem } from '../../types/menu';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { RootStackParamList } from '../../navigation/types';
 import ScreenLayout from '../../components/molecules/ScreenLayout';
+import { RootStackParamList } from '../../navigation/types';
+import { MenuItem } from '../../types/menu';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'NativeMaps'>;
 
@@ -82,13 +82,6 @@ const ITEMS: MenuItem[] = [
     description: 'Visualize data density with a heatmap overlay',
     screen: 'NativeMapsHeatmap',
     icon: 'fire',
-    implemented: true,
-  },
-  {
-    title: 'Animated Marker',
-    description: 'Simulate a vehicle moving along a route',
-    screen: 'NativeMapsAnimatedMarker',
-    icon: 'car-outline',
     implemented: true,
   },
   {
