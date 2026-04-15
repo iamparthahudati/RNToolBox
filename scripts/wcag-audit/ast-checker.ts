@@ -143,8 +143,17 @@ function traverseAST(
 // Component name sets
 // ---------------------------------------------------------------------------
 
-const IMAGE_COMPONENTS = new Set(['Image', 'Icon', 'SvgXml', 'FastImage']);
+/** Non-text visual elements that require accessibilityLabel (1.1.1) */
+const IMAGE_COMPONENTS = new Set([
+  'Image',
+  'ImageBackground',
+  'Icon',
+  'SvgXml',
+  'FastImage',
+  'ActivityIndicator',
+]);
 
+/** Interactive components that require accessibilityRole (1.3.1) */
 const TOUCHABLE_COMPONENTS = new Set([
   'TouchableOpacity',
   'Pressable',
@@ -152,12 +161,14 @@ const TOUCHABLE_COMPONENTS = new Set([
   'TouchableWithoutFeedback',
 ]);
 
+/** Interactive components checked for empty accessibilityLabel (2.5.3) */
 const TOUCHABLE_LABEL_COMPONENTS = new Set([
   'TouchableOpacity',
   'Pressable',
   'TouchableHighlight',
 ]);
 
+/** Interactive components checked for minimum touch target size (2.5.8) */
 const TOUCHABLE_SIZE_COMPONENTS = new Set([
   'TouchableOpacity',
   'Pressable',
@@ -165,12 +176,39 @@ const TOUCHABLE_SIZE_COMPONENTS = new Set([
 ]);
 
 // ---------------------------------------------------------------------------
-// Rule implementations
+// Decorative element helper
 // ---------------------------------------------------------------------------
 
 /**
+ * Returns true if the element is explicitly hidden from the accessibility tree,
+ * meaning it is purely decorative and should be exempt from a11y label checks.
+ *
+ * Exemption conditions:
+ *   - accessible={false}
+ *   - importantForAccessibility="no" | "no-hide-descendants"  (Android)
+ *   - accessibilityElementsHidden={true}  (iOS)
+ */
+function isDecorativeElement(node: TSESTree.JSXOpeningElement): boolean {
+  const accessibleAttr = getJSXAttr(node, 'accessible');
+  if (accessibleAttr && getAttrBoolValue(accessibleAttr) === false) return true;
+
+  const ifaAttr = getJSXAttr(node, 'importantForAccessibility');
+  if (ifaAttr) {
+    const val = getAttrStringValue(ifaAttr);
+    if (val === 'no' || val === 'no-hide-descendants') return true;
+  }
+
+  const aehAttr = getJSXAttr(node, 'accessibilityElementsHidden');
+  if (aehAttr && getAttrBoolValue(aehAttr) === true) return true;
+
+  return false;
+}
+
+/**
  * 1.1.1 — Non-text Content
- * Image/Icon/SvgXml/FastImage must have a non-empty accessibilityLabel.
+ * Image/ImageBackground/Icon/SvgXml/FastImage/ActivityIndicator must have a
+ * non-empty accessibilityLabel UNLESS they are explicitly marked decorative via
+ * accessible={false} or importantForAccessibility="no"/"no-hide-descendants".
  */
 function checkNonTextContent(
   node: TSESTree.JSXOpeningElement,
@@ -179,12 +217,15 @@ function checkNonTextContent(
   const name = getComponentName(node);
   if (!IMAGE_COMPONENTS.has(name)) return;
 
+  // Decorative exemption — explicitly hidden from a11y tree
+  if (isDecorativeElement(node)) return;
+
   const attr = getJSXAttr(node, 'accessibilityLabel');
   const missing = !attr;
-  const empty = attr
-    ? (getAttrStringValue(attr) ?? '').trim() === '' &&
-      getAttrStringValue(attr) !== null
-    : false;
+  const empty =
+    attr !== undefined &&
+    getAttrStringValue(attr) !== null &&
+    (getAttrStringValue(attr) ?? '').trim() === '';
 
   if (missing || empty) {
     issues.push(
@@ -192,7 +233,9 @@ function checkNonTextContent(
         'non-text-content',
         node,
         `${name} is missing accessibilityLabel`,
-        'Add accessibilityLabel="description of image" to convey meaning to screen reader users',
+        missing
+          ? `Add accessibilityLabel="description of ${name.toLowerCase()}" to convey meaning to screen reader users, or add accessible={false} if purely decorative`
+          : `accessibilityLabel on ${name} is empty — provide a meaningful description or mark as accessible={false} if decorative`,
         'error',
       ),
     );
@@ -435,6 +478,153 @@ function checkLabelsInstructions(
   }
 }
 
+/**
+ * 1.1.1 — Non-text Content (extended)
+ * ActivityIndicator used as a loading state must have accessibilityLabel so
+ * screen readers announce "Loading" rather than silence.
+ * (Already covered by IMAGE_COMPONENTS set — this note is for documentation.)
+ *
+ * 1.3.1 — Info and Relationships (extended)
+ * Switch must have accessibilityRole="switch" and accessibilityLabel.
+ */
+function checkSwitch(
+  node: TSESTree.JSXOpeningElement,
+  issues: AuditIssue[],
+): void {
+  const name = getComponentName(node);
+  if (name !== 'Switch') return;
+
+  // Must have accessibilityLabel (3.3.2 / 1.1.1 overlap — use labels-instructions)
+  const labelAttr = getJSXAttr(node, 'accessibilityLabel');
+  const labelMissing = !labelAttr;
+  const labelEmpty =
+    labelAttr !== undefined &&
+    getAttrStringValue(labelAttr) !== null &&
+    (getAttrStringValue(labelAttr) ?? '').trim() === '';
+
+  if (labelMissing || labelEmpty) {
+    issues.push(
+      makeIssue(
+        'labels-instructions',
+        node,
+        'Switch is missing accessibilityLabel',
+        'Add accessibilityLabel="Toggle [feature name]" so screen readers announce the purpose of this switch',
+        'error',
+      ),
+    );
+  }
+
+  // Must have accessibilityRole="switch" (1.3.1)
+  const roleAttr = getJSXAttr(node, 'accessibilityRole');
+  if (!roleAttr) {
+    issues.push(
+      makeIssue(
+        'info-relationships',
+        node,
+        'Switch is missing accessibilityRole="switch"',
+        'Add accessibilityRole="switch" so assistive technologies announce this as a toggle control',
+        'warning',
+      ),
+    );
+  }
+}
+
+/**
+ * 1.3.1 — Info and Relationships (extended)
+ * FlatList used as a navigable list should have accessibilityLabel describing
+ * the list content, and accessibilityRole="list" is recommended.
+ */
+function checkFlatList(
+  node: TSESTree.JSXOpeningElement,
+  issues: AuditIssue[],
+): void {
+  const name = getComponentName(node);
+  if (name !== 'FlatList') return;
+
+  const labelAttr = getJSXAttr(node, 'accessibilityLabel');
+  if (!labelAttr) {
+    issues.push(
+      makeIssue(
+        'info-relationships',
+        node,
+        'FlatList is missing accessibilityLabel',
+        'Add accessibilityLabel="List of [items]" so screen readers announce the list purpose when focused',
+        'warning',
+      ),
+    );
+  }
+}
+
+/**
+ * 1.3.1 — Info and Relationships (extended)
+ * ScrollView used as a primary content region should have accessibilityLabel
+ * and accessibilityRole="scrollbar" or a descriptive label.
+ * Only flagged when it has no accessibilityLabel at all.
+ */
+function checkScrollView(
+  node: TSESTree.JSXOpeningElement,
+  issues: AuditIssue[],
+): void {
+  const name = getComponentName(node);
+  if (name !== 'ScrollView') return;
+
+  // Only flag if it has no label AND no role — many ScrollViews are layout-only
+  const labelAttr = getJSXAttr(node, 'accessibilityLabel');
+  const roleAttr = getJSXAttr(node, 'accessibilityRole');
+
+  if (!labelAttr && !roleAttr) {
+    issues.push(
+      makeIssue(
+        'info-relationships',
+        node,
+        'ScrollView is missing accessibilityLabel and accessibilityRole',
+        'Add accessibilityLabel="[content description]" and accessibilityRole="scrollbar" if this is a primary scrollable region',
+        'info',
+      ),
+    );
+  }
+}
+
+/**
+ * 2.1.1 — Keyboard / Switch Access (extended)
+ * Text with onPress must have accessible={true} and accessibilityRole.
+ * Plain Text is not keyboard-focusable by default.
+ */
+function checkInteractiveText(
+  node: TSESTree.JSXOpeningElement,
+  issues: AuditIssue[],
+): void {
+  const name = getComponentName(node);
+  if (name !== 'Text') return;
+
+  if (!getJSXAttr(node, 'onPress')) return;
+
+  const accessibleAttr = getJSXAttr(node, 'accessible');
+  const roleAttr = getJSXAttr(node, 'accessibilityRole');
+
+  if (!accessibleAttr || getAttrBoolValue(accessibleAttr) === false) {
+    issues.push(
+      makeIssue(
+        'keyboard',
+        node,
+        'Text with onPress is missing accessible={true}',
+        'Add accessible={true} and accessibilityRole="button" (or "link") to make interactive Text reachable by keyboard and switch access users',
+        'warning',
+      ),
+    );
+  } else if (!roleAttr) {
+    issues.push(
+      makeIssue(
+        'info-relationships',
+        node,
+        'Interactive Text is missing accessibilityRole',
+        'Add accessibilityRole="button" or "link" to interactive Text so assistive technologies announce its purpose',
+        'warning',
+      ),
+    );
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
@@ -471,13 +661,25 @@ export function checkFile(filePath: string): AuditIssue[] {
   traverseAST(ast, {
     JSXOpeningElement(node: unknown) {
       const jsxNode = node as TSESTree.JSXOpeningElement;
+      // 1.1.1 — Non-text content (Image, Icon, SvgXml, FastImage, ImageBackground, ActivityIndicator)
       checkNonTextContent(jsxNode, issues);
+      // 1.3.1 — Info & Relationships (Touchables, Switch, FlatList, ScrollView, interactive Text)
       checkInfoRelationships(jsxNode, issues);
+      checkSwitch(jsxNode, issues);
+      checkFlatList(jsxNode, issues);
+      checkScrollView(jsxNode, issues);
+      checkInteractiveText(jsxNode, issues);
+      // 1.4.4 — Resize Text (Text allowFontScaling / maxFontSizeMultiplier)
       checkResizeText(jsxNode, issues);
+      // 2.1.1 — Keyboard / Switch Access (View with onPress, Text with onPress)
       checkKeyboard(jsxNode, issues);
+      // 2.4.3 — Focus Order (Modal)
       checkFocusOrder(jsxNode, issues);
+      // 2.5.3 — Label in Name (empty accessibilityLabel on touchables)
       checkLabelInName(jsxNode, issues);
+      // 2.5.8 — Target Size (inline style width/height < 24pt)
       checkTargetSize(jsxNode, issues);
+      // 3.3.2 — Labels / Instructions (TextInput, Switch)
       checkLabelsInstructions(jsxNode, issues);
     },
   });
