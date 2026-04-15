@@ -67,7 +67,7 @@ const ITEMS: MenuItem[] = [
     title: 'Biometrics',
     description: 'Face ID and fingerprint auth',
     screen: 'NativeBiometrics',
-    implemented: false,
+    implemented: true,
     icon: 'fingerprint',
   },
   {
