@@ -80,6 +80,24 @@ function formatRadius(meters: number): string {
   return `${Math.round(meters)} m`;
 }
 
+function formatArea(sqm: number): string {
+  if (sqm >= 1_000_000) {
+    return `${(sqm / 1_000_000).toFixed(3)} km²`;
+  }
+  if (sqm >= 10_000) {
+    return `${(sqm / 10_000).toFixed(2)} ha`;
+  }
+  return `${Math.round(sqm).toLocaleString()} m²`;
+}
+
+function circleArea(r: number): number {
+  return Math.PI * r * r;
+}
+
+function circleCircumference(r: number): number {
+  return 2 * Math.PI * r;
+}
+
 function pixelDistance(ax: number, ay: number, bx: number, by: number): number {
   return Math.sqrt((bx - ax) ** 2 + (by - ay) ** 2);
 }
@@ -269,6 +287,14 @@ export default function CircleDrawScreen(_props: Props) {
     : 'Tap to place center';
 
   const displayRadius = draft !== null ? draft.radiusMeters : lastRadius;
+  const displayArea =
+    displayRadius !== null && displayRadius > 0
+      ? circleArea(displayRadius)
+      : null;
+  const displayCircumference =
+    displayRadius !== null && displayRadius > 0
+      ? circleCircumference(displayRadius)
+      : null;
 
   // -------------------------------------------------------------------------
   // Render
@@ -376,14 +402,42 @@ export default function CircleDrawScreen(_props: Props) {
             </View>
             <View style={styles.statDivider} />
             <View style={styles.stat}>
-              <Text style={styles.statValue}>
+              <Text
+                style={styles.statValue}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+              >
                 {displayRadius !== null && displayRadius > 0
                   ? formatRadius(displayRadius)
                   : '—'}
               </Text>
               <Text style={styles.statLabel}>
-                {draft !== null ? 'Live Radius' : 'Last Radius'}
+                {draft !== null ? 'Live Radius' : 'Radius'}
               </Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.stat}>
+              <Text
+                style={styles.statValue}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+              >
+                {displayArea !== null ? formatArea(displayArea) : '—'}
+              </Text>
+              <Text style={styles.statLabel}>Area</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.stat}>
+              <Text
+                style={styles.statValue}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+              >
+                {displayCircumference !== null
+                  ? formatRadius(displayCircumference)
+                  : '—'}
+              </Text>
+              <Text style={styles.statLabel}>Perimeter</Text>
             </View>
           </View>
 
