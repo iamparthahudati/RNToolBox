@@ -62,6 +62,83 @@ function totalPoints(strokes: Stroke[]): number {
   return strokes.reduce((acc, s) => acc + s.points.length, 0);
 }
 
+// Haversine distance between two coordinates (metres)
+function haversine(a: LatLng, b: LatLng): number {
+  const R = 6_371_000;
+  const lat1 = (a.latitude * Math.PI) / 180;
+  const lat2 = (b.latitude * Math.PI) / 180;
+  const dLat = lat2 - lat1;
+  const dLon = ((b.longitude - a.longitude) * Math.PI) / 180;
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+}
+
+// Perimeter of a stroke — for polygons the closing edge is included
+function strokePerimeter(pts: LatLng[], isPolygon: boolean): number {
+  if (pts.length < 2) {
+    return 0;
+  }
+  let total = 0;
+  for (let i = 0; i < pts.length - 1; i++) {
+    total += haversine(pts[i], pts[i + 1]);
+  }
+  if (isPolygon && pts.length >= 3) {
+    total += haversine(pts[pts.length - 1], pts[0]);
+  }
+  return total;
+}
+
+// Spherical excess formula — area of a geographic polygon (m²)
+function strokeArea(pts: LatLng[]): number {
+  if (pts.length < 3) {
+    return 0;
+  }
+  const R = 6_371_000;
+  let sum = 0;
+  const n = pts.length;
+  for (let i = 0; i < n; i++) {
+    const j = (i + 1) % n;
+    const lat1 = (pts[i].latitude * Math.PI) / 180;
+    const lat2 = (pts[j].latitude * Math.PI) / 180;
+    const dLon = ((pts[j].longitude - pts[i].longitude) * Math.PI) / 180;
+    sum += (2 + Math.sin(lat1) + Math.sin(lat2)) * dLon;
+  }
+  return Math.abs((sum * R * R) / 2);
+}
+
+// Aggregate perimeter + area across all committed strokes
+function aggregateStats(strokes: Stroke[]): {
+  perimeter: number;
+  area: number;
+} {
+  let perimeter = 0;
+  let area = 0;
+  for (const s of strokes) {
+    const isPoly = s.mode === 'polygon' && s.points.length >= 3;
+    perimeter += strokePerimeter(s.points, isPoly);
+    if (isPoly) {
+      area += strokeArea(s.points);
+    }
+  }
+  return { perimeter, area };
+}
+
+function fmtDist(m: number): string {
+  return m >= 1000 ? `${(m / 1000).toFixed(2)} km` : `${Math.round(m)} m`;
+}
+
+function fmtArea(sqm: number): string {
+  if (sqm >= 1_000_000) {
+    return `${(sqm / 1_000_000).toFixed(3)} km²`;
+  }
+  if (sqm >= 10_000) {
+    return `${(sqm / 10_000).toFixed(2)} ha`;
+  }
+  return `${Math.round(sqm).toLocaleString()} m²`;
+}
+
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
@@ -198,6 +275,18 @@ export default function GestureDrawScreen(_props: Props) {
   const strokeCount = committedStrokes.length;
   const pointCount = totalPoints(committedStrokes);
 
+  // Include the live stroke in perimeter while drawing
+  const { perimeter: committedPerimeter, area: committedArea } =
+    aggregateStats(committedStrokes);
+  const livePerimeter =
+    livePoints.length >= 2
+      ? strokePerimeter(livePoints, mode === 'polygon')
+      : 0;
+  const totalPerimeter = committedPerimeter + livePerimeter;
+  const liveArea =
+    mode === 'polygon' && livePoints.length >= 3 ? strokeArea(livePoints) : 0;
+  const totalArea = committedArea + liveArea;
+
   const badgeInstruction = !mapLocked
     ? 'Map navigation active — toggle Lock Map to draw'
     : mode === 'draw'
@@ -287,6 +376,28 @@ export default function GestureDrawScreen(_props: Props) {
             <View style={styles.stat}>
               <Text style={styles.statValue}>{pointCount}</Text>
               <Text style={styles.statLabel}>Points</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.stat}>
+              <Text
+                style={styles.statValue}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+              >
+                {totalPerimeter > 0 ? fmtDist(totalPerimeter) : '—'}
+              </Text>
+              <Text style={styles.statLabel}>Perimeter</Text>
+            </View>
+            <View style={styles.statDivider} />
+            <View style={styles.stat}>
+              <Text
+                style={styles.statValue}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+              >
+                {totalArea > 0 ? fmtArea(totalArea) : '—'}
+              </Text>
+              <Text style={styles.statLabel}>Area</Text>
             </View>
           </View>
 
