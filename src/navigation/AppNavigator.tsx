@@ -37,11 +37,13 @@ import SendEmailScreen from '../screens/native/SendEmailScreen';
 import ShareScreen from '../screens/native/ShareScreen';
 import AnimatedMarkerScreen from '../screens/native/maps/AnimatedMarkerScreen';
 import BasicMapScreen from '../screens/native/maps/BasicMapScreen';
+import CircleDrawScreen from '../screens/native/maps/CircleDrawScreen';
 import ClusterMarkersScreen from '../screens/native/maps/ClusterMarkersScreen';
 import CustomMapStyleScreen from '../screens/native/maps/CustomMapStyleScreen';
 import DirectionsScreen from '../screens/native/maps/DirectionsScreen';
 import DrawAreaScreen from '../screens/native/maps/DrawAreaScreen';
 import GeofenceScreen from '../screens/native/maps/GeofenceScreen';
+import GestureDrawScreen from '../screens/native/maps/GestureDrawScreen';
 import HeatmapScreen from '../screens/native/maps/HeatmapScreen';
 import MarkersScreen from '../screens/native/maps/MarkersScreen';
 import MyLocationScreen from '../screens/native/maps/MyLocationScreen';
@@ -167,6 +169,14 @@ const AppNavigator = () => {
         <Stack.Screen
           name="NativeMapsAnimatedMarker"
           component={AnimatedMarkerScreen}
+        />
+        <Stack.Screen
+          name="NativeMapsGestureDraw"
+          component={GestureDrawScreen}
+        />
+        <Stack.Screen
+          name="NativeMapsCircleDraw"
+          component={CircleDrawScreen}
         />
 
         {/* Permissions */}

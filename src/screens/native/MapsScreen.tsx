@@ -64,6 +64,20 @@ const ITEMS: MenuItem[] = [
     implemented: true,
   },
   {
+    title: 'Gesture Draw',
+    description: 'Freehand draw polylines and polygons with your finger',
+    screen: 'NativeMapsGestureDraw',
+    icon: 'gesture',
+    implemented: true,
+  },
+  {
+    title: 'Circle Draw',
+    description: 'Tap to place center, drag to set radius — draw circles',
+    screen: 'NativeMapsCircleDraw',
+    icon: 'circle-edit-outline',
+    implemented: true,
+  },
+  {
     title: 'Animated Marker',
     description: 'Simulate a vehicle moving along a polyline route',
     screen: 'NativeMapsAnimatedMarker',
