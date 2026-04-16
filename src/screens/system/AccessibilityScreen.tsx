@@ -143,11 +143,7 @@ const DemoCard = ({
           },
         ]}
       >
-        <Icon
-          name="code-tags"
-          size={14}
-          color={colors.textTertiary}
-        />
+        <Icon name="code-tags" size={14} color={colors.textTertiary} />
         <Text
           style={[
             typography.presets.caption,
@@ -294,6 +290,8 @@ export default function AccessibilityScreen() {
   const { colors, spacing, typography, isDark } = useTheme();
   const [switchWrong, setSwitchWrong] = useState(false);
   const [switchCorrect, setSwitchCorrect] = useState(false);
+  const [errorShown, setErrorShown] = useState(false);
+  const [liveCount, setLiveCount] = useState(0);
 
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: colors.background }]}>
@@ -364,11 +362,7 @@ export default function AccessibilityScreen() {
           codeSnippet={`// Correct — descriptive label\n<Icon\n  name="heart"\n  size={24}\n  color={colors.errorMain}\n  accessibilityLabel="Add to favourites"\n/>`}
         >
           <View accessibilityLabel="Add to favourites" accessible={true}>
-            <Icon
-              name="heart"
-              size={28}
-              color={colors.errorMain}
-            />
+            <Icon name="heart" size={28} color={colors.errorMain} />
           </View>
         </DemoCard>
 
@@ -830,11 +824,7 @@ export default function AccessibilityScreen() {
                 justifyContent: 'center',
               }}
             >
-              <Icon
-                name="close"
-                size={10}
-                color={colors.white}
-              />
+              <Icon name="close" size={10} color={colors.white} />
             </TouchableOpacity>
             <Text
               style={[
@@ -866,11 +856,7 @@ export default function AccessibilityScreen() {
                 justifyContent: 'center',
               }}
             >
-              <Icon
-                name="close"
-                size={20}
-                color={colors.white}
-              />
+              <Icon name="close" size={20} color={colors.white} />
             </TouchableOpacity>
             <Text
               style={[
@@ -1039,6 +1025,538 @@ export default function AccessibilityScreen() {
             size="large"
             accessibilityLabel="Loading, please wait"
           />
+        </DemoCard>
+
+        {/* ================================================================ */}
+        {/* 1.3.4 — Orientation                                              */}
+        {/* ================================================================ */}
+        <CriterionHeader
+          id="1.3.4"
+          level="AA"
+          title="Orientation"
+          description="Content must not be locked to a single screen orientation (portrait or landscape) unless essential. Users with mounted devices cannot rotate their screen."
+        />
+
+        <DemoCard
+          variant="wrong"
+          criterion="1.3.4"
+          label="Locking orientation to portrait prevents users with fixed-mount devices (e.g. wheelchair mounts) from using the app in landscape."
+          codeSnippet={`// Wrong — forces portrait only\n// In AppDelegate / AndroidManifest:\nscreenOrientation: 'portrait'\n\n// Or via react-native-orientation-locker:\nOrientation.lockToPortrait();`}
+        >
+          <View
+            style={{
+              backgroundColor: isDark ? colors.neutral800 : colors.neutral100,
+              borderRadius: spacing.radii.md,
+              padding: spacing.md,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: spacing.sm,
+            }}
+          >
+            <Icon name="phone-lock" size={28} color={colors.errorMain} />
+            <View style={{ flex: 1 }}>
+              <Text
+                style={[
+                  typography.presets.label,
+                  { color: colors.textPrimary },
+                ]}
+              >
+                Portrait only
+              </Text>
+              <Text
+                style={[
+                  typography.presets.caption,
+                  { color: colors.textSecondary, marginTop: 2 },
+                ]}
+              >
+                Locked — landscape users cannot rotate
+              </Text>
+            </View>
+          </View>
+        </DemoCard>
+
+        <DemoCard
+          variant="correct"
+          criterion="1.3.4"
+          label="Allow both orientations by default. Only lock orientation when it is essential to the feature (e.g. a video player in fullscreen)."
+          codeSnippet={`// Correct — no orientation lock\n// Do not set screenOrientation in app config.\n// Layout adapts to both portrait and landscape.\n\n// If you must lock (e.g. video), provide an\n// explicit unlock when leaving that screen:\nOrientation.unlockAllOrientations();`}
+        >
+          <View
+            style={{
+              backgroundColor: isDark ? colors.neutral800 : colors.neutral100,
+              borderRadius: spacing.radii.md,
+              padding: spacing.md,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: spacing.sm,
+            }}
+          >
+            <Icon
+              name="phone-rotate-landscape"
+              size={28}
+              color={colors.successMain}
+            />
+            <View style={{ flex: 1 }}>
+              <Text
+                style={[
+                  typography.presets.label,
+                  { color: colors.textPrimary },
+                ]}
+              >
+                Both orientations
+              </Text>
+              <Text
+                style={[
+                  typography.presets.caption,
+                  { color: colors.textSecondary, marginTop: 2 },
+                ]}
+              >
+                Unlocked — layout adapts to device rotation
+              </Text>
+            </View>
+          </View>
+        </DemoCard>
+
+        {/* ================================================================ */}
+        {/* 1.3.5 — Identify Input Purpose                                   */}
+        {/* ================================================================ */}
+        <CriterionHeader
+          id="1.3.5"
+          level="AA"
+          title="Identify Input Purpose"
+          description="Form fields that collect personal data must declare their purpose via textContentType (iOS) and autoComplete (Android) so autofill and assistive tech can identify them."
+        />
+
+        <DemoCard
+          variant="wrong"
+          criterion="1.3.5"
+          label="No textContentType or autoComplete — autofill cannot identify the field, and assistive tech cannot announce its purpose to users who rely on autofill."
+          codeSnippet={`// Wrong — no input purpose declared\n<TextInput\n  placeholder="Email"\n  accessibilityLabel="Email address"\n  keyboardType="email-address"\n/>`}
+        >
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor={colors.textTertiary}
+            accessibilityLabel="Email address (no autofill hint)"
+            keyboardType="email-address"
+            style={{
+              borderWidth: 1,
+              borderColor: colors.border,
+              borderRadius: spacing.radii.md,
+              paddingHorizontal: spacing.md,
+              paddingVertical: spacing.sm,
+              width: '100%',
+              color: colors.textPrimary,
+              backgroundColor: colors.surface,
+            }}
+          />
+        </DemoCard>
+
+        <DemoCard
+          variant="correct"
+          criterion="1.3.5"
+          label="textContentType='emailAddress' (iOS) and autoComplete='email' (Android) let the OS identify the field for autofill and announce it correctly to assistive tech."
+          codeSnippet={`// Correct — input purpose declared\n<TextInput\n  placeholder="Email"\n  accessibilityLabel="Email address"\n  keyboardType="email-address"\n  textContentType="emailAddress"   // iOS\n  autoComplete="email"             // Android\n/>`}
+        >
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor={colors.textTertiary}
+            accessibilityLabel="Email address"
+            keyboardType="email-address"
+            textContentType="emailAddress"
+            autoComplete="email"
+            style={{
+              borderWidth: 1.5,
+              borderColor: colors.primary,
+              borderRadius: spacing.radii.md,
+              paddingHorizontal: spacing.md,
+              paddingVertical: spacing.sm,
+              width: '100%',
+              color: colors.textPrimary,
+              backgroundColor: colors.surface,
+            }}
+          />
+        </DemoCard>
+
+        {/* ================================================================ */}
+        {/* 2.4.6 — Headings and Labels                                      */}
+        {/* ================================================================ */}
+        <CriterionHeader
+          id="2.4.6"
+          level="AA"
+          title="Headings and Labels"
+          description="Section headings must be marked with accessibilityRole='header' so screen reader users can navigate between sections using heading shortcuts."
+        />
+
+        <DemoCard
+          variant="wrong"
+          criterion="2.4.6"
+          label="Section title rendered as plain Text — VoiceOver reads it as body text. Screen reader users cannot jump between sections using heading navigation."
+          codeSnippet={`// Wrong — plain Text, not a heading\n<Text style={styles.sectionTitle}>\n  Account Settings\n</Text>`}
+        >
+          <Text
+            style={[
+              typography.presets.h2,
+              {
+                color: colors.textPrimary,
+                borderBottomWidth: 1,
+                borderBottomColor: colors.border,
+                paddingBottom: spacing.xs,
+              },
+            ]}
+          >
+            Account Settings
+          </Text>
+        </DemoCard>
+
+        <DemoCard
+          variant="correct"
+          criterion="2.4.6"
+          label='accessibilityRole="header" marks this as a heading — VoiceOver announces "Account Settings, heading" and users can navigate to it with the rotor.'
+          codeSnippet={`// Correct — marked as a heading\n<Text\n  accessibilityRole="header"\n  style={styles.sectionTitle}\n>\n  Account Settings\n</Text>`}
+        >
+          <Text
+            accessibilityRole="header"
+            style={[
+              typography.presets.h2,
+              {
+                color: colors.textPrimary,
+                borderBottomWidth: 1,
+                borderBottomColor: colors.border,
+                paddingBottom: spacing.xs,
+              },
+            ]}
+          >
+            Account Settings
+          </Text>
+        </DemoCard>
+
+        {/* ================================================================ */}
+        {/* 2.5.4 — Motion Actuation                                         */}
+        {/* ================================================================ */}
+        <CriterionHeader
+          id="2.5.4"
+          level="A"
+          title="Motion Actuation"
+          description="Functionality triggered by device motion (shake, tilt, gyroscope) must also be available through a standard UI control. Users with tremors or fixed-mount devices cannot perform motion gestures."
+        />
+
+        <DemoCard
+          variant="wrong"
+          criterion="2.5.4"
+          label="Shake-to-undo is the only way to undo — users with motor impairments or mounted devices cannot shake their device."
+          codeSnippet={`// Wrong — shake is the only undo mechanism\nuseEffect(() => {\n  // Shake gesture listener only\n  ShakeEventListener.addListener(() => {\n    undoLastAction();\n  });\n}, []);`}
+        >
+          <View
+            style={{
+              backgroundColor: isDark ? colors.neutral800 : colors.neutral100,
+              borderRadius: spacing.radii.md,
+              padding: spacing.md,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: spacing.sm,
+            }}
+          >
+            <Icon name="vibrate" size={24} color={colors.errorMain} />
+            <Text
+              style={[
+                typography.presets.bodySmall,
+                { color: colors.textSecondary, flex: 1 },
+              ]}
+            >
+              Shake device to undo{'\n'}
+              <Text style={{ color: colors.errorMain }}>
+                No button alternative provided
+              </Text>
+            </Text>
+          </View>
+        </DemoCard>
+
+        <DemoCard
+          variant="correct"
+          criterion="2.5.4"
+          label="Shake gesture is supported AND an Undo button is always visible — users who cannot shake can tap the button instead."
+          codeSnippet={`// Correct — shake + button alternative\nuseEffect(() => {\n  ShakeEventListener.addListener(undoLastAction);\n}, []);\n\n// Always render a visible Undo button:\n<TouchableOpacity\n  onPress={undoLastAction}\n  accessibilityRole="button"\n  accessibilityLabel="Undo last action"\n>\n  <Text>Undo</Text>\n</TouchableOpacity>`}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: spacing.sm,
+            }}
+          >
+            <Icon name="vibrate" size={20} color={colors.successMain} />
+            <Text
+              style={[
+                typography.presets.caption,
+                { color: colors.textSecondary },
+              ]}
+            >
+              Shake to undo
+            </Text>
+            <Text
+              style={[
+                typography.presets.caption,
+                { color: colors.textTertiary },
+              ]}
+            >
+              or
+            </Text>
+            <TouchableOpacity
+              onPress={() => {}}
+              accessibilityRole="button"
+              accessibilityLabel="Undo last action"
+              style={{
+                backgroundColor: colors.primary,
+                paddingHorizontal: spacing.md,
+                paddingVertical: spacing.xs,
+                borderRadius: spacing.radii.sm,
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: spacing.xs,
+              }}
+            >
+              <Icon name="undo" size={14} color={colors.white} />
+              <Text style={[typography.presets.label, { color: colors.white }]}>
+                Undo
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </DemoCard>
+
+        {/* ================================================================ */}
+        {/* UNDERSTANDABLE (continued)                                        */}
+        {/* ================================================================ */}
+
+        {/* ================================================================ */}
+        {/* 3.3.1 — Error Identification                                      */}
+        {/* ================================================================ */}
+        <CriterionHeader
+          id="3.3.1"
+          level="A"
+          title="Error Identification"
+          description="Form errors must be announced to screen readers, not just shown visually. Color or icon alone is not sufficient — the error must be programmatically associated with the field."
+        />
+
+        <DemoCard
+          variant="wrong"
+          criterion="3.3.1"
+          label="Error shown only with a red border and icon — screen readers do not announce the error. Users relying on VoiceOver have no idea the field is invalid."
+          codeSnippet={`// Wrong — visual error only\n<TextInput\n  style={{ borderColor: 'red' }}\n  accessibilityLabel="Email"\n/>\n<Icon name="alert-circle" color="red" />\n<Text style={{ color: 'red' }}>Invalid email</Text>`}
+        >
+          <View style={{ width: '100%', gap: spacing.xs }}>
+            <TextInput
+              placeholder="Enter email"
+              placeholderTextColor={colors.textTertiary}
+              accessibilityLabel="Email"
+              style={{
+                borderWidth: 2,
+                borderColor: colors.errorMain,
+                borderRadius: spacing.radii.md,
+                paddingHorizontal: spacing.md,
+                paddingVertical: spacing.sm,
+                width: '100%',
+                color: colors.textPrimary,
+                backgroundColor: colors.surface,
+              }}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: spacing.xs,
+              }}
+            >
+              <Icon name="alert-circle" size={14} color={colors.errorMain} />
+              <Text
+                style={[
+                  typography.presets.caption,
+                  { color: colors.errorMain },
+                ]}
+              >
+                Invalid email address
+              </Text>
+            </View>
+          </View>
+        </DemoCard>
+
+        <DemoCard
+          variant="correct"
+          criterion="3.3.1"
+          label="accessibilityLabel includes the error text, and accessibilityLiveRegion='assertive' causes VoiceOver to immediately announce the error when it appears."
+          codeSnippet={`// Correct — error announced to screen reader\n<TextInput\n  accessibilityLabel="Email — Invalid email address"\n  accessibilityInvalid={true}\n  style={{ borderColor: colors.errorMain }}\n/>\n{/* Error message with live region */}\n<Text\n  accessibilityLiveRegion="assertive"\n  accessibilityRole="alert"\n>\n  Invalid email address\n</Text>`}
+        >
+          <View style={{ width: '100%', gap: spacing.xs }}>
+            <TouchableOpacity
+              onPress={() => setErrorShown(v => !v)}
+              accessibilityRole="button"
+              accessibilityLabel="Toggle error state demo"
+              style={{
+                backgroundColor: colors.primary,
+                paddingHorizontal: spacing.md,
+                paddingVertical: spacing.xs,
+                borderRadius: spacing.radii.sm,
+                alignSelf: 'flex-start',
+                marginBottom: spacing.xs,
+              }}
+            >
+              <Text
+                style={[typography.presets.caption, { color: colors.white }]}
+              >
+                {errorShown ? 'Clear error' : 'Trigger error'}
+              </Text>
+            </TouchableOpacity>
+            <TextInput
+              placeholder="Enter email"
+              placeholderTextColor={colors.textTertiary}
+              accessibilityLabel={
+                errorShown ? 'Email — Invalid email address' : 'Email'
+              }
+              style={{
+                borderWidth: errorShown ? 2 : 1,
+                borderColor: errorShown ? colors.errorMain : colors.primary,
+                borderRadius: spacing.radii.md,
+                paddingHorizontal: spacing.md,
+                paddingVertical: spacing.sm,
+                width: '100%',
+                color: colors.textPrimary,
+                backgroundColor: colors.surface,
+              }}
+            />
+            {errorShown && (
+              <View
+                accessibilityLiveRegion="assertive"
+                accessibilityRole="alert"
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: spacing.xs,
+                }}
+              >
+                <Icon name="alert-circle" size={14} color={colors.errorMain} />
+                <Text
+                  style={[
+                    typography.presets.caption,
+                    { color: colors.errorMain },
+                  ]}
+                >
+                  Invalid email address
+                </Text>
+              </View>
+            )}
+          </View>
+        </DemoCard>
+
+        {/* ================================================================ */}
+        {/* ROBUST                                                            */}
+        {/* ================================================================ */}
+        <SectionHeader title="ROBUST" />
+
+        {/* ================================================================ */}
+        {/* 4.1.3 — Status Messages                                          */}
+        {/* ================================================================ */}
+        <CriterionHeader
+          id="4.1.3"
+          level="AA"
+          title="Status Messages"
+          description="Dynamic status updates (item counts, success/error toasts, loading completion) must be announced by screen readers without moving focus. Use accessibilityLiveRegion."
+        />
+
+        <DemoCard
+          variant="wrong"
+          criterion="4.1.3"
+          label="Counter updates visually but has no live region — screen readers do not announce the new count. Users relying on VoiceOver miss the update entirely."
+          codeSnippet={`// Wrong — no live region\n<Text style={styles.counter}>\n  {count} items selected\n</Text>\n<TouchableOpacity onPress={increment}>\n  <Text>Add item</Text>\n</TouchableOpacity>`}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: spacing.md,
+            }}
+          >
+            <Text
+              style={[
+                typography.presets.h3,
+                {
+                  color: colors.textPrimary,
+                  minWidth: 80,
+                  backgroundColor: isDark
+                    ? colors.neutral800
+                    : colors.neutral100,
+                  padding: spacing.sm,
+                  borderRadius: spacing.radii.md,
+                  textAlign: 'center',
+                },
+              ]}
+            >
+              {liveCount} items
+            </Text>
+            <TouchableOpacity
+              onPress={() => setLiveCount(c => c + 1)}
+              accessibilityRole="button"
+              accessibilityLabel="Add item (no announcement)"
+              style={{
+                backgroundColor: colors.errorMain,
+                paddingHorizontal: spacing.md,
+                paddingVertical: spacing.sm,
+                borderRadius: spacing.radii.md,
+              }}
+            >
+              <Text style={[typography.presets.label, { color: colors.white }]}>
+                Add item
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </DemoCard>
+
+        <DemoCard
+          variant="correct"
+          criterion="4.1.3"
+          label='accessibilityLiveRegion="polite" causes VoiceOver to announce the updated count after the current speech finishes — without moving focus away from the button.'
+          codeSnippet={`// Correct — live region announces updates\n<Text\n  accessibilityLiveRegion="polite"\n  accessibilityLabel={\`\${count} items selected\`}\n>\n  {count} items selected\n</Text>\n<TouchableOpacity\n  onPress={increment}\n  accessibilityRole="button"\n  accessibilityLabel="Add item"\n>\n  <Text>Add item</Text>\n</TouchableOpacity>`}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: spacing.md,
+            }}
+          >
+            <Text
+              accessibilityLiveRegion="polite"
+              accessibilityLabel={`${liveCount} items selected`}
+              style={[
+                typography.presets.h3,
+                {
+                  color: colors.textPrimary,
+                  minWidth: 80,
+                  backgroundColor: isDark
+                    ? colors.neutral800
+                    : colors.neutral100,
+                  padding: spacing.sm,
+                  borderRadius: spacing.radii.md,
+                  textAlign: 'center',
+                },
+              ]}
+            >
+              {liveCount} items
+            </Text>
+            <TouchableOpacity
+              onPress={() => setLiveCount(c => c + 1)}
+              accessibilityRole="button"
+              accessibilityLabel="Add item"
+              style={{
+                backgroundColor: colors.successMain,
+                paddingHorizontal: spacing.md,
+                paddingVertical: spacing.sm,
+                borderRadius: spacing.radii.md,
+              }}
+            >
+              <Text style={[typography.presets.label, { color: colors.white }]}>
+                Add item
+              </Text>
+            </TouchableOpacity>
+          </View>
         </DemoCard>
       </ScrollView>
     </SafeAreaView>
