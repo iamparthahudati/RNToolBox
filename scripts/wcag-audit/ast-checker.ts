@@ -8,6 +8,12 @@ const parser = require('@typescript-eslint/parser') as {
 };
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const fs: { readFileSync(path: string, enc: 'utf-8'): string } = require('fs');
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+const wcagContrast = require('wcag-contrast') as {
+  hex(a: string, b: string): number;
+};
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+const Color = require('color') as (hex: string) => { hex(): string };
 
 function makeIssue(
   ruleId: string,
@@ -626,6 +632,214 @@ function checkInteractiveText(
 }
 
 // ---------------------------------------------------------------------------
+// Inline color contrast checker (1.4.3 + 1.4.11)
+// ---------------------------------------------------------------------------
+
+/** Regex that matches a 3 or 6 digit hex color string literal */
+const HEX_RE = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
+
+function isHex(value: string): boolean {
+  return HEX_RE.test(value);
+}
+
+function safeContrastRatio(fg: string, bg: string): number | null {
+  try {
+    return wcagContrast.hex(Color(fg).hex(), Color(bg).hex());
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Extract a string literal value from an ObjectExpression property by key name.
+ * Returns null if the property is absent or not a string literal.
+ */
+function getStylePropString(
+  obj: TSESTree.ObjectExpression,
+  key: string,
+): string | null {
+  for (const prop of obj.properties) {
+    if (prop.type !== 'Property') continue;
+    const p = prop as TSESTree.Property;
+    const k =
+      p.key.type === 'Identifier'
+        ? (p.key as TSESTree.Identifier).name
+        : p.key.type === 'Literal'
+        ? String((p.key as TSESTree.Literal).value)
+        : null;
+    if (k !== key) continue;
+    if (
+      p.value.type === 'Literal' &&
+      typeof (p.value as TSESTree.Literal).value === 'string'
+    ) {
+      return (p.value as TSESTree.Literal).value as string;
+    }
+  }
+  return null;
+}
+
+/**
+ * Walk an inline style JSXExpressionContainer and return the ObjectExpression
+ * if the style is a plain object literal (not a StyleSheet ref or array).
+ */
+function getInlineStyleObject(
+  attr: TSESTree.JSXAttribute | undefined,
+): TSESTree.ObjectExpression | null {
+  if (!attr?.value) return null;
+  const { value } = attr;
+  if (value.type !== 'JSXExpressionContainer') return null;
+  const expr = value.expression;
+  if (expr.type === 'ObjectExpression')
+    return expr as TSESTree.ObjectExpression;
+  return null;
+}
+
+interface InlineColorIssue {
+  ruleId: 'contrast-minimum' | 'non-text-contrast';
+  line: number;
+  column: number;
+  message: string;
+  suggestion: string;
+  severity: 'error' | 'warning';
+}
+
+/**
+ * 1.4.3 / 1.4.11 — Inline color contrast
+ *
+ * Scans every JSXOpeningElement in the file for inline style objects that
+ * contain literal hex color values. Checks:
+ *
+ *   Text / TextInput — color vs backgroundColor (1.4.3, threshold 4.5:1)
+ *   View / Pressable / TouchableOpacity etc — borderColor vs backgroundColor (1.4.11, threshold 3:1)
+ *
+ * When backgroundColor is absent from the element itself, falls back to a
+ * set of background hex values collected from all View-like containers in
+ * the same file (best-effort heuristic).
+ */
+function checkInlineColorContrast(ast: TSESTree.Program): InlineColorIssue[] {
+  const issues: InlineColorIssue[] = [];
+
+  // ── Pass 1: collect all backgroundColor hex values used in the file ────────
+  // Used as fallback backgrounds when a Text has no explicit backgroundColor.
+  const fileBackgrounds = new Set<string>();
+
+  traverseAST(ast, {
+    JSXOpeningElement(node: unknown) {
+      const el = node as TSESTree.JSXOpeningElement;
+      const styleObj = getInlineStyleObject(getJSXAttr(el, 'style'));
+      if (!styleObj) return;
+      const bg = getStylePropString(styleObj, 'backgroundColor');
+      if (bg && isHex(bg)) fileBackgrounds.add(bg);
+    },
+  });
+
+  // Always include white and common light/dark backgrounds as implicit fallbacks
+  const IMPLICIT_BACKGROUNDS = [
+    '#FFFFFF',
+    '#F8FAFC',
+    '#F1F5F9',
+    '#0F172A',
+    '#1E293B',
+  ];
+  for (const b of IMPLICIT_BACKGROUNDS) fileBackgrounds.add(b);
+
+  // ── Pass 2: check each element ─────────────────────────────────────────────
+  const TEXT_COMPONENTS = new Set(['Text', 'TextInput']);
+  const UI_COMPONENTS = new Set([
+    'View',
+    'Pressable',
+    'TouchableOpacity',
+    'TouchableHighlight',
+    'TouchableWithoutFeedback',
+    'TextInput',
+  ]);
+
+  traverseAST(ast, {
+    JSXOpeningElement(node: unknown) {
+      const el = node as TSESTree.JSXOpeningElement;
+      const name = getComponentName(el);
+      const styleObj = getInlineStyleObject(getJSXAttr(el, 'style'));
+      if (!styleObj) return;
+
+      const { line, column } = el.loc.start;
+
+      // ── Text contrast (1.4.3) ──────────────────────────────────────────────
+      if (TEXT_COMPONENTS.has(name)) {
+        const fg = getStylePropString(styleObj, 'color');
+        if (!fg || !isHex(fg)) return;
+
+        const explicitBg = getStylePropString(styleObj, 'backgroundColor');
+        const backgrounds =
+          explicitBg && isHex(explicitBg) ? [explicitBg] : [...fileBackgrounds];
+
+        // Report the worst (lowest) contrast found against any background
+        let worstRatio: number | null = null;
+        let worstBg = '';
+
+        for (const bg of backgrounds) {
+          const r = safeContrastRatio(fg, bg);
+          if (r === null) continue;
+          if (worstRatio === null || r < worstRatio) {
+            worstRatio = r;
+            worstBg = bg;
+          }
+        }
+
+        if (worstRatio !== null && worstRatio < 4.5) {
+          issues.push({
+            ruleId: 'contrast-minimum',
+            line,
+            column,
+            severity: 'error',
+            message: `Inline text color ${fg} on background ${worstBg} has contrast ratio ${worstRatio.toFixed(
+              2,
+            )}:1 (required 4.5:1 for normal text)`,
+            suggestion: `Replace ${fg} with a darker color, or lighten the background ${worstBg}, to meet WCAG 1.4.3 AA contrast`,
+          });
+        }
+      }
+
+      // ── Non-text contrast: borderColor (1.4.11) ────────────────────────────
+      if (UI_COMPONENTS.has(name)) {
+        const borderColor = getStylePropString(styleObj, 'borderColor');
+        if (!borderColor || !isHex(borderColor)) return;
+
+        const explicitBg = getStylePropString(styleObj, 'backgroundColor');
+        const backgrounds =
+          explicitBg && isHex(explicitBg) ? [explicitBg] : [...fileBackgrounds];
+
+        let worstRatio: number | null = null;
+        let worstBg = '';
+
+        for (const bg of backgrounds) {
+          const r = safeContrastRatio(borderColor, bg);
+          if (r === null) continue;
+          if (worstRatio === null || r < worstRatio) {
+            worstRatio = r;
+            worstBg = bg;
+          }
+        }
+
+        if (worstRatio !== null && worstRatio < 3.0) {
+          issues.push({
+            ruleId: 'non-text-contrast',
+            line,
+            column,
+            severity: 'warning',
+            message: `Inline borderColor ${borderColor} on background ${worstBg} has contrast ratio ${worstRatio.toFixed(
+              2,
+            )}:1 (required 3:1 for UI components)`,
+            suggestion: `Replace borderColor ${borderColor} with a color that achieves at least 3:1 contrast against ${worstBg} to meet WCAG 1.4.11`,
+          });
+        }
+      }
+    },
+  });
+
+  return issues;
+}
+
+// ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
 
@@ -684,9 +898,24 @@ export function checkFile(filePath: string): AuditIssue[] {
     },
   });
 
-  // Stamp the resolved filePath on every issue (makeIssue leaves it blank)
+  // 1.4.3 / 1.4.11 — Inline color contrast (hex literals in style props)
+  const colorIssues = checkInlineColorContrast(ast);
+  for (const ci of colorIssues) {
+    issues.push({
+      ruleId: ci.ruleId,
+      criterion: WCAG_CRITERIA[ci.ruleId],
+      severity: ci.severity,
+      filePath,
+      line: ci.line,
+      column: ci.column,
+      message: ci.message,
+      suggestion: ci.suggestion,
+    });
+  }
+
+  // Stamp the resolved filePath on every structural issue
   for (const issue of issues) {
-    issue.filePath = filePath;
+    if (!issue.filePath) issue.filePath = filePath;
   }
 
   return issues;
