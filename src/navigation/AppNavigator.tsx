@@ -58,6 +58,7 @@ import JailbreakScreen from '../screens/security/JailbreakScreen';
 import ObfuscationScreen from '../screens/security/ObfuscationScreen';
 import ScreenshotPreventionScreen from '../screens/security/ScreenshotPreventionScreen';
 import AsyncStorageScreen from '../screens/storage/AsyncStorageScreen';
+import AccessibilityScreen from '../screens/system/AccessibilityScreen';
 import DeviceInfoScreen from '../screens/system/DeviceInfoScreen';
 import { RootStackParamList } from './types';
 
@@ -252,7 +253,10 @@ const AppNavigator = () => {
         <Stack.Screen name="SystemEnvironment" component={ComingSoonScreen} />
         <Stack.Screen name="SystemDarkMode" component={ComingSoonScreen} />
         <Stack.Screen name="SystemLocalization" component={ComingSoonScreen} />
-        <Stack.Screen name="SystemAccessibility" component={ComingSoonScreen} />
+        <Stack.Screen
+          name="SystemAccessibility"
+          component={AccessibilityScreen}
+        />
         <Stack.Screen
           name="SystemPushNotifications"
           component={ComingSoonScreen}
