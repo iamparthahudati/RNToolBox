@@ -1,146 +1,77 @@
 # RNToolBox
 
-A React Native developer reference app built with TypeScript. It demonstrates real-world patterns for UI components, native device actions, permissions, system info, and more — all organized using an atomic design system.
+> Every React Native pattern. Running on your device. Right now.
+
+RNToolBox is an open-source developer companion app for React Native engineers. It is not a documentation site. It is not an AI-generated snippet. It is a **living, interactive app** — every pattern runs on real hardware, with real APIs, real permissions, real native behaviour.
+
+When you want to know how biometrics feel on a physical device, how a map gesture draw works with your finger, how Face ID prompts look in context, or how a skeleton shimmer animates — you open RNToolBox. No simulator. No guessing. No copy-pasting from Stack Overflow and hoping for the best.
 
 ---
 
-## Table of Contents
+## Why This Exists
 
-- [Overview](#overview)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Architecture](#architecture)
-  - [Atomic Design](#atomic-design)
-  - [Atoms](#atoms)
-  - [Molecules](#molecules)
-  - [Screens](#screens)
-  - [Navigation](#navigation)
-  - [Services](#services)
-  - [Theme](#theme)
-  - [Types](#types)
-- [Feature Sections](#feature-sections)
-  - [UI Components](#ui-components)
-  - [Native Actions](#native-actions)
-  - [Permissions](#permissions)
-  - [Hooks & Utilities](#hooks--utilities)
-  - [System & Device](#system--device)
-  - [Forms](#forms)
-  - [Animations](#animations)
-  - [Navigation Patterns](#navigation-patterns)
-  - [Storage](#storage)
-  - [Networking](#networking)
-  - [Testing](#testing)
-- [Adding a New Screen](#adding-a-new-screen)
-- [Adding a New Component](#adding-a-new-component)
-- [Scripts](#scripts)
+AI can generate React Native code in seconds. What AI cannot do:
+
+- Run Face ID on your device right now
+- Show you how haptic feedback actually feels
+- Demonstrate a map gesture draw with your finger
+- Prove that a permission flow handles the "blocked" state correctly
+- Show you the exact gap between what the code says and what the device does
+
+**RNToolBox closes that gap.** It is the proof layer between reading about a pattern and shipping it with confidence.
 
 ---
 
-## Overview
+## Current State
 
-RNToolBox is a living reference app — not a production app. Each section demonstrates a specific React Native capability with working, real code. Unimplemented sections show a "Coming Soon" placeholder so the navigation structure is always complete.
-
-The app covers 11 major categories: UI Components, Native Actions, Permissions, Hooks & Utilities, System & Device, Forms, Animations, Navigation Patterns, Storage, Networking, and Testing.
+| Category                 | Screens Done | Total Screens |
+| ------------------------ | ------------ | ------------- |
+| UI Components            | 6            | 14            |
+| Native Actions           | 7            | 13            |
+| Google Maps              | 15           | 15            |
+| Permissions              | 0            | 7             |
+| Hooks & Utilities        | 0            | 6             |
+| System & Device          | 2            | 9             |
+| Forms                    | 0            | 5             |
+| Animations               | 0            | 5             |
+| Navigation Patterns      | 0            | 5             |
+| Storage                  | 1            | 5             |
+| Security                 | 5            | 5             |
+| Authentication           | 5            | 5             |
+| Networking               | 1            | 8             |
+| Testing                  | 0            | 3             |
+| Code Refactoring         | 0            | 9             |
+| Accessibility (WCAG 2.2) | 1            | 1             |
+| **Total**                | **43**       | **115**       |
 
 ---
 
 ## Tech Stack
 
-| Package                             | Version | Purpose                    |
-| ----------------------------------- | ------- | -------------------------- |
-| `react-native`                      | 0.83.1  | Core framework             |
-| `react`                             | 19.2.0  | UI library                 |
-| `typescript`                        | ^5.8.3  | Type safety                |
-| `@react-navigation/native`          | ^7.1.26 | Navigation container       |
-| `@react-navigation/native-stack`    | ^7.9.0  | Stack navigator            |
-| `react-native-paper`                | 5.15.0  | Material UI inputs         |
-| `react-native-safe-area-context`    | ^5.6.2  | Safe area handling         |
-| `react-native-screens`              | ^4.19.0 | Native screen optimization |
-| `react-native-device-info`          | 15.0.2  | Device metadata            |
-| `react-native-permissions`          | ^5.4.4  | Runtime permissions        |
-| `@react-native-clipboard/clipboard` | ^1.16.3 | Clipboard read/write       |
-
----
-
-## Project Structure
-
-```
-RNToolBox/
-├── App.tsx                          # Root: SafeAreaProvider > PaperProvider > AppNavigator
-├── src/
-│   ├── components/
-│   │   ├── index.ts                 # Barrel export for all atoms and molecules
-│   │   ├── atoms/
-│   │   │   ├── Badge/               # Status label (Coming Soon, success, error, warning)
-│   │   │   ├── Button/              # Pressable button with variants, loading, debounce
-│   │   │   ├── Chip/                # Selectable chip with optional sublabel
-│   │   │   ├── Divider/             # Horizontal or vertical line separator
-│   │   │   └── Header/              # Screen header with back navigation
-│   │   └── molecules/
-│   │       ├── Checkbox/            # Controlled and uncontrolled checkbox
-│   │       ├── InfoRow/             # Label + value row for settings-style lists
-│   │       ├── MenuCard/            # Tappable card with title, description, badge
-│   │       ├── RadioGroup/          # Group of radio options
-│   │       ├── ScreenLayout/        # Full-screen layout: Header + FlatList of MenuCards
-│   │       └── SectionHeader/       # Uppercase section label bar
-│   ├── navigation/
-│   │   ├── AppNavigator.tsx         # All routes registered here
-│   │   └── types.ts                 # RootStackParamList type
-│   ├── screens/
-│   │   ├── HomeScreen.tsx
-│   │   ├── ComponentsScreen.tsx
-│   │   ├── NativeActionsScreen.tsx
-│   │   ├── PermissionsScreen.tsx
-│   │   ├── HooksScreen.tsx
-│   │   ├── SystemScreen.tsx
-│   │   ├── FormsScreen.tsx
-│   │   ├── AnimationsScreen.tsx
-│   │   ├── NavigationPatternsScreen.tsx
-│   │   ├── StorageScreen.tsx
-│   │   ├── NetworkingScreen.tsx
-│   │   ├── TestingScreen.tsx
-│   │   ├── ComingSoonScreen.tsx
-│   │   ├── components/
-│   │   │   ├── ButtonsScreen.tsx
-│   │   │   ├── InputsScreen.tsx
-│   │   │   └── SelectionScreen.tsx
-│   │   ├── native/
-│   │   │   ├── CallPhoneScreen.tsx
-│   │   │   ├── ClipboardScreen.tsx
-│   │   │   ├── MapsScreen.tsx
-│   │   │   ├── SendEmailScreen.tsx
-│   │   │   ├── ShareScreen.tsx
-│   │   │   └── maps/
-│   │   │       ├── OpenInMapsScreen.tsx
-│   │   │       ├── BasicMapScreen.tsx
-│   │   │       ├── MyLocationScreen.tsx
-│   │   │       ├── MarkersScreen.tsx
-│   │   │       ├── DirectionsScreen.tsx
-│   │   │       ├── PolygonScreen.tsx
-│   │   │       └── GeofenceScreen.tsx
-│   │   └── system/
-│   │       └── DeviceInfoScreen.tsx
-│   ├── services/
-│   │   ├── phone.ts                 # callPhoneNumber()
-│   │   ├── email.ts                 # sendEmail()
-│   │   ├── maps.ts                  # openMaps()
-│   │   ├── clipboard/
-│   │   │   ├── clipboard.ts         # copyToClipboard(), getFromClipboard()
-│   │   │   └── index.ts
-│   │   └── permissions/
-│   │       ├── permissions.ts       # checkPermission(), requestPermission(), openAppSettings()
-│   │       └── index.ts
-│   ├── theme/
-│   │   ├── colors.ts
-│   │   ├── spacing.ts
-│   │   ├── typography.ts
-│   │   └── index.ts                 # Exports: theme = { colors, spacing, typography }
-│   ├── types/
-│   │   └── menu.ts                  # Shared MenuItem type
-│   └── utils/
-│       └── helper.ts
-```
+| Package                                            | Version  | Purpose                          |
+| -------------------------------------------------- | -------- | -------------------------------- |
+| `react-native`                                     | 0.83.1   | Core framework                   |
+| `react`                                            | 19.2.0   | UI library                       |
+| `typescript`                                       | ^5.8.3   | Type safety                      |
+| `@react-navigation/native`                         | ^7.1.26  | Navigation container             |
+| `@react-navigation/native-stack`                   | ^7.9.0   | Stack navigator                  |
+| `react-native-paper`                               | 5.15.0   | Material UI inputs               |
+| `react-native-safe-area-context`                   | ^5.6.2   | Safe area handling               |
+| `react-native-screens`                             | ^4.19.0  | Native screen optimization       |
+| `react-native-device-info`                         | 15.0.2   | Device metadata                  |
+| `react-native-permissions`                         | ^5.4.4   | Runtime permissions              |
+| `react-native-maps`                                | ^1.27.2  | Google Maps integration          |
+| `react-native-config`                              | 1.6.0    | Environment variable management  |
+| `@react-native-firebase/app`                       | ^21.14.0 | Firebase core                    |
+| `@react-native-firebase/auth`                      | 21.14.0  | Firebase Authentication          |
+| `@react-native-firebase/remote-config`             | 21.14.0  | Firebase Remote Config           |
+| `@react-native-google-signin/google-signin`        | 16.1.2   | Google OAuth                     |
+| `@invertase/react-native-apple-authentication`     | 2.5.1    | Apple Sign-In                    |
+| `@sbaiahmed1/react-native-biometrics`              | ^0.11.0  | Face ID / Touch ID / Fingerprint |
+| `@react-native-async-storage/async-storage`        | 3.0.2    | Key-value storage                |
+| `@react-native-clipboard/clipboard`                | ^1.16.3  | Clipboard read/write             |
+| `react-native-google-places-autocomplete`          | ^2.6.4   | Places search                    |
+| `@react-native-vector-icons/material-design-icons` | 12.5.0   | Icon set                         |
 
 ---
 
@@ -153,31 +84,113 @@ RNToolBox/
 - Android Studio (for Android)
 - CocoaPods (for iOS)
 
-### Install
+### Environment Setup
 
 ```bash
 # Clone the repo
-git clone <repo-url>
+git clone https://github.com/iamparthahudati/RNToolBox.git
 cd RNToolBox
 
+# Copy the example env file and fill in your keys
+cp .env.debug.example .env.debug
+```
+
+Open `.env.debug` and fill in:
+
+| Key                    | Where to get it                                            |
+| ---------------------- | ---------------------------------------------------------- |
+| `MAPS_API_KEY`         | Google Cloud Console — Maps SDK for Android                |
+| `MAPS_API_KEY_IOS`     | Google Cloud Console — Maps SDK for iOS                    |
+| `GOOGLE_WEB_CLIENT_ID` | Firebase Console → Authentication → Google → Web Client ID |
+| `SENTRY_DSN`           | sentry.io → Project Settings → DSN                         |
+
+### Install and Run
+
+```bash
 # Install JS dependencies
 yarn install
 
 # Install iOS pods
 npx pod-install
+
+# iOS (debug)
+yarn ios:debug
+
+# Android (debug)
+yarn android:debug
 ```
 
-### Run
+---
 
-```bash
-# iOS
-yarn ios
+## Project Structure
 
-# Android
-yarn android
-
-# Start Metro bundler with cache reset
-yarn start
+```
+RNToolBox/
+├── App.tsx                              # Root: SafeAreaProvider > PaperProvider > AppNavigator
+├── .env.debug                           # Local debug environment (gitignored)
+├── .env.debug.example                   # Template — copy to .env.debug
+├── .env.production                      # Production environment
+├── scripts/
+│   └── wcag-audit/                      # WCAG 2.2 automated AST + contrast checker
+│       ├── index.ts
+│       ├── ast-checker.ts
+│       ├── color-checker.ts
+│       ├── reporter.ts
+│       ├── rules.ts
+│       └── types.ts
+└── src/
+    ├── components/
+    │   ├── atoms/
+    │   │   ├── Badge/                   # Status label (success, warning, error, comingSoon)
+    │   │   ├── Button/                  # Pressable with variants, loading, debounce, icon
+    │   │   ├── Chip/                    # Selectable chip with optional sublabel
+    │   │   ├── Divider/                 # Horizontal or vertical separator
+    │   │   └── Header/                  # Screen header with auto back navigation
+    │   └── molecules/
+    │       ├── Checkbox/                # Controlled and uncontrolled checkbox
+    │       ├── InfoRow/                 # Label + value row for settings-style lists
+    │       ├── MenuCard/                # Tappable card with title, description, badge
+    │       ├── RadioGroup/              # Group of radio options
+    │       ├── ScreenLayout/            # Full-screen layout: Header + FlatList of MenuCards
+    │       └── SectionHeader/           # Uppercase section label bar
+    ├── config/
+    │   ├── env.ts                       # Typed env parsing + validation (validateConfig, parseConfig)
+    │   └── index.ts                     # Barrel export
+    ├── navigation/
+    │   ├── AppNavigator.tsx             # All 100+ routes registered here
+    │   └── types.ts                     # RootStackParamList — full type safety
+    ├── screens/
+    │   ├── HomeScreen.tsx               # Animated 2-column grid + deep search across all screens
+    │   ├── ComingSoonScreen.tsx         # Fallback for unimplemented screens
+    │   ├── auth/                        # Email, Google, Apple, Phone OTP, Anonymous
+    │   ├── components/                  # Buttons, Inputs, Selection, Typography, Badges, Loading
+    │   ├── native/
+    │   │   ├── BiometricsScreen.tsx     # Full biometrics reference (FaceID, TouchID, keys, signing)
+    │   │   ├── MapsScreen.tsx           # Maps sub-menu (15 screens)
+    │   │   └── maps/                   # All 15 Google Maps screens
+    │   ├── networking/                  # Remote Config (live) + setup guide
+    │   ├── security/                    # App Masking, Jailbreak, Screenshot, Pinning, Obfuscation
+    │   ├── storage/                     # AsyncStorage CRUD demo
+    │   └── system/                      # Device Info, WCAG 2.2 Accessibility
+    ├── services/
+    │   ├── asyncStorage/                # AsyncStorage service layer
+    │   ├── auth/                        # Firebase Auth service layer
+    │   ├── clipboard/                   # Copy / paste service
+    │   ├── firebase/                    # Firebase app init
+    │   ├── permissions/                 # checkPermission, requestPermission, openAppSettings
+    │   ├── remoteConfig/                # Firebase Remote Config service
+    │   ├── email.ts                     # sendEmail() via mailto:
+    │   ├── maps.ts                      # openMaps() via maps:/geo:
+    │   └── phone.ts                     # callPhoneNumber() via tel:
+    ├── theme/
+    │   ├── colors.ts                    # Full color palette + semantic tokens (light/dark)
+    │   ├── spacing.ts                   # Spacing scale + border radii
+    │   ├── typography.ts                # Font families, sizes, weights, presets
+    │   └── index.ts
+    ├── types/
+    │   └── menu.ts                      # MenuItem type used by all list screens
+    └── utils/
+        └── helper.ts
 ```
 
 ---
@@ -186,854 +199,98 @@ yarn start
 
 ### Atomic Design
 
-The component system follows atomic design principles with two layers:
-
 ```
 Atoms      — smallest building blocks, no dependencies on other components
 Molecules  — composed of atoms, represent a complete UI pattern
 Screens    — composed of molecules and atoms, contain business logic
+Services   — pure functions, no UI dependencies, one capability each
 ```
 
-This keeps components focused, testable, and easy to reuse across screens.
+### Screen Pattern
 
----
-
-### Atoms
-
-Located in `src/components/atoms/`. Import from the barrel:
-
-```ts
-import { Button, Header, Badge, Chip, Divider } from '../components';
-```
-
-#### Button
+Every screen follows the same structure:
 
 ```tsx
-import Button from '../components/atoms/Button';
-
-<Button title="Save" onPress={handleSave} />
-<Button title="Cancel" variant="outline" onPress={handleCancel} />
-<Button title="Delete" variant="secondary" loading={isDeleting} onPress={handleDelete} />
-<Button title="Submit" disabled />
-<Button title="Auto Width" fullWidth={false} onPress={handleSubmit} />
-<Button
-  title="With Icon"
-  icon={<Icon name="check" />}
-  iconPosition="left"
-  onPress={handleSubmit}
-/>
-<Button title="Debounced" debounceMs={1000} onPress={handleSubmit} />
-```
-
-| Prop           | Type                                  | Default   | Description                     |
-| -------------- | ------------------------------------- | --------- | ------------------------------- |
-| `title`        | `string`                              | required  | Button label                    |
-| `onPress`      | `function`                            | —         | Press handler                   |
-| `variant`      | `primary` \| `secondary` \| `outline` | `primary` | Visual style                    |
-| `loading`      | `boolean`                             | `false`   | Shows spinner, disables press   |
-| `disabled`     | `boolean`                             | `false`   | Disables press, reduces opacity |
-| `fullWidth`    | `boolean`                             | `true`    | Stretches to container width    |
-| `icon`         | `ReactNode`                           | —         | Icon element to render          |
-| `iconPosition` | `left` \| `right`                     | `left`    | Icon placement                  |
-| `debounceMs`   | `number`                              | `0`       | Minimum ms between presses      |
-
----
-
-#### Header
-
-```tsx
+import React from 'react';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Header from '../components/atoms/Header';
-
-<Header title="My Screen" />;
-```
-
-Automatically shows a back button with label when `navigation.canGoBack()` is true. Uses `useNavigation()` internally — no navigation prop needed.
-
-| Prop    | Type     | Description                  |
-| ------- | -------- | ---------------------------- |
-| `title` | `string` | Text displayed in the center |
-
----
-
-#### Badge
-
-```tsx
-import Badge from '../components/atoms/Badge';
-
-<Badge label="Coming Soon" variant="comingSoon" />
-<Badge label="Active" variant="success" />
-<Badge label="Pending" variant="warning" />
-<Badge label="Failed" variant="error" />
-```
-
-| Prop      | Type                                              | Default      | Description  |
-| --------- | ------------------------------------------------- | ------------ | ------------ |
-| `label`   | `string`                                          | required     | Badge text   |
-| `variant` | `comingSoon` \| `success` \| `warning` \| `error` | `comingSoon` | Color scheme |
-
----
-
-#### Chip
-
-```tsx
-import Chip from '../components/atoms/Chip';
-
-<Chip label="Apple Support" sublabel="+1-800-275-2273" active={false} onPress={() => {}} />
-<Chip label="Selected" active={true} onPress={() => {}} />
-```
-
-| Prop       | Type       | Default  | Description                      |
-| ---------- | ---------- | -------- | -------------------------------- |
-| `label`    | `string`   | required | Primary chip text                |
-| `sublabel` | `string`   | —        | Secondary line below label       |
-| `active`   | `boolean`  | `false`  | Highlights chip in primary color |
-| `onPress`  | `function` | required | Press handler                    |
-
----
-
-#### Divider
-
-```tsx
-import Divider from '../components/atoms/Divider';
-
-<Divider />                      // horizontal (default)
-<Divider horizontal={false} />   // vertical
-```
-
-| Prop         | Type      | Default | Description                   |
-| ------------ | --------- | ------- | ----------------------------- |
-| `horizontal` | `boolean` | `true`  | Direction of the divider line |
-
----
-
-### Molecules
-
-Located in `src/components/molecules/`. Import from the barrel:
-
-```ts
-import {
-  MenuCard,
-  ScreenLayout,
-  SectionHeader,
-  InfoRow,
-  Checkbox,
-  RadioGroup,
-} from '../components';
-```
-
----
-
-#### MenuCard
-
-A tappable card used in list screens. Automatically shows a `Badge` when `implemented` is false.
-
-```tsx
-import MenuCard from '../components/molecules/MenuCard';
-
-<MenuCard
-  title="Buttons"
-  description="Primary, outline, loading, icon variants"
-  implemented={true}
-  onPress={() => navigation.navigate('ComponentButtons')}
-/>;
-```
-
-| Prop          | Type       | Description                          |
-| ------------- | ---------- | ------------------------------------ |
-| `title`       | `string`   | Card heading                         |
-| `description` | `string`   | Card subtext                         |
-| `implemented` | `boolean`  | Shows "Coming Soon" badge when false |
-| `onPress`     | `function` | Press handler                        |
-
----
-
-#### ScreenLayout
-
-Wraps an entire list screen — `SafeAreaView` + `Header` + `FlatList` of `MenuCard` items. Used by all top-level and section list screens.
-
-```tsx
-import ScreenLayout from '../components/molecules/ScreenLayout';
-import { MenuItem } from '../types/menu';
-
-const ITEMS: MenuItem[] = [
-  {
-    title: 'Buttons',
-    description: '...',
-    screen: 'ComponentButtons',
-    implemented: true,
-  },
-  {
-    title: 'Typography',
-    description: '...',
-    screen: 'ComingSoon',
-    params: { title: 'Typography' },
-    implemented: false,
-  },
-];
-
-<ScreenLayout
-  title="Components"
-  items={ITEMS}
-  onItemPress={item =>
-    navigation.navigate(item.screen as any, item.params as any)
-  }
-/>;
-```
-
-| Prop          | Type                       | Description                  |
-| ------------- | -------------------------- | ---------------------------- |
-| `title`       | `string`                   | Passed to `Header`           |
-| `items`       | `MenuItem[]`               | List of menu items to render |
-| `onItemPress` | `(item: MenuItem) => void` | Called when a card is tapped |
-
----
-
-#### SectionHeader
-
-An uppercase label bar used to group rows in settings-style screens.
-
-```tsx
-import SectionHeader from '../components/molecules/SectionHeader';
-
-<SectionHeader title="DEVICE" />;
-```
-
-| Prop    | Type     | Description                         |
-| ------- | -------- | ----------------------------------- |
-| `title` | `string` | Section label (displayed uppercase) |
-
----
-
-#### InfoRow
-
-A horizontal label + value row. Used in `DeviceInfoScreen`.
-
-```tsx
-import InfoRow from '../components/molecules/InfoRow';
-
-<InfoRow label="Model" value="iPhone 15 Pro" />
-<InfoRow label="OS Version" value="17.4" />
-```
-
-| Prop    | Type     | Description                          |
-| ------- | -------- | ------------------------------------ |
-| `label` | `string` | Left-side descriptor                 |
-| `value` | `string` | Right-side value (truncated if long) |
-
----
-
-#### Checkbox
-
-Supports both uncontrolled (internal state) and controlled (external state) usage.
-
-```tsx
-import Checkbox from '../components/molecules/Checkbox';
-
-// Uncontrolled
-<Checkbox label="Accept Terms" />
-
-// Controlled
-<Checkbox label="Remember me" checked={rememberMe} onChange={setRememberMe} />
-```
-
-| Prop       | Type                         | Default  | Description              |
-| ---------- | ---------------------------- | -------- | ------------------------ |
-| `label`    | `string`                     | required | Checkbox label           |
-| `checked`  | `boolean`                    | —        | Controlled checked state |
-| `onChange` | `(checked: boolean) => void` | —        | Called on toggle         |
-
----
-
-#### RadioGroup
-
-Renders a list of radio options. Fully controlled.
-
-```tsx
-import RadioGroup from '../components/molecules/RadioGroup';
-
-const OPTIONS = [
-  { id: 'light', label: 'Light Mode' },
-  { id: 'dark', label: 'Dark Mode' },
-  { id: 'system', label: 'System Default' },
-];
-
-<RadioGroup
-  options={OPTIONS}
-  selected={selectedTheme}
-  onSelect={setSelectedTheme}
-/>;
-```
-
-| Prop       | Type                              | Description                     |
-| ---------- | --------------------------------- | ------------------------------- |
-| `options`  | `{ id: string; label: string }[]` | List of options                 |
-| `selected` | `string`                          | Currently selected option id    |
-| `onSelect` | `(id: string) => void`            | Called when an option is tapped |
-
----
-
-### Screens
-
-All screens live in `src/screens/`. They contain only data and navigation logic — no raw UI primitives. Layout and UI are delegated to molecules and atoms.
-
-| Screen                     | Route                | Description                           |
-| -------------------------- | -------------------- | ------------------------------------- |
-| `HomeScreen`               | `Home`               | Root menu                             |
-| `ComponentsScreen`         | `Components`         | UI component list                     |
-| `ButtonsScreen`            | `ComponentButtons`   | Button variants demo                  |
-| `InputsScreen`             | `ComponentInputs`    | Input field variants demo             |
-| `SelectionScreen`          | `ComponentSelection` | Switch, Checkbox, Radio demo          |
-| `NativeActionsScreen`      | `NativeActions`      | Native action list                    |
-| `CallPhoneScreen`          | `NativeCallPhone`    | Phone dialer                          |
-| `SendEmailScreen`          | `NativeSendEmail`    | Email composer                        |
-| `MapsScreen`               | `NativeMaps`         | Maps sub-menu                         |
-| `OpenInMapsScreen`         | `NativeMapsOpen`     | Open address in native maps           |
-| `ClipboardScreen`          | `NativeClipboard`    | Clipboard copy/paste/OTP              |
-| `ShareScreen`              | `NativeShare`        | Native share sheet                    |
-| `PermissionsScreen`        | `Permissions`        | Permissions list                      |
-| `HooksScreen`              | `Hooks`              | Hooks & utilities list                |
-| `SystemScreen`             | `System`             | System & device list                  |
-| `DeviceInfoScreen`         | `SystemDeviceInfo`   | Device metadata viewer                |
-| `FormsScreen`              | `Forms`              | Forms section list                    |
-| `AnimationsScreen`         | `Animations`         | Animations section list               |
-| `NavigationPatternsScreen` | `NavigationPatterns` | Navigation patterns list              |
-| `StorageScreen`            | `Storage`            | Storage section list                  |
-| `NetworkingScreen`         | `Networking`         | Networking section list               |
-| `TestingScreen`            | `Testing`            | Testing section list                  |
-| `ComingSoonScreen`         | `ComingSoon`         | Placeholder for unimplemented screens |
-
----
-
-### Navigation
-
-All routes are registered in `src/navigation/AppNavigator.tsx` using `@react-navigation/native-stack`. The navigator is wrapped in `NavigationContainer` and all headers are hidden (`headerShown: false`) — each screen renders its own `Header` atom.
-
-Route types are defined in `src/navigation/types.ts`:
-
-```ts
-export type RootStackParamList = {
-  Home: undefined;
-  ComingSoon: { title: string };
-  Components: undefined;
-  ComponentButtons: undefined;
-  // ... all routes
-};
-```
-
-To navigate to a screen:
-
-```ts
-navigation.navigate('ComponentButtons');
-navigation.navigate('ComingSoon', { title: 'My Feature' });
-```
-
----
-
-### Services
-
-Pure functions with no UI dependencies. Each service handles one native capability.
-
-#### `services/phone.ts`
-
-```ts
-import { callPhoneNumber } from '../services/phone';
-
-callPhoneNumber('+1-800-275-2273');
-```
-
-Builds a `tel:` URL, checks device support via `Linking.canOpenURL`, then opens the dialer.
-
----
-
-#### `services/email.ts`
-
-```ts
-import { sendEmail } from '../services/email';
-
-sendEmail({ to: 'hello@example.com', subject: 'Hi', body: 'Message body' });
-```
-
-Builds a `mailto:` URL with encoded subject and body, then opens the native email app.
-
----
-
-#### `services/maps.ts`
-
-```ts
-import { openMaps } from '../services/maps';
-
-openMaps('1 Infinite Loop, Cupertino, CA');
-```
-
-Uses `maps:` on iOS and `geo:` on Android. Falls back to Google Maps web URL if the native app is unavailable.
-
----
-
-#### `services/clipboard/clipboard.ts`
-
-```ts
-import { copyToClipboard, getFromClipboard } from '../services/clipboard';
-
-copyToClipboard('Hello world'); // Sets clipboard, shows Alert
-const text = await getFromClipboard(); // Returns clipboard string
-```
-
----
-
-#### `services/permissions/permissions.ts`
-
-```ts
-import {
-  checkPermission,
-  requestPermission,
-  openAppSettings,
-} from '../services/permissions';
-
-const status = await checkPermission('camera'); // 'granted' | 'denied' | 'blocked' | ...
-const result = await requestPermission('location');
-openAppSettings(); // Opens device settings for this app
-```
-
-Supported permission types: `camera`, `location`, `notification`.
-
-Notification permission uses `PermissionsAndroid` on Android 13+. Camera and location use `react-native-permissions`.
-
----
-
-### Theme
-
-All design tokens are in `src/theme/`. Import the `theme` object anywhere:
-
-```ts
+import { RootStackParamList } from '../navigation/types';
 import { theme } from '../theme';
+
+type Props = NativeStackScreenProps<RootStackParamList, 'MyScreen'>;
+
+const MyScreen = ({}: Props) => (
+  <SafeAreaView style={styles.root}>
+    <Header title="My Screen" />
+    <ScrollView contentContainerStyle={styles.content}>
+      {/* content */}
+    </ScrollView>
+  </SafeAreaView>
+);
+
+export default MyScreen;
+
+const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: theme.colors.background },
+  content: { padding: theme.spacing.lg },
+});
 ```
 
-#### Colors
+### Environment Config
 
-| Token           | Value     | Usage                         |
-| --------------- | --------- | ----------------------------- |
-| `primary`       | `#2563EB` | Buttons, links, active states |
-| `background`    | `#FFFFFF` | Screen backgrounds            |
-| `surface`       | `#F9FAFB` | Cards, input backgrounds      |
-| `border`        | `#E5E7EB` | Borders, dividers             |
-| `textPrimary`   | `#111827` | Main text                     |
-| `textSecondary` | `#6B7280` | Subtitles, labels             |
-| `textDisabled`  | `#9CA3AF` | Disabled text                 |
-| `success`       | `#16A34A` | Success states                |
-| `warning`       | `#F59E0B` | Warning states                |
-| `error`         | `#DC2626` | Error states                  |
-| `white`         | `#FFFFFF` | —                             |
-| `black`         | `#000000` | —                             |
-
-#### Spacing
-
-| Token | Value |
-| ----- | ----- |
-| `xs`  | 4     |
-| `sm`  | 8     |
-| `md`  | 12    |
-| `lg`  | 16    |
-| `xl`  | 24    |
-| `xxl` | 32    |
-
-#### Typography
-
-| Token       | Value |
-| ----------- | ----- |
-| `sizes.xs`  | 12    |
-| `sizes.sm`  | 14    |
-| `sizes.md`  | 16    |
-| `sizes.lg`  | 18    |
-| `sizes.xl`  | 22    |
-| `sizes.xxl` | 26    |
-
----
-
-### Types
-
-#### `src/types/menu.ts`
-
-Shared type used by all list screens and `ScreenLayout`:
+All environment variables are validated at startup via `src/config/env.ts`. If any required key is missing the app throws a descriptive error before rendering anything.
 
 ```ts
-import { MenuItem } from '../types/menu';
+import appConfig from '../config';
 
-type MenuItem = {
-  title: string;
-  description: string;
-  screen: keyof RootStackParamList;
-  params?: Record<string, any>;
-  implemented: boolean;
-};
+appConfig.MAPS_API_KEY; // string
+appConfig.ENABLE_LOGS; // boolean
+appConfig.API_TIMEOUT; // number
+appConfig.APP_ENV; // 'debug' | 'production'
 ```
 
 ---
 
-## Feature Sections
-
-### UI Components
-
-| Screen             | Status      | What it shows                                                                                                                    |
-| ------------------ | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Buttons            | Done        | Primary, outline, secondary variants; loading, disabled, full/auto width, icon left/right, debounce                              |
-| Inputs             | Done        | Outlined/flat modes, icons, email validation, password toggle, MFA PIN (SMS OTP), phone, numeric, multiline, disabled, read-only |
-| Selection Controls | Done        | Switch (3 items), Checkbox (uncontrolled), Radio group                                                                           |
-| Typography         | Coming Soon | Font sizes, weights, line heights, Text props                                                                                    |
-| Cards              | Coming Soon | Basic, image, action cards                                                                                                       |
-| Badges & Tags      | Coming Soon | Status indicators, labels                                                                                                        |
-| Modals & Alerts    | Coming Soon | Custom modal, bottom sheet, confirmation dialog                                                                                  |
-| Toast / Snackbar   | Coming Soon | Success, error, info notifications                                                                                               |
-| Loading States     | Coming Soon | Skeleton screens, spinners, progress bars                                                                                        |
-| Lists              | Coming Soon | FlatList, SectionList, pull-to-refresh, infinite scroll                                                                          |
-| Images             | Coming Soon | Image, ImageBackground, lazy loading, placeholder                                                                                |
-| Icons              | Coming Soon | Vector icons showcase and usage patterns                                                                                         |
-| Avatar             | Coming Soon | Image avatar, initials fallback, sizes                                                                                           |
-| Empty State        | Coming Soon | No data placeholder patterns                                                                                                     |
-
----
-
-### Native Actions
-
-| Screen               | Status      | What it shows                                                   |
-| -------------------- | ----------- | --------------------------------------------------------------- |
-| Call Phone           | Done        | Phone input, quick-dial chips, native dialer via `tel:`         |
-| Send Email           | Done        | To/Subject/Body fields, native email app via `mailto:`          |
-| Open Maps            | Done        | Address input, suggestion chips, native maps via `maps:`/`geo:` |
-| OTP / Clipboard      | Done        | Copy text, paste from clipboard, SMS OTP auto-fill demo         |
-| Share                | Done        | Message + URL fields, native share sheet via `Share` API        |
-| Image Picker         | Coming Soon | Camera and gallery picker                                       |
-| File Picker          | Coming Soon | Document selection                                              |
-| Haptics              | Coming Soon | Vibration feedback patterns                                     |
-| Biometrics           | Coming Soon | Face ID and fingerprint auth                                    |
-| Camera               | Coming Soon | Live camera preview and capture                                 |
-| Barcode / QR Scanner | Coming Soon | Scan barcodes and QR codes                                      |
-| Push Notifications   | Coming Soon | Local and remote push notifications                             |
-| Background Tasks     | Coming Soon | Run tasks when app is in background                             |
-
----
-
-### Permissions
-
-| Screen        | Status      | What it shows                                          |
-| ------------- | ----------- | ------------------------------------------------------ |
-| Camera        | Coming Soon | Camera access — check, request, open settings fallback |
-| Location      | Coming Soon | Foreground vs background location access               |
-| Notifications | Coming Soon | Push notification permission request                   |
-| Microphone    | Coming Soon | Audio recording access                                 |
-| Contacts      | Coming Soon | Address book access                                    |
-| Photo Library | Coming Soon | Gallery and media access                               |
-| Bluetooth     | Coming Soon | BLE device access                                      |
-
-The service layer (`checkPermission`, `requestPermission`, `openAppSettings`) is fully implemented in `src/services/permissions/` and ready to use.
-
----
-
-### Hooks & Utilities
-
-| Hook             | Status      | What it shows                       |
-| ---------------- | ----------- | ----------------------------------- |
-| useDebounce      | Coming Soon | Debounced value hook                |
-| useLocalStorage  | Coming Soon | AsyncStorage wrapper hook           |
-| useNetworkStatus | Coming Soon | Online and offline detection        |
-| useAppState      | Coming Soon | Foreground and background detection |
-| useKeyboard      | Coming Soon | Keyboard height and visibility      |
-| useTimer         | Coming Soon | Countdown and stopwatch             |
-
----
-
-### System & Device
-
-| Screen             | Status      | What it shows                                                                           |
-| ------------------ | ----------- | --------------------------------------------------------------------------------------- |
-| Device Info        | Done        | Device name, brand, model, OS, app version, screen size, memory, battery, emulator flag |
-| Push Notifications | Coming Soon | Push notification setup and handling                                                    |
-| Network Info       | Coming Soon | Connection type and IP address                                                          |
-| Environment Config | Coming Soon | Dev, staging and prod config via react-native-config                                    |
-| Dark Mode          | Coming Soon | useColorScheme and theme switching                                                      |
-| Localization       | Coming Soon | i18n, translations and RTL support                                                      |
-| Accessibility      | Coming Soon | accessibilityLabel, roles, screen reader testing                                        |
-
----
-
-### Forms
-
-| Screen            | Status      | What it shows                                  |
-| ----------------- | ----------- | ---------------------------------------------- |
-| Form Validation   | Coming Soon | Required fields, regex, real-time vs on-submit |
-| React Hook Form   | Coming Soon | The standard RN form library                   |
-| Date Picker       | Coming Soon | Native date and time picker                    |
-| Dropdown / Select | Coming Soon | Picker and custom dropdown component           |
-| Search Input      | Coming Soon | Debounced search with clear button             |
-
----
-
-### Animations
-
-| Screen          | Status      | What it shows                           |
-| --------------- | ----------- | --------------------------------------- |
-| Animated API    | Coming Soon | Fade, slide, scale basics with Animated |
-| LayoutAnimation | Coming Soon | Auto-animate layout changes             |
-| Reanimated      | Coming Soon | useSharedValue, useAnimatedStyle        |
-| Gesture Handler | Coming Soon | Swipe, pan, pinch gestures              |
-| Lottie          | Coming Soon | JSON animation playback                 |
-
----
-
-### Navigation Patterns
-
-| Screen           | Status      | What it shows                                 |
-| ---------------- | ----------- | --------------------------------------------- |
-| Tab Navigator    | Coming Soon | Bottom tab navigation pattern                 |
-| Drawer Navigator | Coming Soon | Side menu drawer pattern                      |
-| Modal Stack      | Coming Soon | Presenting screens as modals                  |
-| Deep Linking     | Coming Soon | URL scheme and universal link handling        |
-| Auth Flow        | Coming Soon | Conditional stack for logged in vs logged out |
-
----
-
-### Storage
-
-| Screen         | Status      | What it shows                          |
-| -------------- | ----------- | -------------------------------------- |
-| AsyncStorage   | Coming Soon | Read, write and delete key-value pairs |
-| MMKV           | Coming Soon | Fast synchronous key-value storage     |
-| Secure Storage | Coming Soon | Encrypted storage for sensitive data   |
-| SQLite         | Coming Soon | Structured local relational data       |
-
----
-
-### Networking
-
-| Screen            | Status      | What it shows                              |
-| ----------------- | ----------- | ------------------------------------------ |
-| Fetch API         | Coming Soon | GET, POST, headers and error handling      |
-| Axios             | Coming Soon | Axios instance, requests and responses     |
-| Interceptors      | Coming Soon | Auth token injection and response handling |
-| Offline Detection | Coming Soon | NetInfo and retry logic                    |
-| WebSocket         | Coming Soon | Real-time connection demo                  |
-
----
-
-### Testing
-
-| Screen          | Status      | What it shows                         |
-| --------------- | ----------- | ------------------------------------- |
-| Unit Tests      | Coming Soon | Jest tests for services and hooks     |
-| Component Tests | Coming Soon | React Native Testing Library patterns |
-| E2E Tests       | Coming Soon | Detox setup and example flows         |
-
----
-
-## Next Steps
-
-The following modules are planned in priority order. Each entry lists what needs to be built and any dependencies required.
-
----
-
-### 1. Authentication
-
-**Route:** `Auth` and sub-screens (`AuthEmail`, `AuthGoogle`, `AuthApple`, `AuthPhoneOTP`, `AuthAnonymous`)
-
-**Dependencies:** `@react-native-firebase/auth`, `@react-native-google-signin/google-signin`
-
-| Step | Task                                                                 |
-| ---- | -------------------------------------------------------------------- |
-| 1    | Add `@react-native-firebase/auth` and run `pod install`              |
-| 2    | Build `AuthScreen.tsx` category menu (already scaffolded)            |
-| 3    | Implement `AuthEmailScreen` — sign up, sign in, password reset       |
-| 4    | Implement `AuthGoogleScreen` — Google Sign-In with Firebase          |
-| 5    | Implement `AuthAppleScreen` — Apple Sign-In (iOS only)               |
-| 6    | Implement `AuthPhoneOTPScreen` — phone number + SMS OTP verification |
-| 7    | Implement `AuthAnonymousScreen` — anonymous sign-in and upgrade flow |
-| 8    | Create `src/services/firebase/auth.ts` service layer                 |
-| 9    | Mark `Auth` as `implemented: true` in `HomeScreen.tsx`               |
-
----
-
-### 2. Remote Config
-
-**Route:** `NetworkingRemoteConfig`, `NetworkingRemoteConfigSetup` (already implemented)
-
-**Dependencies:** `@react-native-firebase/remote-config` (already in `package.json`)
-
-| Step | Task                                                                           |
-| ---- | ------------------------------------------------------------------------------ |
-| 1    | Verify `RemoteConfigScreen` and `RemoteConfigSetupScreen` are complete         |
-| 2    | Add A/B testing demo — two variants of a UI element driven by remote flag      |
-| 3    | Add fetch-and-activate with loading state and error handling                   |
-| 4    | Document default values and Firebase console setup in README                   |
-| 5    | Mark `NetworkingRemoteConfig` as `implemented: true` in `NetworkingScreen.tsx` |
-
----
-
-### 3. Google Maps
-
-**Route:** `NativeMaps` and sub-screens (already implemented — 7 screens)
-
-**Dependencies:** `react-native-maps` (already linked)
-
-| Step | Task                                                                                                             |
-| ---- | ---------------------------------------------------------------------------------------------------------------- |
-| 1    | Audit all 7 map screens for completeness (Basic, MyLocation, Markers, Directions, Polygon, Geofence, OpenInMaps) |
-| 2    | Add clustering support to `MarkersScreen`                                                                        |
-| 3    | Add polyline drawing to `DirectionsScreen`                                                                       |
-| 4    | Add real geofence entry/exit callbacks to `GeofenceScreen`                                                       |
-| 5    | Mark `NativeMaps` as `implemented: true` in `NativeActionsScreen.tsx`                                            |
-
----
-
-### 4. Networking
-
-**Route:** `Networking` and sub-screens
-
-**Dependencies:** `axios` (add), `@react-native-community/netinfo` (add)
-
-| Step | Task                                                                            |
-| ---- | ------------------------------------------------------------------------------- |
-| 1    | Install `axios` and `@react-native-community/netinfo`                           |
-| 2    | Implement `NetworkingFetchScreen` — GET/POST with headers and error handling    |
-| 3    | Implement `NetworkingAxiosScreen` — Axios instance, interceptors, retry         |
-| 4    | Implement `NetworkingOfflineScreen` — NetInfo hook, offline banner, retry queue |
-| 5    | Implement `NetworkingWebSocketScreen` — connect, send, receive, disconnect      |
-| 6    | Implement `NetworkingFirestoreScreen` — CRUD with real-time listener            |
-| 7    | Implement `NetworkingRealtimeDBScreen` — Firebase Realtime Database read/write  |
-| 8    | Create `src/services/networking/` service layer (axios instance, interceptors)  |
-| 9    | Mark `Networking` as `implemented: true` in `HomeScreen.tsx`                    |
-
----
-
-### 5. Storage
-
-**Route:** `Storage` and sub-screens
-
-**Dependencies:** `@react-native-async-storage/async-storage` (add), `react-native-mmkv` (add), `react-native-keychain` (add), `react-native-quick-sqlite` (add)
-
-| Step | Task                                                                            |
-| ---- | ------------------------------------------------------------------------------- |
-| 1    | Install and link all storage libraries                                          |
-| 2    | Implement `StorageAsyncStorageScreen` — read, write, delete, list keys          |
-| 3    | Implement `StorageMMKVScreen` — synchronous get/set, benchmarks vs AsyncStorage |
-| 4    | Implement `StorageSecureScreen` — store and retrieve credentials with Keychain  |
-| 5    | Implement `StorageSQLiteScreen` — create table, insert, query, delete           |
-| 6    | Implement `StorageFirebaseScreen` — upload file, download URL, delete           |
-| 7    | Create `src/services/storage/` service layer                                    |
-| 8    | Mark `Storage` as `implemented: true` in `HomeScreen.tsx`                       |
-
----
-
-### 6. Permissions
-
-**Route:** `Permissions` and sub-screens
-
-**Dependencies:** `react-native-permissions` (already installed)
-
-| Step | Task                                                                             |
-| ---- | -------------------------------------------------------------------------------- |
-| 1    | Implement `PermissionsCameraScreen` — check, request, blocked fallback           |
-| 2    | Implement `PermissionsLocationScreen` — foreground vs background                 |
-| 3    | Implement `PermissionsNotificationsScreen` — iOS/Android notification permission |
-| 4    | Implement `PermissionsMicrophoneScreen` — audio recording access                 |
-| 5    | Implement `PermissionsContactsScreen` — address book access                      |
-| 6    | Implement `PermissionsPhotoLibraryScreen` — gallery access                       |
-| 7    | Implement `PermissionsBluetoothScreen` — BLE scan permission                     |
-| 8    | Extend `src/services/permissions/permissions.ts` to cover all 7 types            |
-| 9    | Mark `Permissions` as `implemented: true` in `HomeScreen.tsx`                    |
-
----
-
-### 7. Hooks & Utilities
-
-**Route:** `Hooks` and sub-screens
-
-**Dependencies:** None (pure JS)
-
-| Step | Task                                                                         |
-| ---- | ---------------------------------------------------------------------------- |
-| 1    | Create `src/hooks/useDebounce.ts` and demo screen                            |
-| 2    | Create `src/hooks/useLocalStorage.ts` (AsyncStorage wrapper) and demo screen |
-| 3    | Create `src/hooks/useNetworkStatus.ts` (NetInfo) and demo screen             |
-| 4    | Create `src/hooks/useAppState.ts` and demo screen                            |
-| 5    | Create `src/hooks/useKeyboard.ts` and demo screen                            |
-| 6    | Create `src/hooks/useTimer.ts` (countdown + stopwatch) and demo screen       |
-| 7    | Mark `Hooks` as `implemented: true` in `HomeScreen.tsx`                      |
-
----
-
-### 8. Forms
-
-**Route:** `Forms` and sub-screens
-
-**Dependencies:** `react-hook-form` (add), `@react-native-community/datetimepicker` (add)
-
-| Step | Task                                                                             |
-| ---- | -------------------------------------------------------------------------------- |
-| 1    | Install `react-hook-form` and `@react-native-community/datetimepicker`           |
-| 2    | Implement `FormsValidationScreen` — required, regex, real-time vs on-submit      |
-| 3    | Implement `FormsHookFormScreen` — full form with `useForm`, `Controller`, errors |
-| 4    | Implement `FormsDatePickerScreen` — native date and time picker                  |
-| 5    | Implement `FormsDropdownScreen` — custom picker and `react-native-paper` menu    |
-| 6    | Implement `FormsSearchScreen` — debounced search with clear and results list     |
-| 7    | Mark `Forms` as `implemented: true` in `HomeScreen.tsx`                          |
-
----
-
-### 9. Animations
-
-**Route:** `Animations` and sub-screens
-
-**Dependencies:** `react-native-reanimated` (add), `react-native-gesture-handler` (add), `lottie-react-native` (add)
-
-| Step | Task                                                                          |
-| ---- | ----------------------------------------------------------------------------- |
-| 1    | Install and configure Reanimated, Gesture Handler, and Lottie                 |
-| 2    | Implement `AnimationsBasicScreen` — fade, slide, scale with `Animated` API    |
-| 3    | Implement `AnimationsLayoutScreen` — `LayoutAnimation` presets                |
-| 4    | Implement `AnimationsReanimatedScreen` — `useSharedValue`, `useAnimatedStyle` |
-| 5    | Implement `AnimationsGestureScreen` — swipe, pan, pinch with Gesture Handler  |
-| 6    | Implement `AnimationsLottieScreen` — JSON animation playback                  |
-| 7    | Mark `Animations` as `implemented: true` in `HomeScreen.tsx`                  |
-
----
-
-### 10. Code Refactoring
-
-**Route:** `Refactoring` and sub-screens
-
-**Dependencies:** None
-
-| Step | Task                                                                                |
-| ---- | ----------------------------------------------------------------------------------- |
-| 1    | Implement `RefactoringFolderStructureScreen` — scalable layout, barrel exports      |
-| 2    | Implement `RefactoringAtomicDesignScreen` — atoms, molecules, organisms walkthrough |
-| 3    | Implement `RefactoringCustomHooksScreen` — before/after extraction examples         |
-| 4    | Implement `RefactoringServiceLayerScreen` — isolating side effects from UI          |
-| 5    | Implement `RefactoringStateManagementScreen` — Context vs Zustand vs Redux          |
-| 6    | Implement `RefactoringTypeSafetyScreen` — strict TS, discriminated unions           |
-| 7    | Implement `RefactoringPerformanceScreen` — memo, useCallback, FlatList tips         |
-| 8    | Implement `RefactoringErrorBoundariesScreen` — fallback UI, crash hooks             |
-| 9    | Implement `RefactoringCodeSplittingScreen` — lazy screens, dynamic imports          |
-| 10   | Mark `Refactoring` as `implemented: true` in `HomeScreen.tsx`                       |
+## Scripts
+
+| Command                | Description                                               |
+| ---------------------- | --------------------------------------------------------- |
+| `yarn start`           | Start Metro bundler with cache reset                      |
+| `yarn ios:debug`       | Build and run iOS in debug mode                           |
+| `yarn ios:release`     | Build and run iOS in release mode                         |
+| `yarn android:debug`   | Build and run Android in debug mode                       |
+| `yarn android:release` | Build and run Android in release mode                     |
+| `yarn test`            | Run Jest tests                                            |
+| `yarn lint`            | Run ESLint                                                |
+| `yarn pods`            | Install CocoaPods                                         |
+| `yarn xcode`           | Open project in Xcode                                     |
+| `yarn android:clean`   | Clean Android build artifacts                             |
+| `yarn deepclean`       | Full clean: node_modules, pods, build folders, lock files |
+| `yarn wcag:audit`      | Run WCAG 2.2 automated AST + contrast audit               |
+| `yarn wcag:audit:json` | Same audit with JSON output                               |
 
 ---
 
 ## Adding a New Screen
 
-### 1. Add the route to `src/navigation/types.ts`
+### 1. Register the route type
 
 ```ts
+// src/navigation/types.ts
 export type RootStackParamList = {
-  // ...existing routes
   MyNewScreen: undefined;
+  // ...
 };
 ```
 
-### 2. Create the screen file
+### 2. Create the screen
 
 ```tsx
 // src/screens/MyNewScreen.tsx
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Header from '../components/atoms/Header';
 import { RootStackParamList } from '../navigation/types';
 import { theme } from '../theme';
@@ -1043,7 +300,6 @@ type Props = NativeStackScreenProps<RootStackParamList, 'MyNewScreen'>;
 const MyNewScreen = ({}: Props) => (
   <SafeAreaView style={styles.root}>
     <Header title="My New Screen" />
-    {/* content here */}
   </SafeAreaView>
 );
 
@@ -1054,32 +310,32 @@ const styles = StyleSheet.create({
 });
 ```
 
-### 3. Register the screen in `src/navigation/AppNavigator.tsx`
+### 3. Register in the navigator
 
 ```tsx
+// src/navigation/AppNavigator.tsx
 import MyNewScreen from '../screens/MyNewScreen';
 
 <Stack.Screen name="MyNewScreen" component={MyNewScreen} />;
 ```
 
-### 4. Add it to a menu list
-
-In the relevant parent screen (e.g. `ComponentsScreen.tsx`), add an entry to the `ITEMS` array:
+### 4. Add to a menu list
 
 ```ts
+// e.g. src/screens/ComponentsScreen.tsx
 {
   title: 'My Feature',
   description: 'What this screen demonstrates',
   screen: 'MyNewScreen',
   implemented: true,
-},
+}
 ```
 
 ---
 
 ## Adding a New Component
 
-### Atom (no dependencies on other components)
+### Atom
 
 ```
 src/components/atoms/MyAtom/
@@ -1093,18 +349,16 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { theme } from '../../../theme';
 
-type MyAtomProps = {
-  // props
+type Props = {
+  /* props */
 };
 
-const MyAtom = ({}: MyAtomProps) => <View style={styles.container} />;
+const MyAtom = ({}: Props) => <View style={styles.root} />;
 
 export default MyAtom;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: theme.colors.surface,
-  },
+  root: { backgroundColor: theme.colors.surface },
 });
 ```
 
@@ -1113,39 +367,274 @@ const styles = StyleSheet.create({
 export { default } from './MyAtom';
 ```
 
-Then add to `src/components/index.ts`:
+Then export from the barrel:
 
 ```ts
+// src/components/index.ts
 export { default as MyAtom } from './atoms/MyAtom';
 ```
 
-### Molecule (composed of atoms)
+### Molecule
 
-Same folder structure under `src/components/molecules/MyMolecule/`. Import atoms using relative paths:
+Same structure under `src/components/molecules/MyMolecule/`. Import atoms via relative paths:
 
 ```tsx
 import Badge from '../../atoms/Badge';
-import Header from '../../atoms/Header';
-```
-
-Then add to `src/components/index.ts`:
-
-```ts
-export { default as MyMolecule } from './molecules/MyMolecule';
+import Button from '../../atoms/Button';
 ```
 
 ---
 
-## Scripts
+# Roadmap
 
-| Command              | Description                                               |
-| -------------------- | --------------------------------------------------------- |
-| `yarn start`         | Start Metro bundler (with cache reset)                    |
-| `yarn ios`           | Build and run on iOS simulator                            |
-| `yarn android`       | Build and run on Android emulator                         |
-| `yarn test`          | Run Jest tests                                            |
-| `yarn lint`          | Run ESLint                                                |
-| `yarn pods`          | Install CocoaPods                                         |
-| `yarn xcode`         | Open project in Xcode                                     |
-| `yarn android:clean` | Clean Android build artifacts                             |
-| `yarn deepclean`     | Full clean: node_modules, pods, build folders, lock files |
+> This roadmap is the north star for RNToolBox. The goal is to become the most complete, most trusted, most interactive React Native reference that exists — not as documentation, but as a running app on your device.
+
+---
+
+## Phase 1 — Complete the Foundation
+
+**Goal: Zero placeholder screens. Every category fully implemented.**
+
+### UI Components (8 remaining)
+
+| Screen           | What it will demonstrate                                                 |
+| ---------------- | ------------------------------------------------------------------------ |
+| Cards            | Basic card, image card, action card, horizontal card, list card          |
+| Modals & Alerts  | Custom modal, bottom sheet, confirmation dialog, full-screen modal       |
+| Toast / Snackbar | Success, error, info, warning — auto-dismiss, action button, queue       |
+| Lists            | FlatList, SectionList, pull-to-refresh, infinite scroll, swipe-to-delete |
+| Images           | Image, ImageBackground, lazy loading, blur placeholder, error fallback   |
+| Icons            | Full Material Design icon showcase, sizing, coloring, usage patterns     |
+| Avatar           | Image avatar, initials fallback, size variants, online indicator         |
+| Empty State      | No data, no connection, no results, error state — with action buttons    |
+
+### Native Actions (6 remaining)
+
+| Screen                   | What it will demonstrate                                        |
+| ------------------------ | --------------------------------------------------------------- |
+| Image Picker             | Camera roll + camera capture, multi-select, crop, compression   |
+| File Picker              | Document selection, file type filtering, size display           |
+| Camera                   | Live preview, capture photo, flash toggle, front/back switch    |
+| Barcode / QR Scanner     | Scan barcodes and QR codes, parse result types, torch toggle    |
+| Push Notifications (FCM) | Local notifications, remote push via FCM, notification channels |
+| Background Tasks         | Headless JS, background fetch, task scheduling                  |
+
+### Permissions (7 remaining)
+
+| Screen        | What it will demonstrate                                         |
+| ------------- | ---------------------------------------------------------------- |
+| Camera        | Check, request, blocked fallback with settings deep-link         |
+| Location      | Foreground vs background, always vs when-in-use, accuracy levels |
+| Notifications | iOS/Android permission request, provisional (iOS), channel setup |
+| Microphone    | Audio recording access, check before record                      |
+| Contacts      | Address book access, read contacts list on grant                 |
+| Photo Library | Gallery access, limited selection (iOS 14+)                      |
+| Bluetooth     | BLE scan permission, Android 12+ granular permissions            |
+
+### Hooks & Utilities (6 remaining)
+
+| Hook               | What it will demonstrate                                       |
+| ------------------ | -------------------------------------------------------------- |
+| `useDebounce`      | Debounced value with configurable delay, live search example   |
+| `useLocalStorage`  | AsyncStorage wrapper with JSON serialization, typed get/set    |
+| `useNetworkStatus` | Online/offline detection, connection type, NetInfo integration |
+| `useAppState`      | Foreground/background/inactive transitions, use cases          |
+| `useKeyboard`      | Keyboard height, visibility, avoid-keyboard patterns           |
+| `useTimer`         | Countdown timer, stopwatch, lap tracking, pause/resume         |
+
+### System & Device (7 remaining)
+
+| Screen             | What it will demonstrate                                           |
+| ------------------ | ------------------------------------------------------------------ |
+| Push Notifications | FCM token, notification payload, foreground/background handling    |
+| Network Info       | Connection type, IP address, WiFi SSID, speed test                 |
+| Environment Config | Live display of all env vars per build, config validation          |
+| Dark Mode          | `useColorScheme`, manual override, system sync, theme switching    |
+| Localization       | i18n setup, language switching, RTL layout, date/number formatting |
+| Analytics          | Firebase Analytics event logging, user properties, screen tracking |
+| Crashlytics        | Crash reporting, non-fatal errors, custom keys and logs            |
+
+### Forms (5 remaining)
+
+| Screen            | What it will demonstrate                                         |
+| ----------------- | ---------------------------------------------------------------- |
+| Form Validation   | Required fields, regex, min/max length, real-time vs on-submit   |
+| React Hook Form   | `useForm`, `Controller`, `FormProvider`, error messages, reset   |
+| Date Picker       | Native date picker, time picker, date range, min/max constraints |
+| Dropdown / Select | Native Picker, custom dropdown, searchable select, multi-select  |
+| Search Input      | Debounced search, clear button, results list, empty state        |
+
+### Animations (5 remaining)
+
+| Screen          | What it will demonstrate                                                         |
+| --------------- | -------------------------------------------------------------------------------- |
+| Animated API    | Fade, slide, scale, rotate, spring, sequence, parallel, loop                     |
+| LayoutAnimation | Preset animations, custom config, list item add/remove                           |
+| Reanimated 3    | `useSharedValue`, `useAnimatedStyle`, `withSpring`, `withTiming`, `withSequence` |
+| Gesture Handler | Pan, swipe, pinch, tap, long press — with Reanimated integration                 |
+| Lottie          | JSON animation playback, speed control, loop, segment play                       |
+
+### Navigation Patterns (5 remaining)
+
+| Screen           | What it will demonstrate                                            |
+| ---------------- | ------------------------------------------------------------------- |
+| Tab Navigator    | Bottom tabs, badge count, custom tab bar, icon + label              |
+| Drawer Navigator | Side menu, custom drawer content, gesture open/close                |
+| Modal Stack      | Presenting screens as modals, transparent modal, bottom sheet modal |
+| Deep Linking     | URL scheme setup, universal links, navigate from notification       |
+| Auth Flow        | Conditional stack — logged in vs logged out, persist auth state     |
+
+### Storage (4 remaining)
+
+| Screen           | What it will demonstrate                                               |
+| ---------------- | ---------------------------------------------------------------------- |
+| MMKV             | Synchronous get/set, performance benchmark vs AsyncStorage             |
+| Secure Storage   | Keychain (iOS) / Keystore (Android), store credentials, biometric lock |
+| SQLite           | Create table, insert, query, update, delete, migrations                |
+| Firebase Storage | Upload file with progress, download URL, delete, list files            |
+
+### Networking (7 remaining)
+
+| Screen            | What it will demonstrate                                             |
+| ----------------- | -------------------------------------------------------------------- |
+| Fetch API         | GET, POST, PUT, DELETE, headers, timeout, error handling             |
+| Axios             | Axios instance, request/response interceptors, retry logic           |
+| Interceptors      | Auth token injection, refresh token flow, error normalization        |
+| Offline Detection | NetInfo, offline banner, request queue, retry on reconnect           |
+| WebSocket         | Connect, send message, receive, ping/pong, disconnect, reconnect     |
+| Firestore         | CRUD operations, real-time listener, pagination, offline persistence |
+| Realtime Database | Read/write, live sync, presence system                               |
+
+### Testing (3 remaining)
+
+| Screen          | What it will demonstrate                                    |
+| --------------- | ----------------------------------------------------------- |
+| Unit Tests      | Jest tests for services and hooks — live test runner output |
+| Component Tests | React Native Testing Library — render, query, fire events   |
+| E2E Tests       | Detox setup, example flows — login, navigation, form submit |
+
+### Code Refactoring (9 remaining)
+
+| Screen           | What it will demonstrate                                                   |
+| ---------------- | -------------------------------------------------------------------------- |
+| Folder Structure | Scalable layout, barrel exports, feature-based vs type-based               |
+| Atomic Design    | Atoms, molecules, organisms — live walkthrough of this codebase            |
+| Custom Hooks     | Before/after extraction — logic pulled out of components                   |
+| Service Layer    | Isolating side effects, pure functions, testability                        |
+| State Management | Context vs Zustand vs Redux — same feature, three implementations          |
+| Type Safety      | Strict TypeScript, discriminated unions, branded types, generics           |
+| Performance      | `memo`, `useCallback`, `useMemo`, FlatList optimization, Flipper profiling |
+| Error Boundaries | Fallback UI, `ErrorBoundary`, crash hooks, Sentry integration              |
+| Code Splitting   | Lazy screens, dynamic imports, bundle size analysis                        |
+
+---
+
+## Phase 2 — Superpower Features
+
+**Goal: Features that no documentation site, no AI, and no tutorial can replicate.**
+
+### Interactive Code Viewer
+
+Every screen gets a "View Source" button. Tap it to see the exact implementation code for that screen — syntax highlighted, scrollable, copyable. Not a link to GitHub. The actual code, inline, on your device.
+
+This is the single most powerful feature for a developer tool. You see the pattern running, then immediately see how it was built.
+
+### Device Comparison Mode
+
+Run two implementations side by side — split screen. Compare `Animated API` vs `Reanimated` for the same animation. Compare `AsyncStorage` vs `MMKV` performance. Compare `fetch` vs `Axios` error handling. See the difference, not just read about it.
+
+### Performance Profiler
+
+Each screen shows live performance metrics:
+
+- Render count
+- Re-render triggers
+- JS thread FPS
+- UI thread FPS
+- Memory usage delta
+
+Developers learn performance by seeing it, not by reading about it.
+
+### Snippet Exporter
+
+One tap to copy a production-ready, typed, linted code snippet for any pattern. Not the entire screen — just the relevant implementation block. Formatted, ready to paste.
+
+### Dark Mode
+
+Full dark/light theme support across every screen. Demonstrates the pattern while being the pattern.
+
+### Offline Mode
+
+The entire app works offline. No network required after first launch. Demonstrates offline-first architecture by being offline-first.
+
+### Search Upgrade
+
+The deep search index already exists. Upgrade it with:
+
+- Fuzzy matching
+- Search by tag (e.g. "firebase", "animation", "ios-only")
+- Recent searches
+- Keyboard shortcut on iPad
+
+### Contribution Guide
+
+Clear, step-by-step guide for open source contributors to add new screens. Lower the barrier so the community builds this together.
+
+---
+
+## Phase 3 — Platform Expansion
+
+**Goal: RNToolBox becomes an ecosystem, not just an app.**
+
+### App Store / Play Store Release
+
+Publish publicly so every React Native developer in the world can install it. This is the distribution milestone — everything before this is building the product.
+
+### GitHub Discussions + Issues as Feature Requests
+
+Let the community vote on which screens to build next. The most-requested patterns get built first.
+
+### Weekly Pattern Drops
+
+One new screen every week. Announced on GitHub, Twitter/X, and via push notification. Keeps developers coming back and gives the project momentum.
+
+### VS Code Extension (Future)
+
+`RNToolBox: Insert Pattern` — browse and insert any pattern directly into your editor without leaving VS Code.
+
+### CLI Tool (Future)
+
+```bash
+npx rntoolbox add biometrics
+```
+
+Scaffolds a production-ready biometrics screen into your project, wired up and ready to run.
+
+---
+
+## Contribution
+
+RNToolBox is open source and contributions are welcome.
+
+To add a new screen:
+
+1. Fork the repository
+2. Create a branch: `feature/your-screen-name`
+3. Follow the screen pattern documented above
+4. Add the route, register in the navigator, add to the menu list
+5. Mark `implemented: true`
+6. Open a pull request
+
+Every screen must:
+
+- Run on both iOS and Android (or clearly document platform limitations)
+- Use the existing theme tokens — no hardcoded colors or spacing
+- Follow the atomic design pattern — no raw primitives in screens
+- Handle loading, error, and empty states where applicable
+- Be accessible — `accessibilityLabel` on all interactive elements
+
+---
+
+## License
+
+MIT
