@@ -51,9 +51,9 @@ const MENU_ITEMS: MenuItem[] = [
   },
   {
     title: 'Accessibility',
-    description: 'accessibilityLabel, roles, screen reader',
+    description: 'WCAG 2.2 — wrong vs correct examples for every criterion',
     screen: 'SystemAccessibility',
-    implemented: false,
+    implemented: true,
     icon: 'human',
   },
   {

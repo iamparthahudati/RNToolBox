@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "wcag:audit": "node node_modules/ts-node/dist/bin.js --project tsconfig.scripts.json scripts/wcag-audit/index.ts",
+    "wcag:audit:json": "node node_modules/ts-node/dist/bin.js --project tsconfig.scripts.json scripts/wcag-audit/index.ts --output=json",
     "lint": "eslint .",
     "start": "react-native start --reset-cache",
     "ios:uninstall": "xcrun simctl uninstall booted com.transunion.trulookup",
@@ -29,6 +31,7 @@
     "@react-native/new-app-screen": "0.83.1",
     "@react-navigation/native": "^7.1.26",
     "@react-navigation/native-stack": "^7.9.0",
+    "@sbaiahmed1/react-native-biometrics": "^0.11.0",
     "react": "19.2.0",
     "react-native": "0.83.1",
     "react-native-config": "1.6.0",
@@ -38,8 +41,7 @@
     "react-native-paper": "5.15.0",
     "react-native-permissions": "^5.4.4",
     "react-native-safe-area-context": "^5.6.2",
-    "react-native-screens": "^4.19.0",
-    "@sbaiahmed1/react-native-biometrics": "^0.11.0"
+    "react-native-screens": "^4.19.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -52,14 +54,21 @@
     "@react-native/eslint-config": "0.83.1",
     "@react-native/metro-config": "0.83.1",
     "@react-native/typescript-config": "0.83.1",
+    "@types/color": "^4.2.1",
     "@types/jest": "^29.5.13",
     "@types/react": "^19.2.0",
     "@types/react-test-renderer": "^19.1.0",
+    "@typescript-eslint/parser": "^8.58.2",
+    "@typescript-eslint/types": "^8.58.2",
+    "chalk": "4",
+    "color": "3",
     "eslint": "^8.19.0",
     "jest": "^29.6.3",
     "prettier": "2.8.8",
     "react-test-renderer": "19.2.0",
-    "typescript": "^5.8.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "wcag-contrast": "^3.0.0"
   },
   "engines": {
     "node": ">=20"
