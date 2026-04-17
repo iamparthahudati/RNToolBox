@@ -1,8 +1,8 @@
-import { MenuItem } from '../../types/menu';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import { RootStackParamList } from '../../navigation/types';
 import ScreenLayout from '../../components/molecules/ScreenLayout';
+import { RootStackParamList } from '../../navigation/types';
+import { MenuItem } from '../../types/menu';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'NativeMaps'>;
 
@@ -64,6 +64,20 @@ const ITEMS: MenuItem[] = [
     implemented: true,
   },
   {
+    title: 'Gesture Draw',
+    description: 'Freehand draw polylines and polygons with your finger',
+    screen: 'NativeMapsGestureDraw',
+    icon: 'gesture',
+    implemented: true,
+  },
+  {
+    title: 'Circle Draw',
+    description: 'Tap to place center, drag to set radius — draw circles',
+    screen: 'NativeMapsCircleDraw',
+    icon: 'circle-edit-outline',
+    implemented: true,
+  },
+  {
     title: 'Animated Marker',
     description: 'Simulate a vehicle moving along a polyline route',
     screen: 'NativeMapsAnimatedMarker',
@@ -82,13 +96,6 @@ const ITEMS: MenuItem[] = [
     description: 'Visualize data density with a heatmap overlay',
     screen: 'NativeMapsHeatmap',
     icon: 'fire',
-    implemented: true,
-  },
-  {
-    title: 'Animated Marker',
-    description: 'Simulate a vehicle moving along a route',
-    screen: 'NativeMapsAnimatedMarker',
-    icon: 'car-outline',
     implemented: true,
   },
   {

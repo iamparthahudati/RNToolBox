@@ -1,62 +1,65 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
 import AnimationsScreen from '../screens/AnimationsScreen';
-import AppMaskingScreen from '../screens/security/AppMaskingScreen';
-import AsyncStorageScreen from '../screens/storage/AsyncStorageScreen';
-import BadgesScreen from '../screens/components/BadgesScreen';
-import AnimatedMarkerScreen from '../screens/native/maps/AnimatedMarkerScreen';
+import AuthScreen from '../screens/AuthScreen';
+import ComingSoonScreen from '../screens/ComingSoonScreen';
+import ComponentsScreen from '../screens/ComponentsScreen';
+import FormsScreen from '../screens/FormsScreen';
+import HomeScreen from '../screens/HomeScreen';
+import HooksScreen from '../screens/HooksScreen';
+import NativeActionsScreen from '../screens/NativeActionsScreen';
+import NavigationPatternsScreen from '../screens/NavigationPatternsScreen';
+import NetworkingScreen from '../screens/NetworkingScreen';
+import PermissionsScreen from '../screens/PermissionsScreen';
+import RefactoringScreen from '../screens/RefactoringScreen';
+import SecurityScreen from '../screens/SecurityScreen';
+import StorageScreen from '../screens/StorageScreen';
+import SystemScreen from '../screens/SystemScreen';
+import TestingScreen from '../screens/TestingScreen';
 import AuthAnonymousScreen from '../screens/auth/AuthAnonymousScreen';
 import AuthAppleScreen from '../screens/auth/AuthAppleScreen';
 import AuthEmailScreen from '../screens/auth/AuthEmailScreen';
 import AuthGoogleScreen from '../screens/auth/AuthGoogleScreen';
 import AuthPhoneOTPScreen from '../screens/auth/AuthPhoneOTPScreen';
-import AuthScreen from '../screens/AuthScreen';
-import BasicMapScreen from '../screens/native/maps/BasicMapScreen';
+import BadgesScreen from '../screens/components/BadgesScreen';
 import ButtonsScreen from '../screens/components/ButtonsScreen';
-import CallPhoneScreen from '../screens/native/CallPhoneScreen';
-import CertificatePinningScreen from '../screens/security/CertificatePinningScreen';
-import ClipboardScreen from '../screens/native/ClipboardScreen';
-import ComingSoonScreen from '../screens/ComingSoonScreen';
-import ComponentsScreen from '../screens/ComponentsScreen';
-import DeviceInfoScreen from '../screens/system/DeviceInfoScreen';
-import DirectionsScreen from '../screens/native/maps/DirectionsScreen';
-import FormsScreen from '../screens/FormsScreen';
-import GeofenceScreen from '../screens/native/maps/GeofenceScreen';
-import HapticsScreen from '../screens/native/HapticsScreen';
-import ClusterMarkersScreen from '../screens/native/maps/ClusterMarkersScreen';
-import SearchPlaceScreen from '../screens/native/maps/SearchPlaceScreen';
-import CustomMapStyleScreen from '../screens/native/maps/CustomMapStyleScreen';
-import DrawAreaScreen from '../screens/native/maps/DrawAreaScreen';
-import HeatmapScreen from '../screens/native/maps/HeatmapScreen';
-import HomeScreen from '../screens/HomeScreen';
-import HooksScreen from '../screens/HooksScreen';
 import InputsScreen from '../screens/components/InputsScreen';
-import JailbreakScreen from '../screens/security/JailbreakScreen';
 import LoadingScreen from '../screens/components/LoadingScreen';
-import MapsScreen from '../screens/native/MapsScreen';
-import MarkersScreen from '../screens/native/maps/MarkersScreen';
-import MyLocationScreen from '../screens/native/maps/MyLocationScreen';
-import NativeActionsScreen from '../screens/NativeActionsScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import NavigationPatternsScreen from '../screens/NavigationPatternsScreen';
-import NetworkingScreen from '../screens/NetworkingScreen';
-import ObfuscationScreen from '../screens/security/ObfuscationScreen';
-import OpenInMapsScreen from '../screens/native/maps/OpenInMapsScreen';
-import PermissionsScreen from '../screens/PermissionsScreen';
-import PolygonScreen from '../screens/native/maps/PolygonScreen';
-import React from 'react';
-import RefactoringScreen from '../screens/RefactoringScreen';
-import RemoteConfigScreen from '../screens/networking/RemoteConfigScreen';
-import RemoteConfigSetupScreen from '../screens/networking/RemoteConfigSetupScreen';
-import { RootStackParamList } from './types';
-import ScreenshotPreventionScreen from '../screens/security/ScreenshotPreventionScreen';
-import SecurityScreen from '../screens/SecurityScreen';
 import SelectionScreen from '../screens/components/SelectionScreen';
+import TypographyScreen from '../screens/components/TypographyScreen';
+import BiometricsScreen from '../screens/native/BiometricsScreen';
+import CallPhoneScreen from '../screens/native/CallPhoneScreen';
+import ClipboardScreen from '../screens/native/ClipboardScreen';
+import HapticsScreen from '../screens/native/HapticsScreen';
+import MapsScreen from '../screens/native/MapsScreen';
 import SendEmailScreen from '../screens/native/SendEmailScreen';
 import ShareScreen from '../screens/native/ShareScreen';
-import StorageScreen from '../screens/StorageScreen';
-import SystemScreen from '../screens/SystemScreen';
-import TestingScreen from '../screens/TestingScreen';
-import TypographyScreen from '../screens/components/TypographyScreen';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AnimatedMarkerScreen from '../screens/native/maps/AnimatedMarkerScreen';
+import BasicMapScreen from '../screens/native/maps/BasicMapScreen';
+import CircleDrawScreen from '../screens/native/maps/CircleDrawScreen';
+import ClusterMarkersScreen from '../screens/native/maps/ClusterMarkersScreen';
+import CustomMapStyleScreen from '../screens/native/maps/CustomMapStyleScreen';
+import DirectionsScreen from '../screens/native/maps/DirectionsScreen';
+import DrawAreaScreen from '../screens/native/maps/DrawAreaScreen';
+import GeofenceScreen from '../screens/native/maps/GeofenceScreen';
+import GestureDrawScreen from '../screens/native/maps/GestureDrawScreen';
+import HeatmapScreen from '../screens/native/maps/HeatmapScreen';
+import MarkersScreen from '../screens/native/maps/MarkersScreen';
+import MyLocationScreen from '../screens/native/maps/MyLocationScreen';
+import OpenInMapsScreen from '../screens/native/maps/OpenInMapsScreen';
+import PolygonScreen from '../screens/native/maps/PolygonScreen';
+import SearchPlaceScreen from '../screens/native/maps/SearchPlaceScreen';
+import RemoteConfigScreen from '../screens/networking/RemoteConfigScreen';
+import RemoteConfigSetupScreen from '../screens/networking/RemoteConfigSetupScreen';
+import AppMaskingScreen from '../screens/security/AppMaskingScreen';
+import CertificatePinningScreen from '../screens/security/CertificatePinningScreen';
+import JailbreakScreen from '../screens/security/JailbreakScreen';
+import ObfuscationScreen from '../screens/security/ObfuscationScreen';
+import ScreenshotPreventionScreen from '../screens/security/ScreenshotPreventionScreen';
+import AsyncStorageScreen from '../screens/storage/AsyncStorageScreen';
+import DeviceInfoScreen from '../screens/system/DeviceInfoScreen';
+import { RootStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -125,7 +128,7 @@ const AppNavigator = () => {
         <Stack.Screen name="NativeImagePicker" component={ComingSoonScreen} />
         <Stack.Screen name="NativeFilePicker" component={ComingSoonScreen} />
         <Stack.Screen name="NativeHaptics" component={HapticsScreen} />
-        <Stack.Screen name="NativeBiometrics" component={ComingSoonScreen} />
+        <Stack.Screen name="NativeBiometrics" component={BiometricsScreen} />
         <Stack.Screen name="NativeCamera" component={ComingSoonScreen} />
         <Stack.Screen name="NativeBarcode" component={ComingSoonScreen} />
         <Stack.Screen
@@ -158,11 +161,22 @@ const AppNavigator = () => {
           component={CustomMapStyleScreen}
         />
         <Stack.Screen name="NativeMapsHeatmap" component={HeatmapScreen} />
-        <Stack.Screen name="NativeMapsSearchPlace" component={SearchPlaceScreen} />
+        <Stack.Screen
+          name="NativeMapsSearchPlace"
+          component={SearchPlaceScreen}
+        />
         <Stack.Screen name="NativeMapsOpen" component={OpenInMapsScreen} />
         <Stack.Screen
           name="NativeMapsAnimatedMarker"
           component={AnimatedMarkerScreen}
+        />
+        <Stack.Screen
+          name="NativeMapsGestureDraw"
+          component={GestureDrawScreen}
+        />
+        <Stack.Screen
+          name="NativeMapsCircleDraw"
+          component={CircleDrawScreen}
         />
 
         {/* Permissions */}

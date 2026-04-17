@@ -73,6 +73,8 @@ export type RootStackParamList = {
   NativeMapsAnimatedMarker: undefined;
   NativeMapsCluster: undefined;
   NativeMapsSearchPlace: undefined;
+  NativeMapsCircleDraw: undefined;
+  NativeMapsGestureDraw: undefined;
 
   // Permissions
   Permissions: undefined;
