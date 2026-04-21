@@ -1,9 +1,4 @@
-import {
-  GooglePlaceDetail,
-  GooglePlacesAutocomplete,
-  GooglePlacesAutocompleteRef,
-} from 'react-native-google-places-autocomplete';
-import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import React, { useRef, useState } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -11,14 +6,23 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useRef, useState } from 'react';
+import {
+  GooglePlaceDetail,
+  GooglePlacesAutocomplete,
+  GooglePlacesAutocompleteRef,
+} from 'react-native-google-places-autocomplete';
+import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
-import Header from '../../../components/Header';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../navigation/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import appConfig from '../../../config';
+import Header from '../../../components/Header';
+import { RootStackParamList } from '../../../navigation/types';
 import { theme } from '../../../theme';
+
+const MAPS_API_KEY =
+  Platform.OS === 'ios'
+    ? 'AIzaSyBedSN0xcQcF3H7FQnymk7w_MClwJQExEU'
+    : 'AIzaSyDBuZNqygBwTMcLNkznEfm7YoHXGxsfGpI';
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -106,7 +110,7 @@ export default function SearchPlaceScreen(_props: Props) {
           onPress={(_data, detail) => handlePlaceSelect(detail)}
           onFail={error => console.warn('[Places] API error:', error)}
           query={{
-            key: appConfig.MAPS_API_KEY,
+            key: MAPS_API_KEY,
             language: 'en',
           }}
           enablePoweredByContainer={false}

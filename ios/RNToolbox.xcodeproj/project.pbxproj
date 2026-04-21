@@ -282,7 +282,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 35WUSKF3QW;
 				ENABLE_BITCODE = NO;
-				ENVFILE = "$(PODS_ROOT)/../../.env.debug";
+				ENVFILE = "$(PODS_ROOT)/../../.env";
 				INFOPLIST_FILE = RNToolbox/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -314,7 +314,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 35WUSKF3QW;
-				ENVFILE = "$(PODS_ROOT)/../../.env.production";
+				ENVFILE = "$(PODS_ROOT)/../../.env";
 				INFOPLIST_FILE = RNToolbox/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (

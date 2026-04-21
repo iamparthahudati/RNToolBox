@@ -43,28 +43,5 @@ target 'RNToolbox' do
       # :ccache_enabled => true
     )
 
-    # Set ENVFILE for react-native-config on both the pods project and the main app target.
-    # This ensures the correct .env file is used during both Debug and Release/Archive builds.
-    envfiles = {
-      'Debug'   => '$(PODS_ROOT)/../../.env.debug',
-      'Release' => '$(PODS_ROOT)/../../.env.production',
-    }
-
-    # Set on all pod targets (covers react-native-config pod itself)
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings['ENVFILE'] = envfiles[config.name] || '$(PODS_ROOT)/../../.env.debug'
-      end
-    end
-
-    # Set on the main app target so the RNCConfig build script picks it up during Archive
-    installer.aggregate_targets.each do |aggregate_target|
-      aggregate_target.user_project.targets.each do |target|
-        target.build_configurations.each do |config|
-          config.build_settings['ENVFILE'] = envfiles[config.name] || '$(PODS_ROOT)/../../.env.debug'
-        end
-      end
-      aggregate_target.user_project.save
-    end
   end
 end

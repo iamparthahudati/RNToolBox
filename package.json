@@ -14,10 +14,10 @@
     "pods": "npx pod-install",
     "deepclean": "rm -rf node_modules vendor ios/build ios/Pods android/build android/.gradle android/.idea android/.kotlin android/.default android/app/.cxx android/app/build && rm -f yarn.lock package-lock.json Gemfile.lock ios/Podfile.lock ios/Gemfile.lock ios/.xcode.env.local android/*.hprof",
     "test": "jest",
-    "android:debug": "ENVFILE=.env.debug react-native run-android --mode debug",
-    "android:release": "ENVFILE=.env.production react-native run-android --mode release",
-    "ios:debug": "ENVFILE=.env.debug react-native run-ios --scheme RNToolbox",
-    "ios:release": "ENVFILE=.env.production react-native run-ios --scheme RNToolbox --configuration Release"
+    "android:debug": "react-native run-android --mode debug",
+    "android:release": "react-native run-android --mode release",
+    "ios:debug": "react-native run-ios --scheme RNToolbox",
+    "ios:release": "react-native run-ios --scheme RNToolbox --configuration Release"
   },
   "dependencies": {
     "@invertase/react-native-apple-authentication": "2.5.1",
@@ -34,7 +34,6 @@
     "@sbaiahmed1/react-native-biometrics": "^0.11.0",
     "react": "19.2.0",
     "react-native": "0.83.1",
-    "react-native-config": "1.6.0",
     "react-native-device-info": "15.0.2",
     "react-native-google-places-autocomplete": "^2.6.4",
     "react-native-maps": "^1.27.2",

@@ -12,7 +12,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Header from '../../components/atoms/Header';
 import SectionHeader from '../../components/molecules/SectionHeader';
-import appConfig from '../../config';
 import { RootStackParamList } from '../../navigation/types';
 import { theme } from '../../theme';
 
@@ -220,7 +219,7 @@ function EnvTab({
 export default function RemoteConfigSetupScreen(
   _props: Props,
 ): React.JSX.Element {
-  const currentEnv = appConfig.APP_ENV as EnvName;
+  const currentEnv: EnvName = 'production';
   const [selectedEnv, setSelectedEnv] = useState<EnvName>(currentEnv);
 
   const envColor = ENV_COLORS[selectedEnv];

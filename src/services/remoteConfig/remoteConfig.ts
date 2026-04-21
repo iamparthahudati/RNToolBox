@@ -1,5 +1,4 @@
 import remoteConfig from '@react-native-firebase/remote-config';
-import { isDebug } from '../../config';
 
 export interface RemoteConfigValues {
   welcome_message: string;
@@ -27,7 +26,7 @@ export async function initRemoteConfig(): Promise<void> {
     >,
   );
   remoteConfig().settings = {
-    minimumFetchIntervalMillis: isDebug ? 0 : 43200000,
+    minimumFetchIntervalMillis: 43200000,
     fetchTimeMillis: 0,
   };
 }
